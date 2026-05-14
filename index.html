@@ -1,80 +1,80 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>EDIMAGE WORLD</title>
 
   <style>
     :root {
-      --bg: radial-gradient(circle at 50% 20%, #241b08 0%, #050505 58%, #000000 100%);
-      --panel: rgba(8, 8, 8, 0.76);
-      --panel-soft: rgba(255, 255, 255, 0.06);
-      --text: #f7d56b;
-      --muted: #b89c48;
-      --accent: #f5c542;
-      --accent-2: #ffd978;
-      --border: rgba(245, 197, 66, 0.34);
-      --danger: #ff7575;
-      --shadow: rgba(0, 0, 0, 0.38);
-      --font-title: Georgia, "Times New Roman", "Songti SC", serif;
-      --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --radius-lg: 28px;
-      --radius-md: 18px;
-      --radius-sm: 999px;
-    }
-
-    body[data-theme="original"] {
-      --bg: radial-gradient(circle at 50% 18%, #2c210b 0%, #070707 54%, #000000 100%);
-      --panel: rgba(8, 8, 8, 0.78);
-      --panel-soft: rgba(255, 214, 92, 0.08);
-      --text: #f7d56b;
-      --muted: #b89c48;
-      --accent: #f5c542;
-      --accent-2: #ffdf86;
-      --border: rgba(245, 197, 66, 0.34);
-      --font-title: Georgia, "Times New Roman", "Songti SC", serif;
-      --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --bg: #040002;
+      --panel: rgba(5, 1, 2, 0.72);
+      --panel-strong: rgba(5, 1, 2, 0.9);
+      --text: #ffe7ad;
+      --text-soft: rgba(255, 231, 173, 0.72);
+      --text-faint: rgba(255, 231, 173, 0.42);
+      --accent: #ffb328;
+      --accent-hot: #ffdc5c;
+      --accent-dark: #170905;
+      --line: rgba(255, 198, 82, 0.24);
+      --line-strong: rgba(255, 198, 82, 0.48);
+      --cyan: #25c5d8;
+      --danger: #e94f74;
+      --shadow: 0 0 22px rgba(255, 180, 46, 0.32), 0 0 70px rgba(255, 123, 18, 0.2);
+      --serif: "Iowan Old Style", "Songti SC", "STSong", "Noto Serif CJK SC", Georgia, serif;
+      --mono: "Menlo", "Monaco", "Courier New", monospace;
+      --ease: cubic-bezier(0.19, 1, 0.22, 1);
     }
 
     body[data-theme="mist"] {
-      --bg: radial-gradient(circle at 30% 20%, #a9bfa0 0%, #517660 34%, #183827 72%, #07130d 100%);
-      --panel: rgba(10, 31, 22, 0.62);
-      --panel-soft: rgba(232, 241, 212, 0.1);
-      --text: #edf5da;
-      --muted: #bfd0ad;
-      --accent: #d7e9a8;
-      --accent-2: #f2ffd0;
-      --border: rgba(221, 239, 181, 0.35);
-      --font-title: Georgia, "Songti SC", serif;
-      --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --bg: #07130d;
+      --panel: rgba(12, 31, 23, 0.62);
+      --panel-strong: rgba(8, 22, 16, 0.92);
+      --text: #e8f1d4;
+      --text-soft: rgba(232, 241, 212, 0.74);
+      --text-faint: rgba(232, 241, 212, 0.42);
+      --accent: #d4e8a3;
+      --accent-hot: #f1ffd0;
+      --accent-dark: #102015;
+      --line: rgba(221, 239, 181, 0.25);
+      --line-strong: rgba(221, 239, 181, 0.54);
+      --cyan: #a5d4be;
+      --shadow: 0 0 35px rgba(193, 224, 170, 0.22), 0 0 90px rgba(45, 97, 65, 0.38);
+      --serif: Georgia, "Songti SC", serif;
     }
 
     body[data-theme="archive"] {
-      --bg: linear-gradient(180deg, #efefec 0%, #d7d7d3 100%);
-      --panel: rgba(255, 255, 255, 0.74);
-      --panel-soft: rgba(0, 0, 0, 0.045);
-      --text: #191919;
-      --muted: #5e5e5e;
+      --bg: #dededb;
+      --panel: rgba(255, 255, 255, 0.72);
+      --panel-strong: rgba(246, 246, 243, 0.94);
+      --text: #1d1d1d;
+      --text-soft: rgba(29, 29, 29, 0.68);
+      --text-faint: rgba(29, 29, 29, 0.38);
       --accent: #345bc7;
-      --accent-2: #1b3292;
-      --border: rgba(0, 0, 0, 0.24);
-      --font-title: Didot, Bodoni 72, Georgia, "Songti SC", serif;
-      --font-body: "Times New Roman", "Songti SC", serif;
+      --accent-hot: #111111;
+      --accent-dark: #ffffff;
+      --line: rgba(0, 0, 0, 0.22);
+      --line-strong: rgba(0, 0, 0, 0.45);
+      --cyan: #345bc7;
+      --shadow: 0 18px 80px rgba(0, 0, 0, 0.13);
+      --serif: Didot, "Bodoni 72", Georgia, "Songti SC", serif;
     }
 
     body[data-theme="blueapple"] {
-      --bg: linear-gradient(180deg, #21a2ff 0%, #0078e8 100%);
-      --panel: rgba(255, 255, 255, 0.18);
-      --panel-soft: rgba(255, 255, 255, 0.18);
+      --bg: #0087f7;
+      --panel: rgba(255, 255, 255, 0.17);
+      --panel-strong: rgba(255, 255, 255, 0.23);
       --text: #ffffff;
-      --muted: #d8f0ff;
-      --accent: #0613db;
-      --accent-2: #ffffff;
-      --border: rgba(255, 255, 255, 0.46);
-      --font-title: Georgia, "Courier New", serif;
-      --font-body: Georgia, "Courier New", "Songti SC", serif;
+      --text-soft: rgba(255, 255, 255, 0.78);
+      --text-faint: rgba(255, 255, 255, 0.46);
+      --accent: #0714d8;
+      --accent-hot: #ffffff;
+      --accent-dark: #ffffff;
+      --line: rgba(255, 255, 255, 0.38);
+      --line-strong: rgba(255, 255, 255, 0.7);
+      --cyan: #d6efff;
+      --shadow: 0 20px 90px rgba(0, 48, 180, 0.25);
+      --serif: Georgia, "Courier New", serif;
     }
 
     * {
@@ -83,961 +83,2207 @@
 
     html {
       min-height: 100%;
+      background: var(--bg);
     }
 
     body {
-      margin: 0;
       min-height: 100vh;
+      margin: 0;
       color: var(--text);
+      font-family: var(--serif);
       background: var(--bg);
-      font-family: var(--font-body);
-      transition:
-        background 0.45s ease,
-        color 0.45s ease;
       overflow-x: hidden;
+      transition: background 520ms ease, color 520ms ease;
     }
 
-    body::before {
-      content: "";
+    body[data-theme="mist"] {
+      background:
+        radial-gradient(circle at 30% 20%, rgba(193, 214, 180, 0.72), transparent 22rem),
+        radial-gradient(circle at 78% 70%, rgba(39, 76, 52, 0.92), transparent 24rem),
+        linear-gradient(180deg, #5f8066 0%, #1b3d2c 48%, #07130d 100%);
+    }
+
+    body[data-theme="archive"] {
+      background:
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(180deg, #f0f0ee 0%, #d4d4d0 100%);
+      background-size: 48px 48px, auto;
+    }
+
+    body[data-theme="blueapple"] {
+      background:
+        radial-gradient(circle at 50% 35%, rgba(255,255,255,0.16), transparent 18rem),
+        linear-gradient(180deg, #1aa4ff 0%, #0075e9 100%);
+    }
+
+    body::before,
+    body::after {
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: -1;
+      content: "";
+      z-index: 20;
+    }
+
+    body::before {
       opacity: 0.32;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08), transparent 26%),
-        radial-gradient(circle at 80% 10%, rgba(255,255,255,0.05), transparent 24%),
-        radial-gradient(circle at 50% 80%, rgba(0,0,0,0.18), transparent 36%);
-      mix-blend-mode: soft-light;
+      mix-blend-mode: screen;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.035) 50%, transparent 50%),
+        radial-gradient(circle, rgba(255, 255, 255, 0.16) 1px, transparent 1.2px);
+      background-size: 100% 4px, 10px 10px;
     }
 
     body[data-theme="archive"]::before {
-      opacity: 0.2;
-      background:
-        linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(0,0,0,0.04) 1px, transparent 1px);
-      background-size: 42px 42px;
+      opacity: 0.16;
+      mix-blend-mode: multiply;
+      background-image:
+        linear-gradient(rgba(0, 0, 0, 0.06) 50%, transparent 50%),
+        radial-gradient(circle, rgba(0, 0, 0, 0.14) 1px, transparent 1.3px);
     }
 
-    body[data-theme="blueapple"]::before {
-      opacity: 0.25;
+    body::after {
       background:
-        radial-gradient(circle at 52% 46%, rgba(255,255,255,0.9) 0 9%, transparent 10%),
-        radial-gradient(circle at 45% 52%, rgba(255,255,255,0.55) 0 7%, transparent 8%),
-        radial-gradient(circle at 58% 56%, rgba(255,255,255,0.42) 0 5%, transparent 6%);
+        linear-gradient(90deg, rgba(255,255,255,0.02), transparent 18%, transparent 82%, rgba(255,255,255,0.018)),
+        radial-gradient(ellipse at center, transparent 46%, rgba(0,0,0,0.32) 100%);
     }
 
     button,
-    input,
-    textarea {
+    textarea,
+    input {
       font: inherit;
     }
 
     button {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 14px 20px;
-      backdrop-filter: blur(18px);
-      background: color-mix(in srgb, var(--panel) 84%, transparent);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .brand-mark {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at 50% 42%, var(--accent-2) 0 18%, transparent 19%),
-        radial-gradient(circle at 50% 50%, var(--accent) 0 48%, transparent 49%),
-        #111;
-      border: 1px solid var(--border);
-      box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 42%, transparent);
-      flex: 0 0 auto;
-    }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.05;
-    }
-
-    .brand-title {
-      font-family: var(--font-title);
-      font-size: 17px;
-      letter-spacing: 0.08em;
-      white-space: nowrap;
-    }
-
-    .brand-subtitle {
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      white-space: nowrap;
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .skin-picker {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 10px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: var(--panel-soft);
-    }
-
-    .skin-label {
-      font-size: 12px;
-      color: var(--muted);
-      margin-right: 2px;
-      white-space: nowrap;
-    }
-
-    .skin-dot {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      border: 1px solid color-mix(in srgb, var(--text) 42%, transparent);
       cursor: pointer;
+    }
+
+    .app {
       position: relative;
-      padding: 0;
-      outline: none;
-      transition:
-        transform 0.18s ease,
-        box-shadow 0.18s ease,
-        border-color 0.18s ease;
+      min-height: 100vh;
+      isolation: isolate;
     }
 
-    .skin-dot:hover {
-      transform: translateY(-1px) scale(1.08);
-    }
-
-    .skin-dot.active {
-      box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px var(--accent);
-      border-color: var(--accent-2);
-    }
-
-    .skin-dot::after {
-      content: attr(aria-label);
-      position: absolute;
-      right: 50%;
-      top: 32px;
-      transform: translateX(50%);
-      white-space: nowrap;
-      font-size: 11px;
-      color: var(--text);
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 5px 8px;
-      opacity: 0;
+    .vhs-frame {
+      position: fixed;
+      inset: 18px;
+      border: 1px solid var(--line);
       pointer-events: none;
-      transition: opacity 0.16s ease;
-      box-shadow: 0 12px 28px var(--shadow);
+      z-index: 5;
     }
 
-    .skin-dot:hover::after {
-      opacity: 1;
+    .status-line {
+      position: fixed;
+      left: clamp(18px, 4vw, 58px);
+      right: clamp(18px, 4vw, 58px);
+      top: clamp(14px, 3vw, 34px);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--text-soft);
+      font-family: var(--mono);
+      font-size: clamp(0.62rem, 1vw, 0.78rem);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      z-index: 6;
     }
 
-    .dot-original {
-      background: radial-gradient(circle at 45% 40%, #ffe08a 0 22%, #f5c542 23% 46%, #0b0b0b 47% 100%);
-    }
-
-    .dot-mist {
-      background: radial-gradient(circle at 38% 32%, #d8e8b1 0 18%, #668a69 19% 56%, #0f2b1d 57% 100%);
-    }
-
-    .dot-archive {
-      background: radial-gradient(circle at 50% 48%, #345bc7 0 18%, #f1f1ef 19% 62%, #171717 63% 100%);
-    }
-
-    .dot-blueapple {
-      background: radial-gradient(circle at 52% 47%, #ffffff 0 24%, #27a9ff 25% 68%, #0613db 69% 100%);
-    }
-
-    .ghost-btn,
-    .primary-btn,
-    .small-btn {
-      border: 1px solid var(--border);
-      color: var(--text);
-      background: var(--panel-soft);
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      transition:
-        transform 0.18s ease,
-        border-color 0.18s ease,
-        background 0.18s ease;
-    }
-
-    .ghost-btn {
-      padding: 9px 13px;
-      font-size: 13px;
-    }
-
-    .small-btn {
+    .knowledge-btn {
+      border: 1px solid var(--line);
+      color: var(--text-soft);
+      background: rgba(0, 0, 0, 0.14);
+      border-radius: 999px;
       padding: 7px 11px;
-      font-size: 12px;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
 
-    .primary-btn {
-      padding: 13px 20px;
-      border-color: var(--accent);
-      background: var(--accent);
-      color: #111;
-      font-weight: 700;
+    body[data-theme="archive"] .knowledge-btn {
+      background: rgba(255,255,255,0.45);
     }
 
-    body[data-theme="archive"] .primary-btn {
-      color: #fff;
+    .timestamp {
+      position: fixed;
+      left: clamp(20px, 7vw, 116px);
+      bottom: clamp(20px, 5vw, 58px);
+      z-index: 6;
+      color: var(--text-soft);
+      font-family: var(--mono);
+      font-size: clamp(0.82rem, 2vw, 1.35rem);
+      letter-spacing: 0.18em;
+      text-shadow: 0 0 18px currentColor;
     }
 
-    body[data-theme="blueapple"] .primary-btn {
-      color: #fff;
+    .world-relic {
+      position: fixed;
+      top: clamp(90px, 12vh, 130px);
+      left: 50%;
+      width: min(54vw, 720px);
+      aspect-ratio: 1.5 / 1;
+      transform: translateX(-50%);
+      pointer-events: none;
+      opacity: 0.55;
+      z-index: -1;
+      animation: relicDrift 9s var(--ease) infinite alternate;
     }
 
-    .ghost-btn:hover,
-    .primary-btn:hover,
-    .small-btn:hover {
-      transform: translateY(-1px);
-      border-color: var(--accent-2);
+    .relic-shell {
+      position: absolute;
+      inset: 1% 0 3%;
+      border-radius: 48% 52% 44% 56% / 52% 44% 58% 46%;
+      background:
+        radial-gradient(ellipse at 52% 54%, rgba(0, 0, 0, 0.62) 0 28%, transparent 29%),
+        radial-gradient(ellipse at 49% 51%, var(--accent-hot) 0 24%, var(--accent) 42%, rgba(0,0,0,0.3) 61%, transparent 62%),
+        radial-gradient(ellipse at center, var(--accent), rgba(0,0,0,0.2) 72%, transparent 76%);
+      box-shadow: var(--shadow);
+      clip-path: polygon(4% 46%, 13% 25%, 34% 12%, 58% 8%, 82% 19%, 98% 41%, 92% 70%, 70% 91%, 39% 92%, 13% 78%);
     }
 
-    .app-shell {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 34px 0 80px;
+    body[data-theme="archive"] .world-relic {
+      opacity: 0.22;
+      filter: grayscale(1);
     }
 
-    .view {
+    body[data-theme="blueapple"] .world-relic {
+      opacity: 0.38;
+      filter: hue-rotate(170deg) saturate(1.8);
+    }
+
+    body[data-theme="mist"] .world-relic {
+      opacity: 0.42;
+      filter: blur(1px) saturate(0.8);
+    }
+
+    .screen {
       display: none;
+      min-height: 100vh;
+      padding: clamp(86px, 12vh, 132px) clamp(18px, 5vw, 78px) clamp(96px, 14vh, 150px);
     }
 
-    .view.active {
-      display: block;
-      animation: fadeIn 0.35s ease both;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .hero {
-      min-height: calc(100vh - 160px);
+    .screen.active {
       display: grid;
+      animation: screenIn 700ms var(--ease) both;
+    }
+
+    .home {
       place-items: center;
     }
 
-    .hero-card,
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      box-shadow: 0 28px 90px var(--shadow);
-      backdrop-filter: blur(18px);
-    }
-
-    .hero-card {
-      width: min(860px, 100%);
-      padding: clamp(26px, 5vw, 54px);
+    .home-shell {
+      width: min(940px, 100%);
+      margin-top: clamp(74px, 14vh, 150px);
       text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-card::before {
-      content: "";
-      position: absolute;
-      inset: 18px;
-      border: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
-      border-radius: calc(var(--radius-lg) - 10px);
-      pointer-events: none;
     }
 
     .eyebrow {
-      font-size: 12px;
-      color: var(--muted);
-      letter-spacing: 0.18em;
+      margin: 0 0 18px;
+      color: var(--text-soft);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-
-    h1,
-    h2,
-    h3 {
-      font-family: var(--font-title);
-      margin: 0;
-      font-weight: 500;
     }
 
     h1 {
-      font-size: clamp(46px, 8vw, 94px);
+      margin: 0;
+      text-wrap: balance;
+      font-size: clamp(2.8rem, 8vw, 7.8rem);
+      font-weight: 500;
       line-height: 0.92;
-      letter-spacing: 0.025em;
-      text-transform: uppercase;
-      margin-bottom: 18px;
+      text-shadow: 0 0 22px color-mix(in srgb, var(--accent) 58%, transparent);
     }
 
-    h2 {
-      font-size: clamp(28px, 4vw, 48px);
-      line-height: 1.05;
-      margin-bottom: 12px;
+    .threshold {
+      margin: clamp(18px, 3vw, 28px) auto 0;
+      max-width: 760px;
+      color: var(--text-soft);
+      font-size: clamp(0.95rem, 1.65vw, 1.15rem);
+      line-height: 1.9;
     }
 
-    h3 {
-      font-size: 22px;
-      margin-bottom: 8px;
-    }
-
-    .lead {
-      width: min(620px, 100%);
-      margin: 0 auto 24px;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.8;
-    }
-
-    .idea-box {
-      display: grid;
-      gap: 12px;
-      margin-top: 28px;
+    .oracle-box {
       position: relative;
-      z-index: 1;
+      width: min(720px, 100%);
+      margin: clamp(28px, 4vw, 44px) auto 0;
+      padding: 1px;
+      background: linear-gradient(115deg, var(--accent), var(--cyan), rgba(255,255,255,0.18));
+      border-radius: 12px;
+      box-shadow: var(--shadow);
     }
 
-    textarea,
-    input {
+    .oracle-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: end;
+      padding: 14px;
+      border-radius: 11px;
+      background: var(--panel-strong);
+      backdrop-filter: blur(16px);
+    }
+
+    textarea {
       width: 100%;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      background: color-mix(in srgb, var(--panel-soft) 74%, transparent);
-      color: var(--text);
-      padding: 15px 16px;
-      outline: none;
+      min-height: 104px;
       resize: vertical;
-      transition:
-        border-color 0.18s ease,
-        background 0.18s ease,
-        box-shadow 0.18s ease;
-    }
-
-    textarea:focus,
-    input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+      color: var(--text);
+      border: 0;
+      outline: 0;
+      background: transparent;
+      font-size: clamp(1rem, 2vw, 1.18rem);
+      line-height: 1.75;
     }
 
     textarea::placeholder,
     input::placeholder {
-      color: color-mix(in srgb, var(--muted) 82%, transparent);
+      color: var(--text-faint);
     }
 
-    .hero-actions {
+    .theme-selector {
+      width: min(900px, 100%);
+      margin: 30px auto 0;
+      text-align: left;
+    }
+
+    .theme-title-row {
       display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 8px;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
     }
 
-    .panel {
-      padding: clamp(20px, 4vw, 34px);
+    .theme-title-row h2 {
+      margin: 0;
+      font-size: clamp(1.25rem, 3vw, 2rem);
+      font-weight: 500;
+    }
+
+    .theme-title-row p {
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 0.92rem;
+    }
+
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .theme-card {
+      min-height: 190px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      color: var(--text);
+      background: var(--panel);
+      text-align: left;
+      transition: transform 220ms var(--ease), border-color 220ms var(--ease), box-shadow 220ms var(--ease);
+    }
+
+    .theme-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--line-strong);
+      box-shadow: var(--shadow);
+    }
+
+    .theme-card.active {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .theme-preview {
+      display: block;
+      height: 105px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .mist-preview {
+      background:
+        radial-gradient(circle at 24% 18%, #c1d6b4, transparent 38%),
+        radial-gradient(circle at 72% 70%, #183c2a, transparent 42%),
+        linear-gradient(180deg, #88a983, #163522);
+      filter: blur(0.2px);
+    }
+
+    .archive-preview {
+      position: relative;
+      background: linear-gradient(180deg, #efefef, #cfcfcf);
+      overflow: hidden;
+    }
+
+    .archive-preview::before {
+      content: "AFIH2026";
+      position: absolute;
+      top: 30px;
+      left: 16px;
+      color: #111;
+      font-family: Didot, Georgia, serif;
+      font-size: 27px;
+    }
+
+    .archive-preview::after {
+      content: "001101";
+      position: absolute;
+      right: 15px;
+      bottom: 18px;
+      color: #345bc7;
+      font-family: var(--mono);
+      font-size: 18px;
+    }
+
+    .blueapple-preview {
+      background:
+        radial-gradient(circle at 48% 50%, rgba(255,255,255,.95) 0 20%, transparent 21%),
+        radial-gradient(circle at 60% 54%, rgba(8,24,210,.45), transparent 12%),
+        linear-gradient(180deg, #20a4ff, #0075e9);
+    }
+
+    .theme-card strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 1rem;
+    }
+
+    .theme-card small {
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    .primary-btn,
+    .ghost-btn,
+    .choice-btn,
+    .small-btn {
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+      transition: transform 220ms var(--ease), border-color 220ms var(--ease), background 220ms var(--ease), box-shadow 220ms var(--ease);
+    }
+
+    .primary-btn {
+      min-width: 118px;
+      min-height: 52px;
+      padding: 0 18px;
+      border-radius: 10px;
+      color: var(--accent-dark);
+      background: linear-gradient(180deg, var(--accent-hot), var(--accent));
+      box-shadow: var(--shadow);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    body[data-theme="archive"] .primary-btn {
+      color: #ffffff;
+      background: #111111;
+    }
+
+    body[data-theme="blueapple"] .primary-btn {
+      color: white;
+      background: #0714d8;
+    }
+
+    .primary-btn:disabled,
+    .small-btn:disabled {
+      cursor: default;
+      opacity: 0.42;
+      filter: saturate(0.4);
+    }
+
+    .primary-btn:not(:disabled):hover,
+    .ghost-btn:hover,
+    .choice-btn:hover,
+    .small-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      box-shadow: var(--shadow);
+    }
+
+    .ghost-btn,
+    .small-btn {
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      background: rgba(0, 0, 0, 0.12);
+    }
+
+    body[data-theme="archive"] .ghost-btn,
+    body[data-theme="archive"] .small-btn {
+      background: rgba(255,255,255,0.52);
+    }
+
+    .stage {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      align-self: center;
+    }
+
+    .stage-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: clamp(24px, 4vw, 42px);
+    }
+
+    .stage-title {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 4.6rem);
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .stage-note {
+      max-width: 520px;
+      margin: 12px 0 0;
+      color: var(--text-soft);
+      line-height: 1.9;
+    }
+
+    .thought-strip,
+    .length-input,
+    .length-output,
+    .story-panel,
+    .result-panel,
+    .meter,
+    .path-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
+      backdrop-filter: blur(16px);
+      box-shadow: inset 0 0 50px rgba(255,255,255,0.035);
+    }
+
+    .thought-strip {
       margin-bottom: 22px;
+      padding: 16px 18px;
+      color: var(--text-soft);
     }
 
-    .step-header {
+    .thought-strip span,
+    .field-label,
+    .meter-label,
+    .path-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-soft);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      min-height: 270px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--panel);
+      transform: translateY(16px) rotateX(18deg);
+      opacity: 0;
+      transform-origin: center bottom;
+      backdrop-filter: blur(14px);
+    }
+
+    .card.revealed {
+      animation: cardReveal 850ms var(--ease) both;
+    }
+
+    .card:nth-child(2).revealed {
+      animation-delay: 120ms;
+    }
+
+    .card:nth-child(3).revealed {
+      animation-delay: 240ms;
+    }
+
+    .card:nth-child(4).revealed {
+      animation-delay: 360ms;
+    }
+
+    .card-kicker {
       display: flex;
       justify-content: space-between;
-      gap: 18px;
-      align-items: flex-start;
-      margin-bottom: 20px;
+      gap: 10px;
+      color: var(--text-soft);
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
     }
 
-    .step-meta {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
+    .card-value {
+      margin: 34px 0 16px;
+      min-height: 74px;
+      color: var(--accent-hot);
+      font-size: clamp(1.22rem, 2.4vw, 1.62rem);
+      line-height: 1.3;
     }
 
-    .progress {
-      display: flex;
-      gap: 6px;
-      margin: 18px 0 0;
-      flex-wrap: wrap;
+    .card-copy {
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 0.92rem;
+      line-height: 1.8;
     }
 
-    .progress-dot {
-      height: 7px;
-      width: 42px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--panel-soft);
-      opacity: 0.55;
-    }
-
-    .progress-dot.done {
-      background: var(--accent);
-      opacity: 1;
-    }
-
-    .cards-grid {
+    .card-options {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 14px;
-      margin-top: 20px;
-    }
-
-    .choice-card {
-      text-align: left;
-      border: 1px solid var(--border);
-      background: var(--panel-soft);
-      color: var(--text);
-      border-radius: var(--radius-md);
-      padding: 17px;
-      cursor: pointer;
-      min-height: 144px;
-      transition:
-        transform 0.18s ease,
-        border-color 0.18s ease,
-        background 0.18s ease;
-    }
-
-    .choice-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--accent);
-      background: color-mix(in srgb, var(--panel-soft) 70%, var(--accent) 8%);
-    }
-
-    .choice-title {
-      display: block;
-      font-family: var(--font-title);
-      font-size: 20px;
-      line-height: 1.2;
-      margin-bottom: 8px;
-    }
-
-    .choice-subtitle {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.55;
-      margin-bottom: 10px;
-    }
-
-    .choice-reason {
-      font-size: 12px;
-      line-height: 1.55;
-      opacity: 0.84;
-    }
-
-    .custom-box {
+      gap: 8px;
       margin-top: 16px;
-      border: 1px dashed var(--border);
-      border-radius: var(--radius-md);
-      padding: 16px;
-      background: color-mix(in srgb, var(--panel-soft) 70%, transparent);
     }
 
-    .custom-row {
+    .card-option {
+      width: 100%;
+      min-height: 38px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--text-soft);
+      background: rgba(255,255,255,0.04);
+      text-align: left;
+      line-height: 1.45;
+    }
+
+    .card-option.selected {
+      color: var(--accent-dark);
+      border-color: var(--accent);
+      background: linear-gradient(180deg, var(--accent-hot), var(--accent));
+    }
+
+    body[data-theme="archive"] .card-option.selected,
+    body[data-theme="blueapple"] .card-option.selected {
+      color: white;
+      background: var(--accent);
+    }
+
+    .card-custom {
       display: grid;
       grid-template-columns: 1fr auto;
-      gap: 10px;
-      align-items: center;
+      gap: 8px;
       margin-top: 10px;
     }
 
-    .loading {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--muted);
-      margin-top: 18px;
-      font-size: 14px;
+    input {
+      width: 100%;
+      height: 50px;
+      padding: 0 14px;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      outline: none;
+      background: rgba(255,255,255,0.06);
     }
 
-    .spinner {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 2px solid color-mix(in srgb, var(--muted) 28%, transparent);
-      border-top-color: var(--accent);
-      animation: spin 0.9s linear infinite;
+    body[data-theme="archive"] input {
+      background: rgba(255,255,255,0.62);
     }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+    input:focus,
+    textarea:focus {
+      border-color: var(--line-strong);
     }
 
-    .error {
-      color: var(--danger);
-      border: 1px solid color-mix(in srgb, var(--danger) 46%, transparent);
-      background: color-mix(in srgb, var(--danger) 10%, transparent);
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
-      margin-top: 16px;
-      font-size: 13px;
-      line-height: 1.6;
+    .card-custom input {
+      height: 38px;
+      font-size: 0.86rem;
     }
 
-    .setup-summary {
+    .length-panel {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 16px;
+      align-items: stretch;
+      margin-top: 16px;
+    }
+
+    .length-input {
+      padding: 18px;
+    }
+
+    .length-actions {
+      display: flex;
+      flex-wrap: wrap;
       gap: 10px;
-      margin-top: 18px;
+      margin-top: 12px;
     }
 
-    .summary-pill {
-      border: 1px solid var(--border);
-      background: var(--panel-soft);
-      border-radius: var(--radius-md);
-      padding: 12px;
+    .length-output {
+      display: grid;
+      align-content: center;
+      padding: 18px;
     }
 
-    .summary-label {
-      display: block;
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 6px;
+    .level {
+      margin: 0 0 8px;
+      color: var(--accent-hot);
+      font-size: clamp(1.35rem, 3vw, 2.2rem);
     }
 
-    .summary-value {
-      font-size: 14px;
+    .level-copy {
+      margin: 0;
+      color: var(--text-soft);
+      line-height: 1.8;
     }
 
     .story-layout {
       display: grid;
       grid-template-columns: minmax(0, 1fr) 280px;
-      gap: 20px;
-      align-items: start;
+      gap: 18px;
     }
 
-    .story-scene {
-      font-size: 17px;
-      line-height: 2;
-      white-space: pre-wrap;
-      margin-top: 18px;
+    .story-panel {
+      min-height: 560px;
+      padding: clamp(22px, 4vw, 46px);
     }
 
-    .state-list {
+    .chapter-mark {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 24px;
+      color: var(--text-soft);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .story-text {
+      color: var(--text);
+      font-size: clamp(1.03rem, 1.8vw, 1.2rem);
+      line-height: 2.05;
+    }
+
+    .story-text p {
+      margin: 0 0 1.35em;
+    }
+
+    .choices {
       display: grid;
       gap: 10px;
+      margin-top: 28px;
     }
 
-    .state-item {
-      border: 1px solid var(--border);
-      background: var(--panel-soft);
-      border-radius: var(--radius-md);
-      padding: 12px;
+    .choice-btn {
+      width: 100%;
+      min-height: 58px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      color: var(--text);
+      text-align: left;
+      line-height: 1.6;
+      background: rgba(255,255,255,0.055);
     }
 
-    .state-item span {
+    .choice-btn small {
       display: block;
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 5px;
+      margin-top: 6px;
+      color: var(--text-soft);
+      font-size: 0.82rem;
     }
 
-    .story-options {
+    .custom-path {
+      margin-top: 18px;
+      padding: 14px;
+      border: 1px solid color-mix(in srgb, var(--cyan) 52%, transparent);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .custom-path p {
+      margin: 0 0 10px;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .custom-path textarea {
+      min-height: 82px;
+      padding: 10px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .custom-path-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+
+    .side-panel {
       display: grid;
       gap: 12px;
-      margin-top: 24px;
+      align-content: start;
     }
 
-    .story-option {
-      text-align: left;
-      border: 1px solid var(--border);
-      background: var(--panel-soft);
-      color: var(--text);
-      border-radius: var(--radius-md);
-      padding: 15px;
-      cursor: pointer;
-      transition:
-        transform 0.18s ease,
-        border-color 0.18s ease;
+    .meter,
+    .path-card {
+      padding: 16px;
     }
 
-    .story-option:hover {
-      transform: translateY(-2px);
-      border-color: var(--accent);
+    .meter-value {
+      margin: 0 0 12px;
+      color: var(--accent-hot);
+      font-size: 1.45rem;
     }
 
-    .story-option strong {
-      display: block;
-      margin-bottom: 7px;
-      font-size: 16px;
-    }
-
-    .story-option small {
-      display: block;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .risk {
-      display: inline-flex;
-      margin-top: 8px;
-      padding: 3px 8px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      display: none;
-      place-items: center;
-      background: rgba(0, 0, 0, 0.42);
-      padding: 18px;
-      backdrop-filter: blur(12px);
-    }
-
-    .modal-backdrop.active {
+    .path-list {
       display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--text-soft);
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .toast {
+      min-height: 20px;
+      margin-top: 14px;
+      color: var(--text-soft);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 280ms var(--ease), transform 280ms var(--ease);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .result-panel {
+      width: min(860px, 100%);
+      margin: 0 auto;
+      padding: clamp(24px, 5vw, 58px);
+    }
+
+    .result-title {
+      margin: 0 0 12px;
+      color: var(--accent-hot);
+      font-size: clamp(2rem, 5vw, 4.8rem);
+      font-weight: 500;
+      line-height: 1.05;
+    }
+
+    .result-lede {
+      margin: 0 0 32px;
+      color: var(--text-soft);
+      line-height: 1.9;
+    }
+
+    .final-body {
+      color: var(--text);
+      font-size: clamp(1rem, 1.7vw, 1.16rem);
+      line-height: 2.05;
+    }
+
+    .path-summary {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--text-soft);
+      font-size: 0.92rem;
+      line-height: 1.8;
+    }
+
+    .result-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
     }
 
     .modal {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background: rgba(2, 0, 1, 0.62);
+      backdrop-filter: blur(14px);
+      z-index: 30;
+    }
+
+    .modal-panel {
       width: min(760px, 100%);
-      max-height: min(82vh, 760px);
+      max-height: min(760px, 88vh);
       overflow: auto;
-      background: var(--panel);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      box-shadow: 0 30px 100px var(--shadow);
-      padding: 24px;
+      padding: clamp(22px, 4vw, 40px);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--panel-strong);
+      box-shadow: var(--shadow);
     }
 
     .modal-head {
       display: flex;
-      justify-content: space-between;
-      gap: 14px;
       align-items: flex-start;
-      margin-bottom: 16px;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
     }
 
-    .modal p {
-      color: var(--muted);
-      line-height: 1.7;
-      margin-top: 8px;
+    .modal-title {
+      margin: 0;
+      color: var(--accent-hot);
+      font-size: clamp(1.6rem, 4vw, 3rem);
+      font-weight: 500;
     }
 
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end;
+    .modal-copy {
+      margin: 8px 0 0;
+      color: var(--text-soft);
+      line-height: 1.8;
+    }
+
+    .knowledge-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-top: 12px;
-      flex-wrap: wrap;
+      margin-bottom: 10px;
     }
 
-    .status-text {
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
+    .knowledge-text {
+      min-height: 160px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .knowledge-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 16px;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      line-height: 1.65;
+    }
+
+    .knowledge-item {
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
     }
 
     .hidden {
       display: none !important;
     }
 
-    @media (max-width: 820px) {
-      .topbar {
-        align-items: flex-start;
-        flex-direction: column;
+    @media (max-width: 920px) {
+      .world-relic {
+        width: min(92vw, 620px);
+        top: 78px;
+        opacity: 0.36;
       }
 
-      .top-actions {
-        width: 100%;
-        justify-content: space-between;
+      .home-shell {
+        margin-top: clamp(120px, 20vh, 190px);
       }
 
-      .skin-picker {
-        max-width: 100%;
-      }
-
+      .cards,
+      .length-panel,
       .story-layout {
         grid-template-columns: 1fr;
       }
 
-      .custom-row {
+      .theme-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        min-height: 210px;
+      }
+
+      .side-panel {
+        grid-row: 1;
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .vhs-frame {
+        inset: 10px;
+      }
+
+      .status-line {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .timestamp {
+        display: none;
+      }
+
+      .world-relic {
+        top: 92px;
+        width: 118vw;
+        opacity: 0.24;
+      }
+
+      h1 {
+        font-size: clamp(2.35rem, 10vw, 2.9rem);
+        line-height: 0.96;
+      }
+
+      h1 .brand-line span {
+        display: block;
+      }
+
+      .threshold {
+        max-width: 34ch;
+      }
+
+      .oracle-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .primary-btn {
+        width: 100%;
+      }
+
+      .stage-header,
+      .theme-title-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .side-panel,
+      .knowledge-grid,
+      .card-custom {
         grid-template-columns: 1fr;
       }
     }
 
-    @media (max-width: 520px) {
-      .app-shell {
-        width: min(100% - 22px, 1120px);
-        padding-top: 22px;
+    @keyframes relicDrift {
+      from {
+        transform: translateX(-50%) translateY(0) rotate(-1deg);
       }
 
-      .hero-card {
-        padding: 28px 18px;
+      to {
+        transform: translateX(-50%) translateY(10px) rotate(1deg);
+      }
+    }
+
+    @keyframes screenIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+        filter: blur(8px);
       }
 
-      .brand-subtitle {
-        display: none;
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes cardReveal {
+      from {
+        opacity: 0;
+        transform: translateY(20px) rotateX(35deg);
+        filter: blur(10px);
       }
 
-      .skin-label {
-        display: none;
+      to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+        filter: blur(0);
       }
+    }
 
-      .skin-dot {
-        width: 20px;
-        height: 20px;
-      }
-
-      .ghost-btn {
-        padding: 8px 10px;
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
       }
     }
   </style>
 </head>
 
-<body data-theme="original">
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-mark" aria-hidden="true"></div>
-      <div class="brand-text">
-        <div class="brand-title">EDIMAGE WORLD</div>
-        <div class="brand-subtitle">Interactive Fiction Generator</div>
-      </div>
+<body data-theme="mist">
+  <div class="app">
+    <div class="vhs-frame" aria-hidden="true"></div>
+
+    <div class="status-line">
+      <span>EDIMAGE WORLD / PATH 0001</span>
+      <button class="knowledge-btn" id="knowledgeOpenBtn" type="button">knowledge base</button>
     </div>
 
-    <div class="top-actions">
-      <div class="skin-picker" aria-label="皮肤选择">
-        <span class="skin-label">Skin</span>
+    <div class="timestamp" aria-hidden="true">2000.04.14&nbsp;&nbsp;14:10</div>
 
-        <button
-          class="skin-dot dot-original"
-          data-theme="original"
-          aria-label="Original 原始金黑"
-          title="Original 原始金黑"
-        ></button>
-
-        <button
-          class="skin-dot dot-mist"
-          data-theme="mist"
-          aria-label="Mist Forest 雾林绿"
-          title="Mist Forest 雾林绿"
-        ></button>
-
-        <button
-          class="skin-dot dot-archive"
-          data-theme="archive"
-          aria-label="Archive Poster 档案海报"
-          title="Archive Poster 档案海报"
-        ></button>
-
-        <button
-          class="skin-dot dot-blueapple"
-          data-theme="blueapple"
-          aria-label="Blue Apple 蓝苹果"
-          title="Blue Apple 蓝苹果"
-        ></button>
-      </div>
-
-      <button id="openKnowledgeBtn" class="ghost-btn">Knowledge Base</button>
-      <button id="homeBtn" class="ghost-btn">Home</button>
+    <div class="world-relic" aria-hidden="true">
+      <div class="relic-shell"></div>
     </div>
-  </header>
 
-  <main class="app-shell">
-    <section id="homeView" class="view active">
-      <div class="hero">
-        <div class="hero-card">
-          <div class="eyebrow">Welcome to</div>
-          <h1>EDIMAGE<br />WORLD</h1>
+    <main>
+      <section class="screen home active" data-screen="home">
+        <div class="home-shell">
+          <p class="eyebrow">an entrance for unfinished dreams</p>
 
-          <p class="lead">
-            输入一个 idea。系统会根据你的创意，智能推荐类型标签、体裁、类型、文风和体量，
-            然后进入一个由选择与自定义路径共同推进的互动小说世界。
+          <h1>
+            <span>WELCOME</span><br />
+            <span class="brand-line"><span>EDIMAGE</span> <span>WORLD.</span></span>
+          </h1>
+
+          <p class="threshold">
+            站在小径分岔的路口，你可以去往一段梦、一枚场景，或一个尚未学会说话的世界。
           </p>
 
-          <div class="idea-box">
-            <textarea
-              id="ideaInput"
-              rows="6"
-              placeholder="例如：一个失眠的人在梦里收到未来自己的来信；每封信都会改写醒来后的城市。"
-            ></textarea>
-
-            <div class="hero-actions">
-              <button id="startSetupBtn" class="primary-btn">Start Building World</button>
-              <button id="clearIdeaBtn" class="ghost-btn">Clear</button>
+          <form class="oracle-box" id="ideaForm">
+            <div class="oracle-inner">
+              <textarea id="ideaInput" rows="4" placeholder="写下一枚会生长的念头。例如：一个失眠的人在梦里收到未来自己的来信。"></textarea>
+              <button class="primary-btn" id="startBtn" type="submit" disabled>进入</button>
             </div>
-          </div>
+          </form>
+
+          <section class="theme-selector" id="themeSelector">
+            <div class="theme-title-row">
+              <div>
+                <p class="eyebrow">choose a skin</p>
+                <h2>选择进入世界的皮肤</h2>
+              </div>
+              <p>它只改变世界显影的方式，不改变你的念头本身。</p>
+            </div>
+
+            <div class="theme-grid">
+              <button class="theme-card" type="button" data-theme="mist">
+                <span class="theme-preview mist-preview"></span>
+                <strong>Mist Forest</strong>
+                <small>雾林、低饱和、潮湿、梦境、记忆回声。</small>
+              </button>
+
+              <button class="theme-card" type="button" data-theme="archive">
+                <span class="theme-preview archive-preview"></span>
+                <strong>Archive Poster</strong>
+                <small>档案、海报、数字身体、伪文献、实验叙事。</small>
+              </button>
+
+              <button class="theme-card" type="button" data-theme="blueapple">
+                <span class="theme-preview blueapple-preview"></span>
+                <strong>Blue Apple</strong>
+                <small>亮蓝、拼贴、超现实、漂浮文字、明亮怪异。</small>
+              </button>
+            </div>
+          </section>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="setupView" class="view">
-      <div class="panel">
-        <div class="step-header">
-          <div>
-            <div class="eyebrow" id="stepEyebrow">Step</div>
-            <h2 id="stepTitle">智能推荐</h2>
-            <p class="step-meta" id="stepDescription">
-              系统正在根据你的 idea 生成推荐。
-            </p>
-          </div>
-
-          <button id="backHomeBtn" class="ghost-btn">Back Home</button>
-        </div>
-
-        <div class="progress" id="progressBar"></div>
-
-        <div id="setupSummary" class="setup-summary"></div>
-
-        <div id="recommendLoading" class="loading hidden">
-          <span class="spinner"></span>
-          <span>正在分析你的 idea，并生成针对性选项……</span>
-        </div>
-
-        <div id="recommendError" class="error hidden"></div>
-
-        <div id="recommendArea" class="cards-grid"></div>
-
-        <div id="customRecommendBox" class="custom-box hidden">
-          <h3>自定义输入</h3>
-          <p class="step-meta" id="customRecommendHint">
-            如果这些推荐都不符合你的想法，可以写下自己的方向。
-          </p>
-
-          <div class="custom-row">
-            <input id="customRecommendInput" placeholder="输入你的自定义选择" />
-            <button id="useCustomRecommendBtn" class="primary-btn">Use Custom</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="storyView" class="view">
-      <div class="story-layout">
-        <article class="panel">
-          <div class="step-header">
+      <section class="screen" data-screen="draw">
+        <div class="stage">
+          <div class="stage-header">
             <div>
-              <div class="eyebrow">Interactive World</div>
-              <h2 id="storyTitle">正在生成世界入口</h2>
+              <p class="eyebrow">the cards are reading</p>
+              <h2 class="stage-title">念头正在显影。</h2>
+              <p class="stage-note">
+                它会先获得类型标签、体裁、类型和文风。你可以选择智能推荐卡片，也可以写入自定义方向。
+              </p>
+            </div>
+            <button class="ghost-btn" data-action="backHome" type="button">回到入口</button>
+          </div>
+
+          <div class="thought-strip">
+            <span>first thought</span>
+            <div id="thoughtEcho"></div>
+          </div>
+
+          <div class="cards" id="cardGrid"></div>
+
+          <div class="length-panel">
+            <div class="length-input">
+              <label class="field-label" for="lengthInput">volume</label>
+              <input id="lengthInput" type="text" placeholder="例如：很短 / 大概 1000 字 / 想玩久一点 / 长篇" />
+              <div class="length-actions">
+                <button class="small-btn" id="matchLengthBtn" type="button">匹配体量</button>
+                <button class="primary-btn" id="enterStoryBtn" type="button" disabled>进入小径</button>
+              </div>
             </div>
 
-            <button id="restartBtn" class="ghost-btn">Restart</button>
+            <div class="length-output" id="lengthOutput">
+              <p class="level">L3 标准互动短篇</p>
+              <p class="level-copy">如果你没有指定体量，世界会默认给这枚念头 5 到 8 次分岔。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="story">
+        <div class="stage">
+          <div class="stage-header">
+            <div>
+              <p class="eyebrow">interactive fiction</p>
+              <h2 class="stage-title">小径已经打开。</h2>
+            </div>
+            <button class="ghost-btn" id="finishEarlyBtn" type="button">让故事浮出水面</button>
           </div>
 
-          <div id="storyLoading" class="loading">
-            <span class="spinner"></span>
-            <span>正在生成下一个情节点……</span>
+          <div class="story-layout">
+            <article class="story-panel">
+              <div class="chapter-mark">
+                <span id="chapterMark">chapter 01</span>
+                <span id="styleMark">冷静诗性</span>
+              </div>
+
+              <div class="story-text" id="storyText"></div>
+              <div class="choices" id="choices"></div>
+
+              <div class="custom-path hidden" id="customPath">
+                <p id="customPrompt">这里出现了一条不能被预设选项完全接住的小路。</p>
+                <textarea id="customInput" rows="3" placeholder="写下你要做的事、要问的话，或你想让世界记住的句子。"></textarea>
+                <div class="custom-path-actions">
+                  <button class="primary-btn" id="customSubmitBtn" type="button">写入这条路</button>
+                </div>
+              </div>
+            </article>
+
+            <aside class="side-panel">
+              <div class="meter">
+                <p class="meter-label">look back</p>
+                <p class="meter-value" id="undoCount">回望 2</p>
+                <button class="small-btn" id="undoBtn" type="button">退回上一处岔路</button>
+                <div class="toast" id="undoToast"></div>
+              </div>
+
+              <div class="path-card">
+                <p class="path-label">path</p>
+                <ul class="path-list" id="pathList"></ul>
+              </div>
+            </aside>
           </div>
+        </div>
+      </section>
 
-          <div id="storyError" class="error hidden"></div>
+      <section class="screen" data-screen="result">
+        <div class="result-panel">
+          <p class="eyebrow">the path has surfaced</p>
+          <h2 class="result-title" id="resultTitle">便利店在梦里亮着</h2>
+          <p class="result-lede" id="resultLede">这条路径暂时抵达了它的尽头。</p>
+          <div class="final-body" id="finalBody"></div>
+          <div class="path-summary" id="pathSummary"></div>
 
-          <div id="storyScene" class="story-scene"></div>
+          <div class="result-actions">
+            <button class="primary-btn" id="copyBtn" type="button">复制全文</button>
+            <button class="ghost-btn" id="downloadBtn" type="button">下载 Markdown</button>
+            <button class="ghost-btn" data-action="restart" type="button">回到入口</button>
+          </div>
+        </div>
+      </section>
+    </main>
 
-          <div id="storyOptions" class="story-options"></div>
-
-          <div id="storyCustomBox" class="custom-box hidden">
-            <h3 id="storyCustomLabel">自定义路径</h3>
-            <p class="step-meta">
-              你可以输入角色想做的事、说的话、隐瞒的记忆，或者完全不同的行动。
+    <section class="modal hidden" id="knowledgeModal" aria-label="EDIMAGE WORLD 知识库">
+      <div class="modal-panel">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">world memory</p>
+            <h2 class="modal-title">知识库入口</h2>
+            <p class="modal-copy">
+              把小说片段、梦境碎片、地点设定或一句还没有归处的话存进世界。知识库会优先参与后续文本生成。
             </p>
-
-            <div class="custom-row">
-              <input id="storyCustomInput" placeholder="输入你的自定义行动" />
-              <button id="useStoryCustomBtn" class="primary-btn">Advance</button>
-            </div>
           </div>
-        </article>
-
-        <aside class="panel">
-          <h3>World State</h3>
-          <div class="state-list" id="stateList">
-            <div class="state-item">
-              <span>Idea</span>
-              <div id="stateIdea">尚未开始</div>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
-  </main>
-
-  <div id="knowledgeModal" class="modal-backdrop">
-    <section class="modal">
-      <div class="modal-head">
-        <div>
-          <h2>Knowledge Base</h2>
-          <p>
-            上传你的世界观、人物小传、片段、梦境、设定、参考语气。
-            知识库会优先参与后续文本生成；当知识库为空时，生成完全依赖智能体推理。
-          </p>
+          <button class="ghost-btn" id="knowledgeCloseBtn" type="button">关闭</button>
         </div>
 
-        <button id="closeKnowledgeBtn" class="ghost-btn">Close</button>
+        <div class="knowledge-grid">
+          <input id="knowledgeTitle" type="text" placeholder="标题，例如：夜间便利店" />
+          <input id="knowledgeTags" type="text" placeholder="标签，例如：梦境 / 货架 / 私语" />
+        </div>
+
+        <textarea class="knowledge-text" id="knowledgeText" rows="6" placeholder="粘贴一段创意文本。它会成为世界后续生成时优先参考的材料。"></textarea>
+
+        <div class="result-actions">
+          <button class="primary-btn" id="knowledgeSaveBtn" type="button">存入世界</button>
+          <button class="ghost-btn" id="knowledgeClearBtn" type="button">清空本地条目</button>
+        </div>
+
+        <div class="knowledge-list" id="knowledgeList"></div>
       </div>
-
-      <textarea
-        id="knowledgeInput"
-        rows="10"
-        placeholder="粘贴你的创意文本、世界观、角色、地点、规则、文风参考……"
-      ></textarea>
-
-      <div class="modal-actions">
-        <button id="saveKnowledgeBtn" class="primary-btn">Save to Knowledge Base</button>
-      </div>
-
-      <div id="knowledgeStatus" class="status-text"></div>
     </section>
   </div>
 
   <script>
-    /*
-      如果你的 API 后端和 index.html 在同一个域名，保持 API_BASE = "" 即可。
-      如果你用 GitHub Pages，server.mjs 不会运行，你需要把后端部署到 Render / Railway / Vercel，
-      然后把下面改成你的后端地址，例如：
-      const API_BASE = "https://your-edimage-api.onrender.com";
-    */
-    const API_BASE = "";
-
-    const steps = [
-      {
-        key: "tag",
-        label: "类型标签",
-        description: "根据 idea 提炼它最核心的叙事标签。"
+    const state = {
+      idea: "",
+      theme: localStorage.getItem("edimage-theme") || "mist",
+      cards: null,
+      cardOptions: null,
+      level: {
+        id: "L3",
+        name: "标准互动短篇",
+        rounds: "5 到 8 次分岔",
+        copy: "如果你没有指定体量，世界会默认给这枚念头 5 到 8 次分岔。"
       },
-      {
-        key: "genre",
-        label: "体裁",
-       
+      undoRemaining: 2,
+      turn: 0,
+      paragraphs: [],
+      choices: [],
+      path: [],
+      history: [],
+      customInput: null,
+      finalStory: null
+    };
+
+    const screens = [...document.querySelectorAll(".screen")];
+    const themeButtons = [...document.querySelectorAll(".theme-card")];
+
+    const ideaInput = document.querySelector("#ideaInput");
+    const startBtn = document.querySelector("#startBtn");
+    const ideaForm = document.querySelector("#ideaForm");
+    const cardGrid = document.querySelector("#cardGrid");
+    const thoughtEcho = document.querySelector("#thoughtEcho");
+    const lengthInput = document.querySelector("#lengthInput");
+    const matchLengthBtn = document.querySelector("#matchLengthBtn");
+    const lengthOutput = document.querySelector("#lengthOutput");
+    const enterStoryBtn = document.querySelector("#enterStoryBtn");
+    const storyText = document.querySelector("#storyText");
+    const choicesEl = document.querySelector("#choices");
+    const customPath = document.querySelector("#customPath");
+    const customPrompt = document.querySelector("#customPrompt");
+    const customInput = document.querySelector("#customInput");
+    const customSubmitBtn = document.querySelector("#customSubmitBtn");
+    const undoBtn = document.querySelector("#undoBtn");
+    const undoCount = document.querySelector("#undoCount");
+    const undoToast = document.querySelector("#undoToast");
+    const pathList = document.querySelector("#pathList");
+    const chapterMark = document.querySelector("#chapterMark");
+    const styleMark = document.querySelector("#styleMark");
+    const finishEarlyBtn = document.querySelector("#finishEarlyBtn");
+    const resultTitle = document.querySelector("#resultTitle");
+    const resultLede = document.querySelector("#resultLede");
+    const finalBody = document.querySelector("#finalBody");
+    const pathSummary = document.querySelector("#pathSummary");
+    const copyBtn = document.querySelector("#copyBtn");
+    const downloadBtn = document.querySelector("#downloadBtn");
+    const knowledgeOpenBtn = document.querySelector("#knowledgeOpenBtn");
+    const knowledgeModal = document.querySelector("#knowledgeModal");
+    const knowledgeCloseBtn = document.querySelector("#knowledgeCloseBtn");
+    const knowledgeTitle = document.querySelector("#knowledgeTitle");
+    const knowledgeTags = document.querySelector("#knowledgeTags");
+    const knowledgeText = document.querySelector("#knowledgeText");
+    const knowledgeSaveBtn = document.querySelector("#knowledgeSaveBtn");
+    const knowledgeClearBtn = document.querySelector("#knowledgeClearBtn");
+    const knowledgeList = document.querySelector("#knowledgeList");
+
+    const fallbackDecks = {
+      tags: [
+        ["梦境残片", "失落场所", "记忆回声"],
+        ["温柔异变", "城市幽灵", "错位童年"],
+        ["潮湿档案", "平行房间", "被遗忘的门"],
+        ["静物叙事", "迷宫日常", "身份裂隙"],
+        ["夜间水域", "私人神话", "过曝现实"]
+      ],
+      forms: ["互动短篇", "梦境档案", "伪日记", "分岔叙事", "调查记录", "开放小说"],
+      genres: ["梦核", "都市异闻", "魔幻现实", "心理奇幻", "日常怪谈", "废墟浪漫"],
+      styles: ["冷静诗性", "潮湿梦呓", "低频悬疑", "影像化白描", "温柔怪诞", "像旧录像一样缓慢"]
+    };
+
+    const cardCopy = {
+      concept: "这些标签来自你的念头，会决定故事最先显影的意象和冲突。",
+      form: "体裁会决定这个世界以什么容器保存你的 idea。",
+      genre: "类型会决定现实偏移的方式、风险感和探索方向。",
+      style: "文风会决定叙事的呼吸、光线和语言颗粒。"
+    };
+
+    setTheme(state.theme);
+    renderLength();
+    renderKnowledgeList();
+
+    themeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        setTheme(button.dataset.theme);
+      });
+    });
+
+    ideaInput.addEventListener("input", () => {
+      startBtn.disabled = ideaInput.value.trim().length < 2;
+    });
+
+    ideaForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const idea = ideaInput.value.trim();
+      if (!idea) return;
+
+      startBtn.disabled = true;
+      startBtn.textContent = "显影中";
+
+      state.idea = idea;
+      state.cards = await generateCards(idea);
+      thoughtEcho.textContent = idea;
+
+      renderCards();
+      showScreen("draw");
+
+      startBtn.textContent = "进入";
+      startBtn.disabled = false;
+    });
+
+    matchLengthBtn.addEventListener("click", () => {
+      state.level = matchLength(lengthInput.value);
+      renderLength();
+      enterStoryBtn.disabled = false;
+    });
+
+    enterStoryBtn.addEventListener("click", startStory);
+    finishEarlyBtn.addEventListener("click", renderResult);
+    customSubmitBtn.addEventListener("click", submitCustomPath);
+    undoBtn.addEventListener("click", undoTurn);
+    copyBtn.addEventListener("click", copyStory);
+    downloadBtn.addEventListener("click", downloadStory);
+    knowledgeOpenBtn.addEventListener("click", openKnowledgeModal);
+    knowledgeCloseBtn.addEventListener("click", closeKnowledgeModal);
+    knowledgeSaveBtn.addEventListener("click", saveKnowledgeEntry);
+    knowledgeClearBtn.addEventListener("click", clearKnowledgeEntries);
+
+    knowledgeModal.addEventListener("click", (event) => {
+      if (event.target === knowledgeModal) closeKnowledgeModal();
+    });
+
+    document.querySelectorAll("[data-action='backHome'], [data-action='restart']").forEach((button) => {
+      button.addEventListener("click", resetToHome);
+    });
+
+    function setTheme(theme) {
+      state.theme = theme || "mist";
+      document.body.dataset.theme = state.theme;
+      localStorage.setItem("edimage-theme", state.theme);
+
+      themeButtons.forEach((button) => {
+        button.classList.toggle("active", button.dataset.theme === state.theme);
+      });
+    }
+
+    function showScreen(name) {
+      screens.forEach((screen) => {
+        screen.classList.toggle("active", screen.dataset.screen === name);
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    async function apiGenerate(stage, payload) {
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ stage, payload })
+      });
+
+      if (!response.ok) {
+        throw new Error("api generate failed");
+      }
+
+      return response.json();
+    }
+
+    async function generateCards(idea) {
+      try {
+        const cards = await apiGenerate("cards", {
+          idea,
+          theme: state.theme,
+          knowledgeBase: getKnowledgeContext(),
+          requirement: "所有推荐卡片必须根据用户 idea 智能生成，禁止通用模板。"
+        });
+
+        return normalizeCardResponse(cards, idea);
+      } catch (error) {
+        const fallback = drawCards(idea);
+        state.cardOptions = makeFallbackCardOptions(fallback);
+        return fallback;
+      }
+    }
+
+    function normalizeCardResponse(cards, idea) {
+      const fallback = drawCards(idea);
+
+      const conceptCandidates = normalizeConceptCandidates(
+        cards.cards?.concept ||
+        cards.candidates?.conceptTags ||
+        cards.conceptCandidates ||
+        [cards.conceptTags || cards.concept || fallback.concept]
+      );
+
+      const formCandidates = normalizeStringCandidates(
+        cards.cards?.form ||
+        cards.candidates?.form ||
+        cards.formCandidates ||
+        [cards.form || fallback.form]
+      );
+
+      const genreCandidates = normalizeStringCandidates(
+        cards.cards?.genre ||
+        cards.candidates?.genre ||
+        cards.genreCandidates ||
+        [cards.genre || fallback.genre]
+      );
+
+      const styleCandidates = normalizeStringCandidates(
+        cards.cards?.style ||
+        cards.candidates?.style ||
+        cards.styleCandidates ||
+        [cards.style || fallback.style]
+      );
+
+      state.cardOptions = {
+        concept: conceptCandidates,
+        form: formCandidates,
+        genre: genreCandidates,
+        style: styleCandidates
+      };
+
+      return {
+        concept: conceptCandidates[0] || fallback.concept,
+        form: formCandidates[0] || fallback.form,
+        genre: genreCandidates[0] || fallback.genre,
+        style: styleCandidates[0] || fallback.style,
+        explanations: cards.explanations || {
+          conceptTags: cards.analysis || cardCopy.concept,
+          form: cardCopy.form,
+          genre: cardCopy.genre,
+          style: cardCopy.style
+        }
+      };
+    }
+
+    function normalizeConceptCandidates(candidates) {
+      return ensureArray(candidates)
+        .map((candidate) => {
+          if (Array.isArray(candidate)) return candidate;
+          if (typeof candidate === "object" && candidate?.title) return [candidate.title];
+          return String(candidate).split(/[、,/，|]/);
+        })
+        .map((candidate) => candidate.map((item) => String(item).trim()).filter(Boolean).slice(0, 4))
+        .filter((candidate) => candidate.length)
+        .slice(0, 5);
+    }
+
+    function normalizeStringCandidates(candidates) {
+      return ensureArray(candidates)
+        .map((candidate) => {
+          if (typeof candidate === "object") {
+            return candidate.title || candidate.value || candidate.label || JSON.stringify(candidate);
+          }
+          return String(candidate);
+        })
+        .map((candidate) => candidate.trim())
+        .filter(Boolean)
+        .slice(0, 5);
+    }
+
+    function ensureArray(value) {
+      if (Array.isArray(value)) return value;
+      if (value === undefined || value === null) return [];
+      return [value];
+    }
+
+    function makeFallbackCardOptions(fallback) {
+      return {
+        concept: [
+          fallback.concept,
+          ["未命名地点", fallback.concept[1] || "隐秘回声", "异常物件"],
+          ["私人梦路", "轻微偏移", "回声场景"]
+        ],
+        form: [fallback.form, "梦境档案", "分岔叙事"],
+        genre: [fallback.genre, "梦核", "日常怪谈"],
+        style: [fallback.style, "低频悬疑", "温柔怪诞"]
+      };
+    }
+
+    function seedFrom(text) {
+      return [...text].reduce((sum, char, index) => sum + char.charCodeAt(0) * (index + 3), 17);
+    }
+
+    function pick(list, seed, offset = 0) {
+      return list[(seed + offset) % list.length];
+    }
+
+    function drawCards(idea) {
+      const seed = seedFrom(idea);
+      let tagSet = pick(fallbackDecks.tags, seed);
+
+      if (/梦|睡|醒|夜|房间/.test(idea)) {
+        tagSet = ["梦境残片", "平行房间", "记忆回声"];
+      }
+
+      if (/便利店|街|城市|路|站|电梯/.test(idea)) {
+        tagSet = ["失落场所", "城市幽灵", "温柔异变"];
+      }
+
+      if (/水|河|雨|海|湖|潮/.test(idea)) {
+        tagSet = ["夜间水域", "潮湿档案", "被遗忘的门"];
+      }
+
+      return {
+        concept: tagSet,
+        form: pick(fallbackDecks.forms, seed, 2),
+        genre: /梦|醒|睡/.test(idea) ? "梦核" : pick(fallbackDecks.genres, seed, 4),
+        style: pick(fallbackDecks.styles, seed, 6),
+        explanations: null
+      };
+    }
+
+    function renderCards() {
+      const cards = [
+        ["concept", "TYPE TAGS", state.cards.concept.join(" / "), state.cards.explanations?.conceptTags || cardCopy.concept],
+        ["form", "FORM", state.cards.form, state.cards.explanations?.form || cardCopy.form],
+        ["genre", "GENRE", state.cards.genre, state.cards.explanations?.genre || cardCopy.genre],
+        ["style", "VOICE", state.cards.style, state.cards.explanations?.style || cardCopy.style]
+      ];
+
+      cardGrid.innerHTML = cards.map((card, index) => {
+        const category = card[0];
+        return `
+          <article class="card">
+            <div class="card-kicker"><span>${card[1]}</span><span>0${index + 1}</span></div>
+            <div class="card-value">${escapeHtml(card[2])}</div>
+            <p class="card-copy">${escapeHtml(card[3])}</p>
+            ${renderCardOptions(category)}
+            <div class="card-custom">
+              <input type="text" data-card-custom="${category}" placeholder="自定义 ${card[1].toLowerCase()}" />
+              <button class="small-btn" type="button" data-card-apply="${category}">写入</button>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      requestAnimationFrame(() => {
+        document.querySelectorAll(".card").forEach((card) => card.classList.add("revealed"));
+      });
+
+      cardGrid.querySelectorAll("[data-card-option]").forEach((button) => {
+        button.addEventListener("click", () => {
+          setCardValue(button.dataset.cardOption, button.dataset.value);
+        });
+      });
+
+      cardGrid.querySelectorAll("[data-card-apply]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const category = button.dataset.cardApply;
+          const input = cardGrid.querySelector(`[data-card-custom="${category}"]`);
+          setCardValue(category, input.value.trim());
+        });
+      });
+    }
+
+    function renderCardOptions(category) {
+      const options = state.cardOptions?.[category] || [];
+      const selected = getCardDisplayValue(category);
+
+      return `
+        <div class="card-options">
+          ${options.map((option) => {
+            const value = Array.isArray(option) ? option.join(" / ") : String(option);
+            const active = value === selected ? " selected" : "";
+            return `<button class="card-option${active}" type="button" data-card-option="${category}" data-value="${escapeHtml(value)}">${escapeHtml(value)}</button>`;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    function getCardDisplayValue(category) {
+      if (category === "concept") return state.cards.concept.join(" / ");
+      return state.cards[category];
+    }
+
+    function setCardValue(category, rawValue) {
+      const value = String(rawValue || "").trim();
+      if (!value) return;
+
+      if (category === "concept") {
+        state.cards.concept = value.split(/[、,/，|]/).map((item) => item.trim()).filter(Boolean).slice(0, 4);
+      } else {
+        state.cards[category] = value;
+      }
+
+      state.cards.explanations = {
+        ...(state.cards.explanations || {}),
+        [category === "concept" ? "conceptTags" : category]: "这张卡片来自你的选择，将直接影响后续文本的推理方向。"
+      };
+
+      renderCards();
+    }
+
+    function matchLength(value) {
+      const text = value.trim();
+      const number = text.match(/(\d{2,7})/);
+      const words = number ? Number(number[1]) : null;
+
+      if (words !== null) {
+        if (words < 800) return level("L1", "火花片段", "1 到 3 次分岔", "它会像一枚短促的闪光，迅速照出核心场景。");
+        if (words < 3000) return level("L2", "短篇梦境", "3 到 5 次分岔", "它会保留梦的速度，让场景在几次选择里完成一次变形。");
+        if (words < 10000) return level("L3", "标准互动短篇", "5 到 8 次分岔", "这条小径有足够的空间，让一个念头长成完整故事。");
+        if (words < 50000) return level("L4", "深入章节", "8 到 15 次分岔", "你选择了更长的停留，地点、人物和异常会慢慢显影。");
+        return level("L5", "开放篇章", "15 次以上分岔", "它会以长程方式展开，像一片需要多次进入的地形。");
+      }
+
+      if (/很短|短|片段|一点|几百/.test(text)) return level("L1", "火花片段", "1 到 3 次分岔", "它会像一枚短促的闪光，迅速照出核心场景。");
+      if (/梦|小故事|短篇|一千|1000/.test(text)) return level("L2", "短篇梦境", "3 到 5 次分岔", "它会保留梦的速度，让场景在几次选择里完成一次变形。");
+      if (/章节|长一点|久一点|慢慢|探索/.test(text)) return level("L4", "深入章节", "8 到 15 次分岔", "你选择了更长的停留，地点、人物和异常会慢慢显影。");
+      if (/长篇|开放|一直|持续|很多/.test(text)) return level("L5", "开放篇章", "15 次以上分岔", "它会以长程方式展开，像一片需要多次进入的地形。");
+
+      return level("L3", "标准互动短篇", "5 到 8 次分岔", "这条小径有足够的空间，让一个念头长成完整故事。");
+    }
+
+    function level(id, name, rounds, copy) {
+      return { id, name, rounds, copy };
+    }
+
+    function renderLength() {
+      lengthOutput.innerHTML = `
+        <p class="level">${state.level.id} ${state.level.name}</p>
+        <p class="level-copy">${state.level.copy}<br />预计 ${state.level.rounds}。</p>
+      `;
+    }
+
+    async function startStory() {
+      enterStoryBtn.disabled = true;
+      enterStoryBtn.textContent = "开门中";
+
+      state.undoRemaining = 2;
+      state.turn = 0;
+      state.path = [];
+      state.history = [];
+      state.finalStory = null;
+
+      const opening = await generateOpening();
+
+      state.paragraphs = [opening.text || opening.scene || openingParagraph()];
+      state.choices = normalizeChoices(opening.choices || opening.options || makeChoices());
+      state.customInput = normalizeCustomInput(opening.customInput);
+
+      styleMark.textContent = state.cards.style;
+
+      renderStory();
+      showScreen("story");
+
+      enterStoryBtn.textContent = "进入小径";
+      enterStoryBtn.disabled = false;
+    }
+
+    async function generateOpening() {
+      try {
+        return await apiGenerate("story_opening", {
+          idea: state.idea,
+          cards: state.cards,
+          level: state.level,
+          theme: state.theme,
+          knowledgeBase: getKnowledgeContext(),
+          instruction: "生成必须严格围绕用户 idea，不得套用通用模板；选项数量根据情节需要决定。"
+        });
+      } catch (error) {
+        return {
+          text: openingParagraph(),
+          choices: makeChoices(),
+          customInput: shouldOfferCustomInput()
+        };
+      }
+    }
+
+    function openingParagraph() {
+      const tag = state.cards.concept[0];
+      return `你把这个念头交给 EDIMAGE WORLD 之后，世界先沉默了一会儿。光从你选择的皮肤里渗出，慢慢照亮最初的句子。${tag}从句子的边缘浮出来，贴着你的脚边延伸成一条小径。你知道，只要再往前一步，原先那句话就不再只是你的想法。`;
+    }
+
+    function makeChoices() {
+      const idea = state.idea;
+      const tag = state.cards?.concept?.[state.turn % state.cards.concept.length] || "那个念头";
+
+      if (/信|来信|消息|短信|邮件/.test(idea)) {
+        return [
+          `拆开那封与“${tag}”有关的信。`,
+          "先检查信封背面是否有第二层文字。",
+          "把信放回原处，观察世界因此发生的变化。"
+        ];
+      }
+
+      if (/便利店|商店|货架/.test(idea)) {
+        return [
+          "走向最深处那排没有标价的货架。",
+          "询问收银员为什么店外一直没有天亮。",
+          "拿起一件与你最初念头有关的商品。"
+        ];
+      }
+
+      if (/梦|睡|醒/.test(idea)) {
+        return [
+          "确认自己是否真的还在梦里。",
+          "跟随梦中反复出现的声音。",
+          "寻找能让自己醒来的物件。"
+        ];
+      }
+
+      if (/水|河|海|雨|湖/.test(idea)) {
+        return [
+          "把手伸进水面，摸索底下的东西。",
+          "沿着水流反方向走。",
+          "询问倒影为什么比你先一步行动。"
+        ];
+      }
+
+      return [
+        `靠近与“${tag}”有关的异常。`,
+        "停下来，听这个世界先说话。",
+        "把最初的念头再低声说一遍。"
+      ];
+    }
+
+    async function choose(choice) {
+      const choiceText = typeof choice === "string" ? choice : choice.label;
+
+      state.history.push({
+        turn: state.turn,
+        paragraphs: [...state.paragraphs],
+        path: [...state.path],
+        choices: [...state.choices],
+        customInput: state.customInput
+      });
+
+      state.path.push(choiceText);
+      state.turn += 1;
+
+      setChoicesLoading();
+
+      const step = await generateStoryStep(choiceText);
+
+      state.paragraphs.push(step.text || step.scene || nextParagraph(choiceText));
+
+      if (step.shouldEnd || state.turn >= maxTurnsByLevel() || /收束|结束|浮出水面/.test(choiceText)) {
+        await renderResult();
+        return;
+      }
+
+      state.choices = normalizeChoices(step.choices || step.options || makeChoices());
+      state.customInput = normalizeCustomInput(step.customInput);
+
+      renderStory();
+    }
+
+    async function submitCustomPath() {
+      const value = customInput.value.trim();
+      if (!value) return;
+
+      customInput.value = "";
+      await choose(`自定义：${value}`);
+    }
+
+    async function generateStoryStep(choice) {
+      try {
+        return await apiGenerate("story_step", {
+          idea: state.idea,
+          cards: state.cards,
+          level: state.level,
+          theme: state.theme,
+          path: state.path,
+          paragraphs: state.paragraphs,
+          selectedChoice: choice,
+          turn: state.turn,
+          knowledgeBase: getKnowledgeContext(),
+          instruction: "必须优先回应用户选择。如果用户选择为自定义内容，必须把自定义内容转化为下一段叙事因果。选项数量不固定。"
+        });
+      } catch (error) {
+        return {
+          text: nextParagraph(choice),
+          choices: makeChoices(),
+          customInput: shouldOfferCustomInput()
+        };
+      }
+    }
+
+    function normalizeChoices(choices) {
+      return ensureArray(choices)
+        .map((choice) => {
+          if (typeof choice === "string") {
+            return { label: choice, description: "" };
+          }
+
+          return {
+            label: choice.label || choice.title || choice.text || choice.value || "继续向前。",
+            description: choice.description || choice.reason || choice.intent || "",
+            risk: choice.risk || ""
+          };
+        })
+        .filter((choice) => choice.label)
+        .slice(0, 4);
+    }
+
+    function normalizeCustomInput(custom) {
+      if (!custom) return null;
+
+      if (typeof custom === "string") {
+        return {
+          enabled: true,
+          prompt: custom,
+          placeholder: "写下你要做的事、要问的话，或你想让世界记住的句子。"
+        };
+      }
+
+      return {
+        enabled: Boolean(custom.enabled),
+        prompt: custom.prompt || custom.label || "这里出现了一条不能被预设选项完全接住的小路。",
+        placeholder: custom.placeholder || "写下你要做的事、要问的话，或你想让世界记住的句子。"
+      };
+    }
+
+    function shouldOfferCustomInput() {
+      const enabled = state.turn === 0 || /梦|信|门|房间|问|说|名字/.test(state.idea);
+      return enabled
+        ? {
+            enabled: true,
+            prompt: "如果这些选项都没有接住你的直觉，你也可以写下一条自己的路。",
+            placeholder: "输入你想做的事、说的话、写下的记忆或选择。"
+          }
+        : { enabled: false };
+    }
+
+    function maxTurnsByLevel() {
+      const map = {
+        L1: 2,
+        L2: 4,
+        L3: 6,
+        L4: 10,
+        L5: 16
+      };
+
+      return map[state.level.id] || 6;
+    }
+
+    function setChoicesLoading() {
+      choicesEl.innerHTML = `<button class="choice-btn" type="button" disabled>小径正在继续显影……</button>`;
+    }
+
+    function nextParagraph(choice) {
+      const tag = state.cards.concept[state.turn % state.cards.concept.length] || "异常";
+      return `你选择了“${choice}”。这句话落下去的时候，周围的世界像被重新校准。${tag}不再只是卡片上的词，它开始拥有重量：可能是一扇门、一件物品、一段被谁故意删去的记忆。你意识到，这条小径并不是在带你离开最初的 idea，而是在逼近它真正害怕说出口的部分。`;
+    }
+
+    function renderStory() {
+      chapterMark.textContent = `chapter ${String(state.turn + 1).padStart(2, "0")}`;
+      storyText.innerHTML = state.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("");
+
+      choicesEl.innerHTML = state.choices.map((choice) => `
+        <button class="choice-btn" type="button">
+          ${escapeHtml(choice.label)}
+          ${choice.description ? `<small>${escapeHtml(choice.description)}</small>` : ""}
+        </button>
+      `).join("");
+
+      choicesEl.querySelectorAll("button").forEach((button, index) => {
+        button.addEventListener("click", () => choose(state.choices[index]));
+      });
+
+      renderCustomPath();
+
+      undoCount.textContent = `回望 ${state.undoRemaining}`;
+      undoBtn.disabled = state.history.length === 0 || state.undoRemaining === 0;
+
+      renderPath();
+    }
+
+    function renderCustomPath() {
+      const enabled = Boolean(state.customInput?.enabled);
+      customPath.classList.toggle("hidden", !enabled);
+
+      if (enabled) {
+        customPrompt.textContent = state.customInput.prompt;
+        customInput.placeholder = state.customInput.placeholder;
+      }
+    }
+
+    function renderPath() {
+      if (state.path.length === 0) {
+        pathList.innerHTML = `<li>第一处岔路还没有被选择。</li>`;
+        return;
+      }
+
+      pathList.innerHTML = state.path.map((choice, index) => `<li>${index + 1}. ${escapeHtml(choice)}</li>`).join("");
+    }
+
+    function undoTurn() {
+      if (state.undoRemaining === 0) {
+        showToast("没有更多回望了。小径开始收拢。");
+        return;
+      }
+
+      const previous = state.history.pop();
+      if (!previous) return;
+
+      state.undoRemaining -= 1;
+      state.turn = previous.turn;
+      state.paragraphs = previous.paragraphs;
+      state.path = previous.path;
+      state.choices = previous.choices;
+      state.customInput = previous.customInput || null;
+
+      renderStory();
+
+      const copy = state.undoRemaining === 0
+        ? "最后一次回望已经发生。接下来的路会记住你的脚步。"
+        : `你回到了上一处岔路。还剩 ${state.undoRemaining} 次回望的机会。`;
+
+      showToast(copy);
+    }
+
+    function showToast(copy) {
+      undoToast.textContent = copy;
+      undoToast.classList.add("show");
+
+      window.clearTimeout(showToast.timer);
+
+      showToast.timer = window.setTimeout(() => {
+        undoToast.classList.remove("show");
+      }, 3400);
+    }
+
+    async function renderResult() {
+      const finalStory = await generateFinalStory();
+      state.finalStory = finalStory;
+
+      const title = finalStory.title || makeTitle();
+      const lede = finalStory.openingLine || finalStory.lede || "这条路径暂时抵达了它的尽头。";
+      const body = textToParagraphs(finalStory.body || state.paragraphs.concat(endingParagraph()).join("\n\n"));
+
+      resultTitle.textContent = title;
+      resultLede.textContent = lede;
+      finalBody.innerHTML = body;
+
+      pathSummary.innerHTML = `
+        <strong>路径摘要</strong><br />
+        ${escapeHtml(state.path.length ? state.path.join(" → ") : "你停在了第一处光亮之前。")}<br /><br />
+        <strong>抽取卡片</strong><br />
+        ${escapeHtml(`${state.cards.concept.join(" / ")} · ${state.cards.form} · ${state.cards.genre} · ${state.cards.style} · ${state.level.id} ${state.level.name}`)}
+      `;
+
+      showScreen("result");
+    }
+
+    async function generateFinalStory() {
+      try {
+        return await apiGenerate("finalize", {
+          idea: state.idea,
+          cards: state.cards,
+          level: state.level,
+          theme: state.theme,
+          path: state.path,
+          paragraphs: state.paragraphs,
+          knowledgeBase: getKnowledgeContext(),
+          instruction: "最终文本必须忠实整合用户 idea、路径选择、知识库和已生成正文，不得突然偏离主题。"
+        });
+      } catch (error) {
+        return {
+          title: makeTitle(),
+          openingLine: "这条路径暂时抵达了它的尽头。",
+          body: state.paragraphs.concat(endingParagraph()).join("\n\n")
+        };
+      }
+    }
+
+    function textToParagraphs(text) {
+      return String(text)
+        .split(/\n{2,}/)
+        .map((paragraph) => paragraph.trim())
+        .filter(Boolean)
+        .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
+        .join("");
+    }
+
+    function makeTitle() {
+      const titleMap = {
+        "梦核": "梦里那圈正在变亮的光",
+        "都市异闻": "城市边缘的发光小径",
+        "魔幻现实": "一处不肯解释自己的房间",
+        "心理奇幻": "回望发生之前",
+        "日常怪谈": "便利店在夜里亮着",
+        "废墟浪漫": "水面保存了旧日期"
+      };
+
+      return titleMap[state.cards.genre] || "小径分岔处的故事";
+    }
+
+    function endingParagraph() {
+      return `最后，光慢慢退回世界的边缘。你站在原地，发现最初写下的念头已经变得陌生了一点，也更像一篇小说。它没有完全结束，只是暂时停在这里，等下一次有人把另一枚碎片交给世界。`;
+    }
+
+    function storyMarkdown() {
+      const title = resultTitle.textContent;
+      const bodyText = [...finalBody.querySelectorAll("p")].map((p) => p.textContent).join("\n\n");
+      const path = state.path.length ? state.path.join(" -> ") : "未选择";
+
+      return `# ${title}
+
+${resultLede.textContent}
+
+${bodyText}
+
+## 路径摘要
+
+${path}
+
+## 抽取卡片
+
+${state.cards.concept.join(" / ")} · ${state.cards.form} · ${state.cards.genre} · ${state.cards.style} · ${state.level.id} ${state.level.name}
+`;
+    }
+
+    async function copyStory() {
+      const text = storyMarkdown();
+
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.textContent = "已复制";
+        window.setTimeout(() => (copyBtn.textContent = "复制全文"), 1600);
+      } catch (error) {
+        copyBtn.textContent = "复制受限";
+        window.setTimeout(() => (copyBtn.textContent = "复制全文"), 1600);
+      }
+    }
+
+    function downloadStory() {
+      const blob = new Blob([storyMarkdown()], { type: "text/markdown;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = "edimage-world-story.md";
+      link.click();
+
+      URL.revokeObjectURL(url);
+    }
+
+    function resetToHome() {
+      state.idea = "";
+      state.cards = null;
+      state.cardOptions = null;
+      state.undoRemaining = 2;
+      state.turn = 0;
+      state.paragraphs = [];
+      state.choices = [];
+      state.path = [];
+      state.history = [];
+      state.customInput = null;
+      state.finalStory = null;
+      state.level = level("L3", "标准互动短篇", "5 到 8 次分岔", "如果你没有指定体量，世界会默认给这枚念头 5 到 8 次分岔。");
+
+      ideaInput.value = "";
+      lengthInput.value = "";
+      startBtn.disabled = true;
+      enterStoryBtn.disabled = true;
+
+      renderLength();
+      showScreen("home");
+    }
+
+    function openKnowledgeModal() {
+      renderKnowledgeList();
+      knowledgeModal.classList.remove("hidden");
+    }
+
+    function closeKnowledgeModal() {
+      knowledgeModal.classList.add("hidden");
+    }
+
+    function loadKnowledgeEntries() {
+      try {
+        return JSON.parse(localStorage.getItem("edimageKnowledgeEntries") || "[]");
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function storeKnowledgeEntries(entries) {
+      localStorage.setItem("edimageKnowledgeEntries", JSON.stringify(entries));
+    }
+
+    function getKnowledgeContext() {
+      return loadKnowledgeEntries()
+        .slice(-8)
+        .map((entry) => `标题：${entry.title}\n标签：${entry.tags}\n正文：${entry.text}`)
+        .join("\n\n---\n\n");
+    }
+
+    async function saveKnowledgeEntry() {
+      const title = knowledgeTitle.value.trim() || "未命名碎片";
+      const tags = knowledgeTags.value.trim();
+      const text = knowledgeText.value.trim();
+
+      if (!text) return;
+
+      const entry = {
+        id: Date.now(),
+        title,
+        tags,
+        text,
+        createdAt: new Date().toISOString()
+      };
+
+      const entries = loadKnowledgeEntries().concat(entry);
+      storeKnowledgeEntries(entries);
+
+      renderKnowledgeList();
+
+      knowledgeTitle.value = "";
+      knowledgeTags.value = "";
+      knowledgeText.value = "";
+
+      try {
+        await fetch("/api/knowledge", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(entry)
+        });
+      } catch (error) {
+        // 本地存储已经完成；后端写入失败时不打断创作。
+      }
+    }
+
+    function clearKnowledgeEntries() {
+      storeKnowledgeEntries([]);
+      renderKnowledgeList();
+    }
+
+    function renderKnowledgeList() {
+      const entries = loadKnowledgeEntries();
+
+      if (!entries.length) {
+        knowledgeList.innerHTML = `<div class="knowledge-item">当前本地知识库还没有条目。知识库为空时，文本生成完全依赖智能体推理。</div>`;
+        return;
+      }
+
+      knowledgeList.innerHTML = entries.slice(-8).reverse().map((entry) => `
+        <div class="knowledge-item">
+          <strong>${escapeHtml(entry.title)}</strong><br />
+          ${escapeHtml(entry.tags || "未标记")}<br />
+          ${escapeHtml(entry.text.slice(0, 140))}${entry.text.length > 140 ? "..." : ""}
+        </div>
+      `).join("");
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+  </script>
+</body>
+</html>
