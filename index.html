@@ -1,0 +1,1536 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EDIMAGE WORLD</title>
+    <style>
+      :root {
+        --bg: #040002;
+        --bg-soft: #0d0504;
+        --ink: #ffe7ad;
+        --ink-soft: rgba(255, 231, 173, 0.72);
+        --ink-faint: rgba(255, 231, 173, 0.42);
+        --amber: #ffb328;
+        --amber-hot: #ffdc5c;
+        --amber-deep: #a9540b;
+        --cyan: #25c5d8;
+        --green: #63ce59;
+        --pink: #e94f74;
+        --black-glass: rgba(5, 1, 2, 0.72);
+        --line: rgba(255, 198, 82, 0.24);
+        --line-strong: rgba(255, 198, 82, 0.44);
+        --shadow-amber: 0 0 22px rgba(255, 180, 46, 0.32), 0 0 70px rgba(255, 123, 18, 0.2);
+        --serif: "Iowan Old Style", "Songti SC", "STSong", "Noto Serif CJK SC", Georgia, serif;
+        --mono: "Menlo", "Monaco", "Courier New", monospace;
+        --ease: cubic-bezier(0.19, 1, 0.22, 1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        min-height: 100%;
+        background: var(--bg);
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 52% 32%, rgba(255, 186, 44, 0.13), transparent 22rem),
+          radial-gradient(circle at 26% 72%, rgba(32, 181, 204, 0.1), transparent 18rem),
+          linear-gradient(180deg, #050003 0%, #090202 48%, #020001 100%);
+        font-family: var(--serif);
+        overflow-x: hidden;
+      }
+
+      body::before,
+      body::after {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        content: "";
+        z-index: 20;
+      }
+
+      body::before {
+        opacity: 0.46;
+        mix-blend-mode: screen;
+        background-image:
+          linear-gradient(rgba(255, 176, 42, 0.03) 50%, transparent 50%),
+          radial-gradient(circle, rgba(255, 222, 102, 0.18) 1px, transparent 1.2px);
+        background-size:
+          100% 4px,
+          9px 9px;
+      }
+
+      body::after {
+        background:
+          linear-gradient(90deg, rgba(255, 255, 255, 0.02), transparent 18%, transparent 82%, rgba(255, 255, 255, 0.018)),
+          radial-gradient(ellipse at center, transparent 46%, rgba(0, 0, 0, 0.55) 100%);
+      }
+
+      button,
+      textarea,
+      input {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .app {
+        position: relative;
+        min-height: 100vh;
+        isolation: isolate;
+      }
+
+      .vhs-frame {
+        position: fixed;
+        inset: 18px;
+        border: 1px solid rgba(255, 190, 64, 0.11);
+        pointer-events: none;
+        z-index: 5;
+      }
+
+      .status-line {
+        position: fixed;
+        left: clamp(18px, 4vw, 58px);
+        right: clamp(18px, 4vw, 58px);
+        top: clamp(14px, 3vw, 34px);
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        color: rgba(255, 202, 82, 0.58);
+        font-family: var(--mono);
+        font-size: clamp(0.62rem, 1vw, 0.78rem);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        z-index: 6;
+      }
+
+      .timestamp {
+        position: fixed;
+        left: clamp(20px, 7vw, 116px);
+        bottom: clamp(20px, 5vw, 58px);
+        z-index: 6;
+        color: rgba(255, 204, 76, 0.82);
+        font-family: var(--mono);
+        font-size: clamp(0.82rem, 2vw, 1.45rem);
+        letter-spacing: 0.18em;
+        text-shadow: 0 0 18px rgba(255, 172, 41, 0.72);
+      }
+
+      .world-relic {
+        position: fixed;
+        top: clamp(84px, 11vh, 126px);
+        left: 50%;
+        width: min(58vw, 760px);
+        aspect-ratio: 1.5 / 1;
+        transform: translateX(-50%);
+        pointer-events: none;
+        filter: saturate(1.16) contrast(1.08);
+        opacity: 0.82;
+        z-index: -1;
+        animation: relicDrift 9s var(--ease) infinite alternate;
+      }
+
+      .relic-shell {
+        position: absolute;
+        inset: 1% 0 3%;
+        border-radius: 48% 52% 44% 56% / 52% 44% 58% 46%;
+        background:
+          radial-gradient(ellipse at 52% 54%, rgba(0, 0, 0, 0.88) 0 28%, transparent 29%),
+          radial-gradient(ellipse at 49% 51%, #ffe372 0 24%, #ffb332 42%, #63300b 61%, transparent 62%),
+          radial-gradient(ellipse at center, rgba(255, 183, 31, 0.86), rgba(112, 48, 5, 0.38) 72%, transparent 76%);
+        box-shadow: var(--shadow-amber);
+        clip-path: polygon(4% 46%, 13% 25%, 34% 12%, 58% 8%, 82% 19%, 98% 41%, 92% 70%, 70% 91%, 39% 92%, 13% 78%);
+      }
+
+      .relic-shell::before {
+        position: absolute;
+        inset: 9% 12% 14%;
+        content: "";
+        border-radius: 50%;
+        border: 8px solid rgba(255, 217, 94, 0.76);
+        border-left-color: rgba(44, 18, 3, 0.72);
+        border-bottom-color: rgba(255, 165, 29, 0.42);
+        box-shadow: inset 0 0 26px rgba(255, 190, 45, 0.36);
+        transform: rotate(2deg);
+      }
+
+      .relic-shell::after {
+        position: absolute;
+        inset: 0;
+        content: "";
+        opacity: 0.74;
+        mix-blend-mode: multiply;
+        background-image: radial-gradient(circle, rgba(9, 1, 0, 0.86) 1.6px, transparent 1.9px);
+        background-size: 10px 10px;
+      }
+
+      .relic-water,
+      .relic-island,
+      .relic-house,
+      .relic-tree,
+      .relic-branch,
+      .relic-flower {
+        position: absolute;
+        z-index: 2;
+      }
+
+      .relic-water {
+        left: 21%;
+        top: 47%;
+        width: 58%;
+        height: 29%;
+        border-radius: 48% 52% 46% 54%;
+        background: linear-gradient(135deg, rgba(25, 193, 220, 0.94), rgba(27, 126, 155, 0.8));
+        clip-path: polygon(0 30%, 19% 13%, 37% 26%, 56% 6%, 82% 14%, 100% 50%, 84% 82%, 51% 90%, 23% 82%, 6% 62%);
+        box-shadow: inset 0 0 20px rgba(255, 225, 91, 0.2);
+      }
+
+      .relic-island {
+        left: 29%;
+        top: 52%;
+        width: 43%;
+        height: 22%;
+        background: linear-gradient(130deg, var(--green), #13764b);
+        border-radius: 57% 43% 48% 52% / 55% 45% 55% 45%;
+        clip-path: polygon(0 45%, 16% 10%, 31% 34%, 44% 12%, 61% 35%, 82% 24%, 100% 59%, 82% 88%, 48% 78%, 23% 94%);
+        opacity: 0.92;
+      }
+
+      .relic-house {
+        left: 37%;
+        top: 35%;
+        width: 25%;
+        height: 26%;
+        border: 4px solid rgba(38, 12, 4, 0.8);
+        background: linear-gradient(180deg, #ffe9a0, #f5a83a);
+        clip-path: polygon(10% 45%, 44% 8%, 85% 34%, 92% 88%, 16% 90%);
+        box-shadow: 0 0 16px rgba(255, 203, 62, 0.5);
+        transform: rotate(2deg);
+      }
+
+      .relic-house::after {
+        position: absolute;
+        left: 18%;
+        right: 12%;
+        bottom: 17%;
+        height: 18%;
+        content: "";
+        background: repeating-linear-gradient(90deg, rgba(36, 13, 5, 0.75) 0 5px, transparent 5px 12px);
+      }
+
+      .relic-tree {
+        width: 12%;
+        height: 16%;
+        border-radius: 45% 55% 48% 52%;
+        background: radial-gradient(circle at 35% 36%, #89df50, #2a8b45 64%, #0e3f30);
+      }
+
+      .relic-tree.one {
+        left: 23%;
+        top: 57%;
+      }
+
+      .relic-tree.two {
+        left: 62%;
+        top: 58%;
+        width: 14%;
+        height: 19%;
+      }
+
+      .relic-tree.three {
+        left: 76%;
+        top: 45%;
+        width: 9%;
+        height: 13%;
+      }
+
+      .relic-branch {
+        left: 12%;
+        top: 26%;
+        width: 72%;
+        height: 30%;
+        border-top: 6px solid rgba(28, 10, 3, 0.78);
+        border-radius: 50%;
+        transform: rotate(3deg);
+      }
+
+      .relic-flower {
+        left: 28%;
+        top: 72%;
+        width: 4%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: var(--pink);
+        box-shadow:
+          8px -2px 0 rgba(255, 168, 177, 0.88),
+          -7px -3px 0 rgba(255, 168, 177, 0.88),
+          2px 7px 0 rgba(255, 168, 177, 0.88),
+          0 0 18px rgba(255, 77, 126, 0.8);
+      }
+
+      .screen {
+        display: none;
+        min-height: 100vh;
+        padding: clamp(84px, 12vh, 132px) clamp(18px, 5vw, 78px) clamp(96px, 14vh, 150px);
+      }
+
+      .screen.active {
+        display: grid;
+        animation: screenIn 700ms var(--ease) both;
+      }
+
+      .home {
+        place-items: center;
+      }
+
+      .home-shell {
+        width: min(840px, 100%);
+        margin-top: clamp(80px, 20vh, 190px);
+        text-align: center;
+      }
+
+      .eyebrow {
+        margin: 0 0 18px;
+        color: rgba(255, 205, 85, 0.62);
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        text-wrap: balance;
+        font-size: clamp(2.9rem, 8vw, 7.8rem);
+        font-weight: 500;
+        line-height: 0.92;
+        letter-spacing: 0;
+        text-shadow:
+          0 0 16px rgba(255, 211, 89, 0.62),
+          0 0 58px rgba(255, 139, 23, 0.32);
+      }
+
+      .threshold {
+        margin: clamp(18px, 3vw, 28px) auto 0;
+        color: var(--ink-soft);
+        font-size: clamp(0.92rem, 1.65vw, 1.15rem);
+        line-height: 1.9;
+      }
+
+      .oracle-box {
+        position: relative;
+        width: min(670px, 100%);
+        margin: clamp(28px, 4vw, 48px) auto 0;
+        padding: 1px;
+        background:
+          linear-gradient(115deg, rgba(255, 214, 91, 0.72), rgba(39, 195, 215, 0.28), rgba(255, 98, 91, 0.2)),
+          rgba(255, 184, 52, 0.06);
+        border-radius: 8px;
+        box-shadow: var(--shadow-amber);
+      }
+
+      .oracle-inner {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        align-items: end;
+        padding: 14px;
+        border-radius: 7px;
+        background: rgba(5, 0, 2, 0.86);
+        backdrop-filter: blur(16px);
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 104px;
+        resize: vertical;
+        color: var(--ink);
+        border: 0;
+        outline: 0;
+        background: transparent;
+        font-size: clamp(1rem, 2vw, 1.18rem);
+        line-height: 1.75;
+      }
+
+      textarea::placeholder,
+      input::placeholder {
+        color: rgba(255, 222, 142, 0.36);
+      }
+
+      .primary-btn,
+      .ghost-btn,
+      .choice-btn,
+      .small-btn {
+        border: 1px solid var(--line);
+        color: var(--ink);
+        background: rgba(255, 188, 49, 0.06);
+        transition:
+          transform 220ms var(--ease),
+          border-color 220ms var(--ease),
+          background 220ms var(--ease),
+          box-shadow 220ms var(--ease),
+          color 220ms var(--ease);
+      }
+
+      .primary-btn {
+        min-width: 118px;
+        min-height: 52px;
+        padding: 0 18px;
+        border-radius: 6px;
+        color: #170905;
+        background: linear-gradient(180deg, var(--amber-hot), var(--amber));
+        box-shadow: 0 0 24px rgba(255, 178, 38, 0.42);
+        font-size: 0.95rem;
+      }
+
+      .primary-btn:disabled {
+        cursor: default;
+        opacity: 0.45;
+        filter: saturate(0.4);
+      }
+
+      .primary-btn:not(:disabled):hover,
+      .ghost-btn:hover,
+      .choice-btn:hover,
+      .small-btn:hover {
+        transform: translateY(-2px);
+        border-color: var(--line-strong);
+        box-shadow: 0 0 24px rgba(255, 177, 42, 0.18);
+      }
+
+      .ghost-btn,
+      .small-btn {
+        min-height: 42px;
+        padding: 0 14px;
+        border-radius: 6px;
+        font-size: 0.88rem;
+      }
+
+      .ghost-btn {
+        background: rgba(0, 0, 0, 0.26);
+      }
+
+      .small-btn {
+        color: var(--ink-soft);
+        background: transparent;
+      }
+
+      .small-btn:disabled {
+        cursor: default;
+        opacity: 0.34;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .stage {
+        width: min(1120px, 100%);
+        margin: 0 auto;
+        align-self: center;
+      }
+
+      .stage-header {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: clamp(24px, 4vw, 46px);
+      }
+
+      .stage-title {
+        margin: 0;
+        font-size: clamp(2rem, 5vw, 4.6rem);
+        font-weight: 500;
+        line-height: 1;
+        text-shadow: 0 0 30px rgba(255, 187, 45, 0.28);
+      }
+
+      .stage-note {
+        max-width: 440px;
+        margin: 12px 0 0;
+        color: var(--ink-soft);
+        line-height: 1.9;
+      }
+
+      .thought-strip {
+        position: relative;
+        margin-bottom: 22px;
+        padding: 16px 18px;
+        border: 1px solid rgba(255, 201, 82, 0.22);
+        border-radius: 6px;
+        color: rgba(255, 235, 187, 0.84);
+        background: rgba(0, 0, 0, 0.38);
+      }
+
+      .thought-strip span {
+        display: block;
+        margin-bottom: 6px;
+        color: rgba(255, 195, 66, 0.7);
+        font-family: var(--mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .card {
+        min-height: 260px;
+        padding: 18px;
+        border: 1px solid rgba(255, 200, 74, 0.22);
+        border-radius: 8px;
+        background:
+          linear-gradient(180deg, rgba(255, 184, 38, 0.11), rgba(12, 2, 2, 0.7)),
+          rgba(0, 0, 0, 0.34);
+        box-shadow: inset 0 0 36px rgba(255, 183, 41, 0.06);
+        transform: translateY(16px) rotateX(18deg);
+        opacity: 0;
+        transform-origin: center bottom;
+      }
+
+      .card.revealed {
+        animation: cardReveal 850ms var(--ease) both;
+      }
+
+      .card:nth-child(2).revealed {
+        animation-delay: 160ms;
+      }
+
+      .card:nth-child(3).revealed {
+        animation-delay: 320ms;
+      }
+
+      .card:nth-child(4).revealed {
+        animation-delay: 480ms;
+      }
+
+      .card-kicker {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        color: rgba(255, 202, 82, 0.62);
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .card-value {
+        margin: 44px 0 18px;
+        min-height: 86px;
+        color: var(--amber-hot);
+        font-size: clamp(1.28rem, 2.4vw, 1.72rem);
+        line-height: 1.25;
+        text-shadow: 0 0 18px rgba(255, 192, 46, 0.44);
+      }
+
+      .card-copy {
+        margin: 0;
+        color: rgba(255, 232, 176, 0.68);
+        font-size: 0.92rem;
+        line-height: 1.8;
+      }
+
+      .length-panel {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 16px;
+        align-items: stretch;
+        margin-top: 16px;
+      }
+
+      .length-input,
+      .length-output,
+      .story-panel,
+      .result-panel {
+        border: 1px solid rgba(255, 200, 74, 0.22);
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.42);
+        box-shadow: inset 0 0 50px rgba(255, 179, 37, 0.05);
+      }
+
+      .length-input {
+        padding: 18px;
+      }
+
+      .field-label {
+        display: block;
+        margin-bottom: 10px;
+        color: rgba(255, 202, 82, 0.66);
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      input {
+        width: 100%;
+        height: 50px;
+        padding: 0 14px;
+        color: var(--ink);
+        border: 1px solid rgba(255, 200, 74, 0.2);
+        border-radius: 6px;
+        outline: none;
+        background: rgba(255, 210, 81, 0.05);
+      }
+
+      input:focus,
+      textarea:focus {
+        border-color: rgba(255, 214, 91, 0.5);
+      }
+
+      .length-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .length-output {
+        display: grid;
+        align-content: center;
+        padding: 18px;
+      }
+
+      .level {
+        margin: 0 0 8px;
+        color: var(--amber-hot);
+        font-size: clamp(1.35rem, 3vw, 2.2rem);
+      }
+
+      .level-copy {
+        margin: 0;
+        color: var(--ink-soft);
+        line-height: 1.8;
+      }
+
+      .story-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 18px;
+      }
+
+      .story-panel {
+        min-height: 560px;
+        padding: clamp(22px, 4vw, 46px);
+      }
+
+      .chapter-mark {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 24px;
+        color: rgba(255, 202, 82, 0.66);
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .story-text {
+        color: rgba(255, 236, 191, 0.92);
+        font-size: clamp(1.03rem, 1.8vw, 1.2rem);
+        line-height: 2.05;
+      }
+
+      .story-text p {
+        margin: 0 0 1.35em;
+      }
+
+      .choices {
+        display: grid;
+        gap: 10px;
+        margin-top: 28px;
+      }
+
+      .choice-btn {
+        width: 100%;
+        min-height: 58px;
+        padding: 14px 16px;
+        border-radius: 6px;
+        color: rgba(255, 234, 188, 0.95);
+        text-align: left;
+        line-height: 1.6;
+        background:
+          linear-gradient(90deg, rgba(255, 183, 37, 0.12), rgba(37, 197, 216, 0.04)),
+          rgba(255, 255, 255, 0.02);
+      }
+
+      .side-panel {
+        display: grid;
+        gap: 12px;
+        align-content: start;
+      }
+
+      .meter,
+      .path-card {
+        padding: 16px;
+        border: 1px solid rgba(255, 200, 74, 0.18);
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.34);
+      }
+
+      .meter-label,
+      .path-label {
+        margin: 0 0 10px;
+        color: rgba(255, 202, 82, 0.62);
+        font-family: var(--mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .meter-value {
+        margin: 0;
+        color: var(--amber-hot);
+        font-size: 1.45rem;
+      }
+
+      .path-list {
+        display: grid;
+        gap: 8px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        color: var(--ink-soft);
+        font-size: 0.88rem;
+        line-height: 1.6;
+      }
+
+      .toast {
+        min-height: 20px;
+        margin-top: 14px;
+        color: rgba(255, 202, 82, 0.72);
+        font-size: 0.82rem;
+        line-height: 1.6;
+        opacity: 0;
+        transform: translateY(6px);
+        transition: opacity 280ms var(--ease), transform 280ms var(--ease);
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .result-panel {
+        width: min(860px, 100%);
+        margin: 0 auto;
+        padding: clamp(24px, 5vw, 58px);
+      }
+
+      .result-title {
+        margin: 0 0 12px;
+        color: var(--amber-hot);
+        font-size: clamp(2rem, 5vw, 4.8rem);
+        font-weight: 500;
+        line-height: 1.05;
+        text-shadow: 0 0 26px rgba(255, 191, 49, 0.35);
+      }
+
+      .result-lede {
+        margin: 0 0 32px;
+        color: var(--ink-soft);
+        line-height: 1.9;
+      }
+
+      .final-body {
+        color: rgba(255, 236, 191, 0.9);
+        font-size: clamp(1rem, 1.7vw, 1.16rem);
+        line-height: 2.05;
+      }
+
+      .path-summary {
+        margin-top: 28px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(255, 200, 74, 0.16);
+        color: rgba(255, 220, 150, 0.68);
+        font-size: 0.92rem;
+        line-height: 1.8;
+      }
+
+      .result-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 28px;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      @media (max-width: 920px) {
+        .world-relic {
+          width: min(92vw, 620px);
+          top: 78px;
+          opacity: 0.62;
+        }
+
+        .home-shell {
+          margin-top: clamp(130px, 25vh, 210px);
+        }
+
+        .cards,
+        .length-panel,
+        .story-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .card {
+          min-height: 210px;
+        }
+
+        .side-panel {
+          grid-row: 1;
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .vhs-frame {
+          inset: 10px;
+        }
+
+        .status-line {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        .timestamp {
+          display: none;
+        }
+
+        .world-relic {
+          top: 92px;
+          width: 118vw;
+          opacity: 0.48;
+        }
+
+        h1 {
+          font-size: clamp(2.35rem, 10vw, 2.7rem);
+          line-height: 0.96;
+        }
+
+        h1 .brand-line span {
+          display: block;
+        }
+
+        .threshold {
+          max-width: 34ch;
+        }
+
+        .oracle-inner {
+          grid-template-columns: 1fr;
+        }
+
+        .primary-btn {
+          width: 100%;
+        }
+
+        .stage-header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .side-panel {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @keyframes relicDrift {
+        from {
+          transform: translateX(-50%) translateY(0) rotate(-1deg);
+        }
+
+        to {
+          transform: translateX(-50%) translateY(10px) rotate(1deg);
+        }
+      }
+
+      @keyframes screenIn {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+          filter: blur(8px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+      }
+
+      @keyframes cardReveal {
+        from {
+          opacity: 0;
+          transform: translateY(20px) rotateX(35deg);
+          filter: blur(10px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0) rotateX(0);
+          filter: blur(0);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 1ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 1ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <div class="vhs-frame" aria-hidden="true"></div>
+      <div class="status-line" aria-hidden="true">
+        <span>EDIMAGE WORLD / PATH 0001</span>
+        <span>TEXT OPEN-WORLD SIGNAL</span>
+      </div>
+      <div class="timestamp" aria-hidden="true">2000.04.14&nbsp;&nbsp;14:10</div>
+
+      <div class="world-relic" aria-hidden="true">
+        <div class="relic-shell"></div>
+        <div class="relic-water"></div>
+        <div class="relic-island"></div>
+        <div class="relic-house"></div>
+        <div class="relic-tree one"></div>
+        <div class="relic-tree two"></div>
+        <div class="relic-tree three"></div>
+        <div class="relic-branch"></div>
+        <div class="relic-flower"></div>
+      </div>
+
+      <main>
+        <section class="screen home active" data-screen="home">
+          <div class="home-shell">
+            <p class="eyebrow">an entrance for unfinished dreams</p>
+            <h1>
+              <span>WELCOME</span><br />
+              <span class="brand-line"><span>EDIMAGE</span> <span>WORLD.</span></span>
+            </h1>
+            <p class="threshold">站在小径分岔的路口，你可以去往一段梦、一枚场景，或一个尚未学会说话的世界。</p>
+            <form class="oracle-box" id="ideaForm">
+              <div class="oracle-inner">
+                <textarea id="ideaInput" rows="4" placeholder="写下一枚会生长的念头。"></textarea>
+                <button class="primary-btn" id="startBtn" type="submit" disabled>进入</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="draw">
+          <div class="stage">
+            <div class="stage-header">
+              <div>
+                <p class="eyebrow">the cards are reading</p>
+                <h2 class="stage-title">念头正在显影。</h2>
+                <p class="stage-note">它会先获得气候、容器、世界倾向和说话的声音，然后再进入小径。</p>
+              </div>
+              <button class="ghost-btn" data-action="backHome" type="button">回到入口</button>
+            </div>
+
+            <div class="thought-strip">
+              <span>first thought</span>
+              <div id="thoughtEcho"></div>
+            </div>
+
+            <div class="cards" id="cardGrid"></div>
+
+            <div class="length-panel">
+              <div class="length-input">
+                <label class="field-label" for="lengthInput">volume</label>
+                <input id="lengthInput" type="text" placeholder="例如：很短 / 大概 1000 字 / 想玩久一点" />
+                <div class="length-actions">
+                  <button class="small-btn" id="matchLengthBtn" type="button">匹配体量</button>
+                  <button class="primary-btn" id="enterStoryBtn" type="button" disabled>进入小径</button>
+                </div>
+              </div>
+              <div class="length-output" id="lengthOutput">
+                <p class="level">L3 标准互动短篇</p>
+                <p class="level-copy">如果你没有指定体量，世界会默认给这枚念头 5 到 8 次分岔。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="story">
+          <div class="stage">
+            <div class="stage-header">
+              <div>
+                <p class="eyebrow">interactive fiction</p>
+                <h2 class="stage-title">小径已经打开。</h2>
+              </div>
+              <button class="ghost-btn" id="finishEarlyBtn" type="button">让故事浮出水面</button>
+            </div>
+
+            <div class="story-layout">
+              <article class="story-panel">
+                <div class="chapter-mark">
+                  <span id="chapterMark">chapter 01</span>
+                  <span id="styleMark">冷静诗性</span>
+                </div>
+                <div class="story-text" id="storyText"></div>
+                <div class="choices" id="choices"></div>
+              </article>
+
+              <aside class="side-panel">
+                <div class="meter">
+                  <p class="meter-label">look back</p>
+                  <p class="meter-value" id="undoCount">回望 2</p>
+                  <button class="small-btn" id="undoBtn" type="button">退回上一处岔路</button>
+                  <div class="toast" id="undoToast"></div>
+                </div>
+                <div class="path-card">
+                  <p class="path-label">path</p>
+                  <ul class="path-list" id="pathList"></ul>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="result">
+          <div class="result-panel">
+            <p class="eyebrow">the path has surfaced</p>
+            <h2 class="result-title" id="resultTitle">便利店在梦里亮着</h2>
+            <p class="result-lede" id="resultLede">这条路径暂时抵达了它的尽头。</p>
+            <div class="final-body" id="finalBody"></div>
+            <div class="path-summary" id="pathSummary"></div>
+            <div class="result-actions">
+              <button class="primary-btn" id="copyBtn" type="button">复制全文</button>
+              <button class="ghost-btn" id="downloadBtn" type="button">下载 Markdown</button>
+              <button class="ghost-btn" data-action="restart" type="button">回到入口</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const state = {
+        idea: "",
+        cards: null,
+        level: {
+          id: "L3",
+          name: "标准互动短篇",
+          rounds: "5 到 8 次分岔",
+          copy: "如果你没有指定体量，世界会默认给这枚念头 5 到 8 次分岔。"
+        },
+        undoRemaining: 2,
+        turn: 0,
+        paragraphs: [],
+        choices: [],
+        path: [],
+        history: [],
+        finalStory: null
+      };
+
+      const screens = [...document.querySelectorAll(".screen")];
+      const ideaInput = document.querySelector("#ideaInput");
+      const startBtn = document.querySelector("#startBtn");
+      const ideaForm = document.querySelector("#ideaForm");
+      const cardGrid = document.querySelector("#cardGrid");
+      const thoughtEcho = document.querySelector("#thoughtEcho");
+      const lengthInput = document.querySelector("#lengthInput");
+      const matchLengthBtn = document.querySelector("#matchLengthBtn");
+      const lengthOutput = document.querySelector("#lengthOutput");
+      const enterStoryBtn = document.querySelector("#enterStoryBtn");
+      const storyText = document.querySelector("#storyText");
+      const choicesEl = document.querySelector("#choices");
+      const undoBtn = document.querySelector("#undoBtn");
+      const undoCount = document.querySelector("#undoCount");
+      const undoToast = document.querySelector("#undoToast");
+      const pathList = document.querySelector("#pathList");
+      const chapterMark = document.querySelector("#chapterMark");
+      const styleMark = document.querySelector("#styleMark");
+      const finishEarlyBtn = document.querySelector("#finishEarlyBtn");
+      const resultTitle = document.querySelector("#resultTitle");
+      const resultLede = document.querySelector("#resultLede");
+      const finalBody = document.querySelector("#finalBody");
+      const pathSummary = document.querySelector("#pathSummary");
+      const copyBtn = document.querySelector("#copyBtn");
+      const downloadBtn = document.querySelector("#downloadBtn");
+
+      const decks = {
+        tags: [
+          ["梦境残片", "失落场所", "记忆回声"],
+          ["温柔异变", "城市幽灵", "错位童年"],
+          ["潮湿档案", "平行房间", "被遗忘的门"],
+          ["静物叙事", "迷宫日常", "身份裂隙"],
+          ["夜间水域", "私人神话", "过曝现实"]
+        ],
+        forms: ["互动短篇", "梦境档案", "伪日记", "分岔叙事", "调查记录", "开放小说"],
+        genres: ["梦核", "都市异闻", "魔幻现实", "心理奇幻", "日常怪谈", "废墟浪漫"],
+        styles: ["冷静诗性", "潮湿梦呓", "低频悬疑", "影像化白描", "温柔怪诞", "像旧录像一样缓慢"]
+      };
+
+      const cardCopy = {
+        concept: "这枚念头像一处被照亮的内部地形，正在用轻微的异常保存某段记忆。",
+        form: "它不急着抵达结论，而会以几次分岔慢慢确认自己的形状。",
+        genre: "现实仍在场，只是有一块地方开始不遵守现实。",
+        style: "语言会保持低声、发光、略带颗粒感，像隔着旧屏幕看见梦。"
+      };
+
+      ideaInput.addEventListener("input", () => {
+        startBtn.disabled = ideaInput.value.trim().length < 2;
+      });
+
+      ideaForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const idea = ideaInput.value.trim();
+        if (!idea) return;
+        startBtn.disabled = true;
+        startBtn.textContent = "显影中";
+        state.idea = idea;
+        state.cards = await generateCards(idea);
+        thoughtEcho.textContent = idea;
+        renderCards();
+        showScreen("draw");
+        startBtn.textContent = "进入";
+        startBtn.disabled = false;
+      });
+
+      matchLengthBtn.addEventListener("click", () => {
+        state.level = matchLength(lengthInput.value);
+        renderLength();
+        enterStoryBtn.disabled = false;
+      });
+
+      enterStoryBtn.addEventListener("click", startStory);
+      finishEarlyBtn.addEventListener("click", renderResult);
+      undoBtn.addEventListener("click", undoTurn);
+      copyBtn.addEventListener("click", copyStory);
+      downloadBtn.addEventListener("click", downloadStory);
+
+      document.querySelectorAll("[data-action='backHome'], [data-action='restart']").forEach((button) => {
+        button.addEventListener("click", resetToHome);
+      });
+
+      function showScreen(name) {
+        screens.forEach((screen) => {
+          screen.classList.toggle("active", screen.dataset.screen === name);
+        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function seedFrom(text) {
+        return [...text].reduce((sum, char, index) => sum + char.charCodeAt(0) * (index + 3), 17);
+      }
+
+      function pick(list, seed, offset = 0) {
+        return list[(seed + offset) % list.length];
+      }
+
+      async function apiGenerate(stage, payload) {
+        const response = await fetch("/api/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ stage, payload })
+        });
+
+        if (!response.ok) {
+          throw new Error("api generate failed");
+        }
+
+        return response.json();
+      }
+
+      async function generateCards(idea) {
+        try {
+          const cards = await apiGenerate("cards", { idea });
+          return {
+            concept: cards.conceptTags || cards.concept || drawCards(idea).concept,
+            form: cards.form || drawCards(idea).form,
+            genre: cards.genre || drawCards(idea).genre,
+            style: cards.style || drawCards(idea).style,
+            explanations: cards.explanations || null
+          };
+        } catch (error) {
+          return drawCards(idea);
+        }
+      }
+
+      function drawCards(idea) {
+        const seed = seedFrom(idea);
+        let tagSet = pick(decks.tags, seed);
+
+        if (/梦|睡|醒|夜|房间/.test(idea)) {
+          tagSet = ["梦境残片", "平行房间", "记忆回声"];
+        }
+        if (/便利店|街|城市|路|站|电梯/.test(idea)) {
+          tagSet = ["失落场所", "城市幽灵", "温柔异变"];
+        }
+        if (/水|河|雨|海|湖|潮/.test(idea)) {
+          tagSet = ["夜间水域", "潮湿档案", "被遗忘的门"];
+        }
+
+        return {
+          concept: tagSet,
+          form: pick(decks.forms, seed, 2),
+          genre: /梦|醒|睡/.test(idea) ? "梦核" : pick(decks.genres, seed, 4),
+          style: pick(decks.styles, seed, 6)
+        };
+      }
+
+      function renderCards() {
+        const cards = [
+          ["TYPE TAGS", state.cards.concept.join(" / "), state.cards.explanations?.conceptTags || cardCopy.concept],
+          ["FORM", state.cards.form, state.cards.explanations?.form || cardCopy.form],
+          ["GENRE", state.cards.genre, state.cards.explanations?.genre || cardCopy.genre],
+          ["VOICE", state.cards.style, state.cards.explanations?.style || cardCopy.style]
+        ];
+
+        cardGrid.innerHTML = cards
+          .map((card, index) => {
+            return `
+              <article class="card" style="--i:${index}">
+                <div class="card-kicker"><span>${card[0]}</span><span>0${index + 1}</span></div>
+                <div class="card-value">${escapeHtml(card[1])}</div>
+                <p class="card-copy">${escapeHtml(card[2])}</p>
+              </article>
+            `;
+          })
+          .join("");
+
+        requestAnimationFrame(() => {
+          document.querySelectorAll(".card").forEach((card) => card.classList.add("revealed"));
+        });
+      }
+
+      function matchLength(value) {
+        const text = value.trim();
+        const number = text.match(/(\d{2,6})/);
+        let words = number ? Number(number[1]) : null;
+
+        if (words !== null) {
+          if (words < 800) return level("L1", "微型片段", "2 到 3 次分岔", "它会像一枚短促的闪光，迅速照出核心场景。");
+          if (words < 2000) return level("L2", "短篇梦境", "3 到 5 次分岔", "它会保留梦的速度，让场景在几次选择里完成一次变形。");
+          if (words < 5000) return level("L3", "标准互动短篇", "5 到 8 次分岔", "这条小径有足够的空间，让一个念头长成完整故事。");
+          if (words < 12000) return level("L4", "深入章节", "8 到 15 次分岔", "你选择了更长的停留，地点、人物和异常会慢慢显影。");
+          return level("L5", "开放篇章", "15 次以上分岔", "它会以长程方式展开，像一片需要多次进入的地形。");
+        }
+
+        if (/很短|短|片段|一点|几百/.test(text)) return level("L1", "微型片段", "2 到 3 次分岔", "它会像一枚短促的闪光，迅速照出核心场景。");
+        if (/梦|小故事|短篇|一千|1000/.test(text)) return level("L2", "短篇梦境", "3 到 5 次分岔", "它会保留梦的速度，让场景在几次选择里完成一次变形。");
+        if (/章节|长一点|久一点|慢慢|探索/.test(text)) return level("L4", "深入章节", "8 到 15 次分岔", "你选择了更长的停留，地点、人物和异常会慢慢显影。");
+        if (/长篇|开放|一直|持续|很多/.test(text)) return level("L5", "开放篇章", "15 次以上分岔", "它会以长程方式展开，像一片需要多次进入的地形。");
+        return level("L3", "标准互动短篇", "5 到 8 次分岔", "这条小径有足够的空间，让一个念头长成完整故事。");
+      }
+
+      function level(id, name, rounds, copy) {
+        return { id, name, rounds, copy };
+      }
+
+      function renderLength() {
+        lengthOutput.innerHTML = `
+          <p class="level">${state.level.id} ${state.level.name}</p>
+          <p class="level-copy">${state.level.copy}<br />预计 ${state.level.rounds}。</p>
+        `;
+      }
+
+      function startStory() {
+        state.undoRemaining = 2;
+        state.turn = 0;
+        state.paragraphs = [openingParagraph()];
+        state.path = [];
+        state.history = [];
+        state.finalStory = null;
+        state.choices = makeChoices();
+        styleMark.textContent = state.cards.style;
+        renderStory();
+        showScreen("story");
+      }
+
+      function openingParagraph() {
+        const tag = state.cards.concept[0];
+        return `你把这个念头交给 EDIMAGE WORLD 之后，世界先沉默了一会儿。黑暗里出现一圈琥珀色的光，像旧录像里被反复暂停的湖面。${tag}从光的边缘浮出来，贴着你的脚边延伸成一条小径。你知道，只要再往前一步，原先那句话就不再只是你的想法。`;
+      }
+
+      function makeChoices() {
+        const pools = [
+          [
+            "沿着最亮的边缘往前走。",
+            "停下来，听那圈光内部的水声。",
+            "把最初的念头再低声说一遍。"
+          ],
+          [
+            "走进那间门半开着的房间。",
+            "绕过房间，查看墙上发亮的日期。",
+            "拾起地上没有署名的纸条。"
+          ],
+          [
+            "靠近那个一直没有转身的人。",
+            "打开发出青绿色光的抽屉。",
+            "把手伸进水面，摸索底下的东西。"
+          ],
+          [
+            "承认这里曾经属于你。",
+            "假装没有看见自己的影子。",
+            "把这条路交给下一次梦境。"
+          ],
+          [
+            "继续向深处走，直到声音变小。",
+            "回到光最亮的地方。",
+            "让故事在此处收束。"
+          ]
+        ];
+
+        return pools[Math.min(state.turn, pools.length - 1)];
+      }
+
+      async function choose(choice) {
+        state.history.push({
+          turn: state.turn,
+          paragraphs: [...state.paragraphs],
+          path: [...state.path],
+          choices: [...state.choices]
+        });
+
+        state.path.push(choice);
+        state.turn += 1;
+        setChoicesLoading();
+        const step = await generateStoryStep(choice);
+        state.paragraphs.push(step.text || nextParagraph(choice));
+
+        if (step.shouldEnd || state.turn >= 5 || /收束|下一次梦境/.test(choice)) {
+          await renderResult();
+          return;
+        }
+
+        state.choices = Array.isArray(step.choices) && step.choices.length ? step.choices.slice(0, 4) : makeChoices();
+        renderStory();
+      }
+
+      async function generateStoryStep(choice) {
+        try {
+          return await apiGenerate("story_step", {
+            idea: state.idea,
+            cards: state.cards,
+            level: state.level,
+            path: state.path,
+            paragraphs: state.paragraphs,
+            selectedChoice: choice,
+            turn: state.turn
+          });
+        } catch (error) {
+          return {
+            text: nextParagraph(choice),
+            choices: makeChoices(),
+            shouldEnd: false
+          };
+        }
+      }
+
+      function setChoicesLoading() {
+        choicesEl.innerHTML = `<button class="choice-btn" type="button" disabled>小径正在继续显影……</button>`;
+      }
+
+      function nextParagraph(choice) {
+        const tag = state.cards.concept[state.turn % state.cards.concept.length];
+        const motif = state.cards.genre === "梦核" ? "醒来" : "离开";
+        const lines = [
+          `你选择了“${choice}”。这句话落下去的时候，周围的黑暗像被一只看不见的手轻轻擦亮。${tag}不再只是卡片上的词，它变成门缝里的一阵风，变成某个远处房间正在播放的旧电视。`,
+          `再往前，路面开始出现细小的网点，像参考图里那种被屏幕吞过一次的光。你看见青绿色的水贴着边缘流动，几棵树站在水中，沉默得像它们知道结局但不准备告诉你。`,
+          `你忽然明白，这个世界不是为了回答问题而出现的。它只是把你的念头折成几条路，让你用脚步替它决定哪一面先被照亮。至于能不能${motif}，还要看你愿不愿意继续向里走。`
+        ];
+        return lines[(state.turn - 1) % lines.length];
+      }
+
+      function renderStory() {
+        chapterMark.textContent = `chapter ${String(state.turn + 1).padStart(2, "0")}`;
+        storyText.innerHTML = state.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("");
+        choicesEl.innerHTML = state.choices
+          .map((choice) => `<button class="choice-btn" type="button">${escapeHtml(choice)}</button>`)
+          .join("");
+        choicesEl.querySelectorAll("button").forEach((button) => {
+          button.addEventListener("click", () => choose(button.textContent));
+        });
+        undoCount.textContent = `回望 ${state.undoRemaining}`;
+        undoBtn.disabled = state.history.length === 0 || state.undoRemaining === 0;
+        renderPath();
+      }
+
+      function renderPath() {
+        if (state.path.length === 0) {
+          pathList.innerHTML = `<li>第一处岔路还没有被选择。</li>`;
+          return;
+        }
+        pathList.innerHTML = state.path.map((choice, index) => `<li>${index + 1}. ${choice}</li>`).join("");
+      }
+
+      function undoTurn() {
+        if (state.undoRemaining === 0) {
+          showToast("没有更多回望了。小径开始收拢。");
+          return;
+        }
+        const previous = state.history.pop();
+        if (!previous) return;
+
+        state.undoRemaining -= 1;
+        state.turn = previous.turn;
+        state.paragraphs = previous.paragraphs;
+        state.path = previous.path;
+        state.choices = previous.choices;
+        renderStory();
+
+        const copy = state.undoRemaining === 0
+          ? "最后一次回望已经发生。接下来的路会记住你的脚步。"
+          : `你回到了上一处岔路。还剩 ${state.undoRemaining} 次回望的机会。`;
+        showToast(copy);
+      }
+
+      function showToast(copy) {
+        undoToast.textContent = copy;
+        undoToast.classList.add("show");
+        window.clearTimeout(showToast.timer);
+        showToast.timer = window.setTimeout(() => {
+          undoToast.classList.remove("show");
+        }, 3400);
+      }
+
+      async function renderResult() {
+        const finalStory = await generateFinalStory();
+        state.finalStory = finalStory;
+        const title = finalStory.title || makeTitle();
+        const lede = finalStory.openingLine || "这条路径暂时抵达了它的尽头。";
+        const body = textToParagraphs(finalStory.body || state.paragraphs.concat(endingParagraph()).join("\n\n"));
+
+        resultTitle.textContent = title;
+        resultLede.textContent = lede;
+        finalBody.innerHTML = body;
+        pathSummary.innerHTML = `
+          <strong>路径摘要</strong><br />
+          ${escapeHtml(state.path.length ? state.path.join(" → ") : "你停在了第一处光亮之前。")}<br /><br />
+          <strong>抽取卡片</strong><br />
+          ${escapeHtml(`${state.cards.concept.join(" / ")} · ${state.cards.form} · ${state.cards.genre} · ${state.cards.style} · ${state.level.id} ${state.level.name}`)}
+        `;
+        showScreen("result");
+      }
+
+      async function generateFinalStory() {
+        try {
+          return await apiGenerate("finalize", {
+            idea: state.idea,
+            cards: state.cards,
+            level: state.level,
+            path: state.path,
+            paragraphs: state.paragraphs
+          });
+        } catch (error) {
+          return {
+            title: makeTitle(),
+            openingLine: "这条路径暂时抵达了它的尽头。",
+            body: state.paragraphs.concat(endingParagraph()).join("\n\n"),
+            summary: ""
+          };
+        }
+      }
+
+      function textToParagraphs(text) {
+        return String(text)
+          .split(/\n{2,}/)
+          .map((paragraph) => paragraph.trim())
+          .filter(Boolean)
+          .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
+          .join("");
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function makeTitle() {
+        const titleMap = {
+          "梦核": "梦里那圈琥珀色的光",
+          "都市异闻": "城市边缘的发光小径",
+          "魔幻现实": "一处不肯解释自己的房间",
+          "心理奇幻": "回望发生之前",
+          "日常怪谈": "便利店在夜里亮着",
+          "废墟浪漫": "水面保存了旧日期"
+        };
+        return titleMap[state.cards.genre] || "小径分岔处的故事";
+      }
+
+      function endingParagraph() {
+        return `最后，光慢慢退回那只发亮的壳里。你站在原地，发现最初写下的念头已经变得陌生了一点，也更像一篇小说。它没有完全结束，只是暂时停在这里，等下一次有人把另一枚碎片交给世界。`;
+      }
+
+      function storyMarkdown() {
+        const title = resultTitle.textContent;
+        const bodyText = [...finalBody.querySelectorAll("p")].map((p) => p.textContent).join("\n\n");
+        const path = state.path.length ? state.path.join(" -> ") : "未选择";
+        return `# ${title}\n\n${resultLede.textContent}\n\n${bodyText}\n\n## 路径摘要\n\n${path}\n\n## 抽取卡片\n\n${state.cards.concept.join(" / ")} · ${state.cards.form} · ${state.cards.genre} · ${state.cards.style} · ${state.level.id} ${state.level.name}\n`;
+      }
+
+      async function copyStory() {
+        const text = storyMarkdown();
+        try {
+          await navigator.clipboard.writeText(text);
+          copyBtn.textContent = "已复制";
+          window.setTimeout(() => (copyBtn.textContent = "复制全文"), 1600);
+        } catch (error) {
+          copyBtn.textContent = "复制受限";
+          window.setTimeout(() => (copyBtn.textContent = "复制全文"), 1600);
+        }
+      }
+
+      function downloadStory() {
+        const blob = new Blob([storyMarkdown()], { type: "text/markdown;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "edimage-world-story.md";
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function resetToHome() {
+        state.idea = "";
+        state.cards = null;
+        state.undoRemaining = 2;
+        state.turn = 0;
+        state.paragraphs = [];
+        state.choices = [];
+        state.path = [];
+        state.history = [];
+        state.finalStory = null;
+        ideaInput.value = "";
+        lengthInput.value = "";
+        startBtn.disabled = true;
+        enterStoryBtn.disabled = true;
+        state.level = level("L3", "标准互动短篇", "5 到 8 次分岔", "如果你没有指定体量，世界会默认给这枚念头 5 到 8 次分岔。");
+        renderLength();
+        showScreen("home");
+      }
+
+      renderLength();
+    </script>
+  </body>
+</html>
