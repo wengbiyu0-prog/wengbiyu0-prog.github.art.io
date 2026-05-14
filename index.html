@@ -8,16 +8,16 @@
 
   <style>
     :root {
-      --bg: radial-gradient(circle at 50% 18%, #2c210b 0%, #070707 54%, #000000 100%);
-      --panel: rgba(8, 8, 8, 0.78);
-      --panel-soft: rgba(255, 214, 92, 0.08);
+      --bg: radial-gradient(circle at 50% 20%, #241b08 0%, #050505 58%, #000000 100%);
+      --panel: rgba(8, 8, 8, 0.76);
+      --panel-soft: rgba(255, 255, 255, 0.06);
       --text: #f7d56b;
       --muted: #b89c48;
       --accent: #f5c542;
-      --accent-2: #ffdf86;
+      --accent-2: #ffd978;
       --border: rgba(245, 197, 66, 0.34);
-      --shadow: rgba(0, 0, 0, 0.38);
       --danger: #ff7575;
+      --shadow: rgba(0, 0, 0, 0.38);
       --font-title: Georgia, "Times New Roman", "Songti SC", serif;
       --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --radius-lg: 28px;
@@ -39,8 +39,8 @@
     }
 
     body[data-theme="mist"] {
-      --bg: radial-gradient(circle at 28% 18%, #b5c9a8 0%, #5f8065 34%, #193a29 72%, #07130d 100%);
-      --panel: rgba(10, 31, 22, 0.64);
+      --bg: radial-gradient(circle at 30% 20%, #a9bfa0 0%, #517660 34%, #183827 72%, #07130d 100%);
+      --panel: rgba(10, 31, 22, 0.62);
       --panel-soft: rgba(232, 241, 212, 0.1);
       --text: #edf5da;
       --muted: #bfd0ad;
@@ -53,14 +53,13 @@
 
     body[data-theme="archive"] {
       --bg: linear-gradient(180deg, #efefec 0%, #d7d7d3 100%);
-      --panel: rgba(255, 255, 255, 0.76);
+      --panel: rgba(255, 255, 255, 0.74);
       --panel-soft: rgba(0, 0, 0, 0.045);
       --text: #191919;
       --muted: #5e5e5e;
       --accent: #345bc7;
       --accent-2: #1b3292;
       --border: rgba(0, 0, 0, 0.24);
-      --shadow: rgba(0, 0, 0, 0.16);
       --font-title: Didot, Bodoni 72, Georgia, "Songti SC", serif;
       --font-body: "Times New Roman", "Songti SC", serif;
     }
@@ -74,26 +73,8 @@
       --accent: #0613db;
       --accent-2: #ffffff;
       --border: rgba(255, 255, 255, 0.46);
-      --shadow: rgba(0, 67, 140, 0.28);
       --font-title: Georgia, "Courier New", serif;
       --font-body: Georgia, "Courier New", "Songti SC", serif;
-    }
-
-    body[data-theme="redcanyon"] {
-      --bg:
-        linear-gradient(90deg, rgba(252, 220, 165, 0.92) 0 8%, transparent 8% 92%, rgba(252, 220, 165, 0.88) 92% 100%),
-        radial-gradient(circle at 50% 18%, rgba(255, 226, 176, 0.95) 0%, transparent 12%),
-        linear-gradient(180deg, #7e130d 0%, #c6351d 42%, #8f1d15 100%);
-      --panel: rgba(85, 19, 13, 0.66);
-      --panel-soft: rgba(255, 210, 163, 0.15);
-      --text: #ffe3b8;
-      --muted: #f3b58c;
-      --accent: #ffcf8d;
-      --accent-2: #fff0c7;
-      --border: rgba(255, 213, 150, 0.4);
-      --shadow: rgba(73, 8, 4, 0.42);
-      --font-title: "Songti SC", Georgia, serif;
-      --font-body: "Songti SC", Georgia, serif;
     }
 
     * {
@@ -110,7 +91,9 @@
       color: var(--text);
       background: var(--bg);
       font-family: var(--font-body);
-      transition: background 0.45s ease, color 0.45s ease;
+      transition:
+        background 0.45s ease,
+        color 0.45s ease;
       overflow-x: hidden;
     }
 
@@ -118,9 +101,9 @@
       content: "";
       position: fixed;
       inset: 0;
-      z-index: -2;
       pointer-events: none;
-      opacity: 0.34;
+      z-index: -1;
+      opacity: 0.32;
       background:
         radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08), transparent 26%),
         radial-gradient(circle at 80% 10%, rgba(255,255,255,0.05), transparent 24%),
@@ -137,43 +120,11 @@
     }
 
     body[data-theme="blueapple"]::before {
-      opacity: 0.28;
+      opacity: 0.25;
       background:
-        radial-gradient(circle at 50% 48%, rgba(255,255,255,0.92) 0 8%, transparent 9%),
-        radial-gradient(circle at 44% 53%, rgba(255,255,255,0.5) 0 6%, transparent 7%),
-        radial-gradient(circle at 58% 55%, rgba(255,255,255,0.42) 0 5%, transparent 6%);
-    }
-
-    body[data-theme="redcanyon"]::before {
-      opacity: 0.45;
-      background:
-        repeating-linear-gradient(
-          105deg,
-          rgba(58, 8, 4, 0.18) 0px,
-          rgba(58, 8, 4, 0.18) 1px,
-          transparent 1px,
-          transparent 16px
-        ),
-        radial-gradient(circle at 50% 22%, rgba(255, 227, 184, 0.38), transparent 16%),
-        linear-gradient(90deg, transparent 0 45%, rgba(255, 226, 178, 0.72) 45% 55%, transparent 55% 100%);
-      mix-blend-mode: multiply;
-    }
-
-    body[data-theme="redcanyon"]::after {
-      content: "";
-      position: fixed;
-      left: 0;
-      right: 0;
-      top: 22%;
-      height: 36px;
-      z-index: -1;
-      pointer-events: none;
-      opacity: 0.28;
-      background:
-        radial-gradient(ellipse at 12% 50%, #ffd8ba 0 32%, transparent 34%),
-        radial-gradient(ellipse at 38% 50%, #ffd8ba 0 28%, transparent 30%),
-        radial-gradient(ellipse at 72% 50%, #ffd8ba 0 34%, transparent 36%),
-        radial-gradient(ellipse at 90% 50%, #ffd8ba 0 26%, transparent 28%);
+        radial-gradient(circle at 52% 46%, rgba(255,255,255,0.9) 0 9%, transparent 10%),
+        radial-gradient(circle at 45% 52%, rgba(255,255,255,0.55) 0 7%, transparent 8%),
+        radial-gradient(circle at 58% 56%, rgba(255,255,255,0.42) 0 5%, transparent 6%);
     }
 
     button,
@@ -194,9 +145,9 @@
       align-items: center;
       justify-content: space-between;
       gap: 14px;
-      padding: 12px 20px;
+      padding: 14px 20px;
       backdrop-filter: blur(18px);
-      background: color-mix(in srgb, var(--panel) 86%, transparent);
+      background: color-mix(in srgb, var(--panel) 84%, transparent);
       border-bottom: 1px solid var(--border);
     }
 
@@ -211,7 +162,10 @@
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      background: var(--accent);
+      background:
+        radial-gradient(circle at 50% 42%, var(--accent-2) 0 18%, transparent 19%),
+        radial-gradient(circle at 50% 50%, var(--accent) 0 48%, transparent 49%),
+        #111;
       border: 1px solid var(--border);
       box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 42%, transparent);
       flex: 0 0 auto;
@@ -263,15 +217,18 @@
     }
 
     .skin-dot {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      border: 1px solid color-mix(in srgb, var(--text) 50%, transparent);
+      border: 1px solid color-mix(in srgb, var(--text) 42%, transparent);
       cursor: pointer;
       position: relative;
       padding: 0;
       outline: none;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease;
     }
 
     .skin-dot:hover {
@@ -287,7 +244,7 @@
       content: attr(aria-label);
       position: absolute;
       right: 50%;
-      top: 31px;
+      top: 32px;
       transform: translateX(50%);
       white-space: nowrap;
       font-size: 11px;
@@ -307,23 +264,19 @@
     }
 
     .dot-original {
-      background: #d5a522;
+      background: radial-gradient(circle at 45% 40%, #ffe08a 0 22%, #f5c542 23% 46%, #0b0b0b 47% 100%);
     }
 
     .dot-mist {
-      background: #638566;
+      background: radial-gradient(circle at 38% 32%, #d8e8b1 0 18%, #668a69 19% 56%, #0f2b1d 57% 100%);
     }
 
     .dot-archive {
-      background: #e7e5df;
+      background: radial-gradient(circle at 50% 48%, #345bc7 0 18%, #f1f1ef 19% 62%, #171717 63% 100%);
     }
 
     .dot-blueapple {
-      background: #159cff;
-    }
-
-    .dot-redcanyon {
-      background: #c9311d;
+      background: radial-gradient(circle at 52% 47%, #ffffff 0 24%, #27a9ff 25% 68%, #0613db 69% 100%);
     }
 
     .ghost-btn,
@@ -334,7 +287,10 @@
       background: var(--panel-soft);
       border-radius: var(--radius-sm);
       cursor: pointer;
-      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease;
     }
 
     .ghost-btn {
@@ -355,7 +311,10 @@
       font-weight: 700;
     }
 
-    body[data-theme="archive"] .primary-btn,
+    body[data-theme="archive"] .primary-btn {
+      color: #fff;
+    }
+
     body[data-theme="blueapple"] .primary-btn {
       color: #fff;
     }
@@ -387,7 +346,6 @@
         opacity: 0;
         transform: translateY(8px);
       }
-
       to {
         opacity: 1;
         transform: translateY(0);
@@ -395,11 +353,9 @@
     }
 
     .hero {
-      min-height: calc(100vh - 150px);
+      min-height: calc(100vh - 160px);
       display: grid;
-      align-content: center;
-      gap: 18px;
-      padding-bottom: 24px;
+      place-items: center;
     }
 
     .hero-card,
@@ -413,7 +369,6 @@
 
     .hero-card {
       width: min(860px, 100%);
-      margin: 0 auto;
       padding: clamp(26px, 5vw, 54px);
       text-align: center;
       position: relative;
@@ -490,7 +445,10 @@
       padding: 15px 16px;
       outline: none;
       resize: vertical;
-      transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+      transition:
+        border-color 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
     }
 
     textarea:focus,
@@ -510,31 +468,6 @@
       justify-content: center;
       flex-wrap: wrap;
       margin-top: 8px;
-    }
-
-    .home-clock {
-      width: min(860px, 100%);
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      align-items: center;
-      padding: 10px 16px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: color-mix(in srgb, var(--panel) 62%, transparent);
-      backdrop-filter: blur(14px);
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .home-clock strong {
-      color: var(--text);
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      font-variant-numeric: tabular-nums;
     }
 
     .panel {
@@ -593,7 +526,10 @@
       padding: 17px;
       cursor: pointer;
       min-height: 144px;
-      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease;
     }
 
     .choice-card:hover {
@@ -746,7 +682,9 @@
       border-radius: var(--radius-md);
       padding: 15px;
       cursor: pointer;
-      transition: transform 0.18s ease, border-color 0.18s ease;
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease;
     }
 
     .story-option:hover {
@@ -847,18 +785,16 @@
         justify-content: space-between;
       }
 
+      .skin-picker {
+        max-width: 100%;
+      }
+
       .story-layout {
         grid-template-columns: 1fr;
       }
 
       .custom-row {
         grid-template-columns: 1fr;
-      }
-
-      .home-clock {
-        align-items: flex-start;
-        flex-direction: column;
-        border-radius: 18px;
       }
     }
 
@@ -881,16 +817,12 @@
       }
 
       .skin-dot {
-        width: 19px;
-        height: 19px;
+        width: 20px;
+        height: 20px;
       }
 
       .ghost-btn {
         padding: 8px 10px;
-      }
-
-      .top-actions {
-        gap: 8px;
       }
     }
   </style>
@@ -937,13 +869,6 @@
           aria-label="Blue Apple 蓝苹果"
           title="Blue Apple 蓝苹果"
         ></button>
-
-        <button
-          class="skin-dot dot-redcanyon"
-          data-theme="redcanyon"
-          aria-label="Red Canyon 红峡谷"
-          title="Red Canyon 红峡谷"
-        ></button>
       </div>
 
       <button id="openKnowledgeBtn" class="ghost-btn">Knowledge Base</button>
@@ -975,11 +900,6 @@
               <button id="clearIdeaBtn" class="ghost-btn">Clear</button>
             </div>
           </div>
-        </div>
-
-        <div class="home-clock">
-          <span>Randomized Entry Time</span>
-          <strong id="randomClock">0000.00.00 00:00:00</strong>
         </div>
       </div>
     </section>
@@ -1104,9 +1024,9 @@
 
   <script>
     /*
-      如果你的 server.mjs 和 index.html 在同一个域名，保持 API_BASE = "" 即可。
-      如果你部署在 GitHub Pages，请把后端部署到 Render / Railway / Vercel 等平台，
-      然后把这里改成你的后端地址，例如：
+      如果你的 API 后端和 index.html 在同一个域名，保持 API_BASE = "" 即可。
+      如果你用 GitHub Pages，server.mjs 不会运行，你需要把后端部署到 Render / Railway / Vercel，
+      然后把下面改成你的后端地址，例如：
       const API_BASE = "https://your-edimage-api.onrender.com";
     */
     const API_BASE = "";
@@ -1120,664 +1040,4 @@
       {
         key: "genre",
         label: "体裁",
-        description: "选择这个故事最适合承载的文学或互动体裁。"
-      },
-      {
-        key: "type",
-        label: "类型",
-        description: "确定故事的类型驱动力，例如悬疑、奇幻、科幻、民俗、成长等。"
-      },
-      {
-        key: "style",
-        label: "文风",
-        description: "决定叙事语言、节奏、意象密度和阅读气质。"
-      },
-      {
-        key: "scale",
-        label: "体量",
-        description: "决定故事长度、章节密度、分支复杂度和生成资源分配。"
-      }
-    ];
-
-    const scaleLevels = [
-      {
-        id: "spark",
-        name: "火花",
-        range: "1000-3000 字",
-        chapters: 3,
-        density: "短篇，高浓度"
-      },
-      {
-        id: "short",
-        name: "短篇",
-        range: "3000-8000 字",
-        chapters: 5,
-        density: "完整起承转合"
-      },
-      {
-        id: "middle",
-        name: "中篇",
-        range: "8000-30000 字",
-        chapters: 8,
-        density: "多阶段分支"
-      },
-      {
-        id: "long",
-        name: "长篇",
-        range: "30000-100000 字",
-        chapters: 15,
-        density: "复杂世界和人物线"
-      },
-      {
-        id: "epic",
-        name: "史诗",
-        range: "100000 字以上",
-        chapters: 30,
-        density: "大型世界，多主线"
-      }
-    ];
-
-    const gameState = {
-      idea: "",
-      setup: {
-        tag: null,
-        genre: null,
-        type: null,
-        style: null,
-        scale: null
-      },
-      history: [],
-      currentNode: null
-    };
-
-    let currentStepIndex = 0;
-    let lastRecommendData = null;
-    let randomClockDate = null;
-    let randomClockTimer = null;
-
-    const $ = (selector) => document.querySelector(selector);
-    const $$ = (selector) => Array.from(document.querySelectorAll(selector));
-
-    const views = {
-      home: $("#homeView"),
-      setup: $("#setupView"),
-      story: $("#storyView")
-    };
-
-    const els = {
-      ideaInput: $("#ideaInput"),
-      startSetupBtn: $("#startSetupBtn"),
-      clearIdeaBtn: $("#clearIdeaBtn"),
-      openKnowledgeBtn: $("#openKnowledgeBtn"),
-      closeKnowledgeBtn: $("#closeKnowledgeBtn"),
-      knowledgeModal: $("#knowledgeModal"),
-      knowledgeInput: $("#knowledgeInput"),
-      saveKnowledgeBtn: $("#saveKnowledgeBtn"),
-      knowledgeStatus: $("#knowledgeStatus"),
-      homeBtn: $("#homeBtn"),
-      backHomeBtn: $("#backHomeBtn"),
-      restartBtn: $("#restartBtn"),
-
-      stepEyebrow: $("#stepEyebrow"),
-      stepTitle: $("#stepTitle"),
-      stepDescription: $("#stepDescription"),
-      progressBar: $("#progressBar"),
-      setupSummary: $("#setupSummary"),
-      recommendLoading: $("#recommendLoading"),
-      recommendError: $("#recommendError"),
-      recommendArea: $("#recommendArea"),
-      customRecommendBox: $("#customRecommendBox"),
-      customRecommendHint: $("#customRecommendHint"),
-      customRecommendInput: $("#customRecommendInput"),
-      useCustomRecommendBtn: $("#useCustomRecommendBtn"),
-
-      storyTitle: $("#storyTitle"),
-      storyLoading: $("#storyLoading"),
-      storyError: $("#storyError"),
-      storyScene: $("#storyScene"),
-      storyOptions: $("#storyOptions"),
-      storyCustomBox: $("#storyCustomBox"),
-      storyCustomLabel: $("#storyCustomLabel"),
-      storyCustomInput: $("#storyCustomInput"),
-      useStoryCustomBtn: $("#useStoryCustomBtn"),
-      stateList: $("#stateList"),
-      stateIdea: $("#stateIdea"),
-
-      randomClock: $("#randomClock")
-    };
-
-    function escapeHTML(value) {
-      return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    function showView(name) {
-      Object.values(views).forEach(view => view.classList.remove("active"));
-      views[name].classList.add("active");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function setTheme(theme) {
-      document.body.dataset.theme = theme;
-      localStorage.setItem("edimage-theme", theme);
-
-      $$(".skin-dot").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.theme === theme);
-      });
-    }
-
-    function initTheme() {
-      const savedTheme = localStorage.getItem("edimage-theme") || "original";
-      setTheme(savedTheme);
-
-      $$(".skin-dot").forEach(btn => {
-        btn.addEventListener("click", () => {
-          setTheme(btn.dataset.theme);
-        });
-      });
-    }
-
-    function pad2(num) {
-      return String(num).padStart(2, "0");
-    }
-
-    function formatClockDate(date) {
-      const y = date.getFullYear();
-      const m = pad2(date.getMonth() + 1);
-      const d = pad2(date.getDate());
-      const hh = pad2(date.getHours());
-      const mm = pad2(date.getMinutes());
-      const ss = pad2(date.getSeconds());
-      return `${y}.${m}.${d} ${hh}:${mm}:${ss}`;
-    }
-
-    function createRandomDate() {
-      const startYear = 1970;
-      const endYear = 2099;
-      const year = startYear + Math.floor(Math.random() * (endYear - startYear + 1));
-      const month = Math.floor(Math.random() * 12);
-      const day = 1 + Math.floor(Math.random() * 28);
-      const hour = Math.floor(Math.random() * 24);
-      const minute = Math.floor(Math.random() * 60);
-      const second = Math.floor(Math.random() * 60);
-      return new Date(year, month, day, hour, minute, second);
-    }
-
-    function initRandomClock() {
-      randomClockDate = createRandomDate();
-      els.randomClock.textContent = formatClockDate(randomClockDate);
-
-      if (randomClockTimer) {
-        clearInterval(randomClockTimer);
-      }
-
-      randomClockTimer = setInterval(() => {
-        randomClockDate = new Date(randomClockDate.getTime() + 1000);
-        els.randomClock.textContent = formatClockDate(randomClockDate);
-      }, 1000);
-    }
-
-    async function postJSON(path, body) {
-      const res = await fetch(`${API_BASE}${path}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-      });
-
-      const text = await res.text();
-
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        throw new Error(`接口没有返回 JSON：${text.slice(0, 300)}`);
-      }
-
-      if (!res.ok) {
-        throw new Error(data.message || data.error || "请求失败");
-      }
-
-      return data;
-    }
-
-    function resetGame(keepIdea = false) {
-      const idea = keepIdea ? gameState.idea : "";
-
-      gameState.idea = idea;
-      gameState.setup = {
-        tag: null,
-        genre: null,
-        type: null,
-        style: null,
-        scale: null
-      };
-      gameState.history = [];
-      gameState.currentNode = null;
-      currentStepIndex = 0;
-      lastRecommendData = null;
-
-      els.recommendArea.innerHTML = "";
-      els.storyScene.textContent = "";
-      els.storyOptions.innerHTML = "";
-      els.storyCustomInput.value = "";
-      renderState();
-    }
-
-    function renderProgress() {
-      els.progressBar.innerHTML = "";
-
-      steps.forEach((step, index) => {
-        const dot = document.createElement("div");
-        dot.className = "progress-dot";
-        if (index <= currentStepIndex) {
-          dot.classList.add("done");
-        }
-        dot.title = step.label;
-        els.progressBar.appendChild(dot);
-      });
-    }
-
-    function renderSetupSummary() {
-      els.setupSummary.innerHTML = "";
-
-      steps.forEach(step => {
-        const selected = gameState.setup[step.key];
-        if (!selected) return;
-
-        const item = document.createElement("div");
-        item.className = "summary-pill";
-        item.innerHTML = `
-          <span class="summary-label">${escapeHTML(step.label)}</span>
-          <div class="summary-value">${escapeHTML(selected.title || selected.value || selected.payload?.value || "已选择")}</div>
-        `;
-        els.setupSummary.appendChild(item);
-      });
-    }
-
-    function renderState() {
-      const entries = [
-        ["Idea", gameState.idea || "尚未开始"],
-        ["类型标签", gameState.setup.tag?.title || gameState.setup.tag?.payload?.value || "未选择"],
-        ["体裁", gameState.setup.genre?.title || gameState.setup.genre?.payload?.value || "未选择"],
-        ["类型", gameState.setup.type?.title || gameState.setup.type?.payload?.value || "未选择"],
-        ["文风", gameState.setup.style?.title || gameState.setup.style?.payload?.value || "未选择"],
-        ["体量", gameState.setup.scale?.title || gameState.setup.scale?.payload?.value || "未选择"]
-      ];
-
-      if (gameState.currentNode?.stateUpdate) {
-        const s = gameState.currentNode.stateUpdate;
-        entries.push(["当前位置", s.location || "未知"]);
-        entries.push(["时间 / 阶段", s.time || "未知"]);
-        entries.push(["氛围", s.mood || "未知"]);
-        entries.push(["风险 / 目标", s.stakes || "未知"]);
-      }
-
-      els.stateList.innerHTML = entries.map(([label, value]) => `
-        <div class="state-item">
-          <span>${escapeHTML(label)}</span>
-          <div>${escapeHTML(value)}</div>
-        </div>
-      `).join("");
-    }
-
-    async function startSetup() {
-      const idea = els.ideaInput.value.trim();
-
-      if (!idea) {
-        alert("请先输入一个 idea。");
-        return;
-      }
-
-      resetGame(true);
-      gameState.idea = idea;
-      currentStepIndex = 0;
-      showView("setup");
-      await loadRecommendations();
-    }
-
-    async function loadRecommendations() {
-      const step = steps[currentStepIndex];
-
-      els.stepEyebrow.textContent = `Step ${currentStepIndex + 1} / ${steps.length}`;
-      els.stepTitle.textContent = step.label;
-      els.stepDescription.textContent = step.description;
-
-      renderProgress();
-      renderSetupSummary();
-
-      els.recommendLoading.classList.remove("hidden");
-      els.recommendError.classList.add("hidden");
-      els.recommendError.textContent = "";
-      els.recommendArea.innerHTML = "";
-      els.customRecommendBox.classList.add("hidden");
-      els.customRecommendInput.value = "";
-
-      try {
-        const data = await postJSON("/api/recommend", {
-          step: step.label,
-          stepKey: step.key,
-          idea: gameState.idea,
-          previousSelections: gameState.setup,
-          scaleLevels
-        });
-
-        lastRecommendData = data;
-        renderRecommendations(data);
-      } catch (err) {
-        els.recommendError.classList.remove("hidden");
-        els.recommendError.textContent =
-          "推荐生成失败。请检查 server.mjs 是否正在运行、API_BASE 是否正确、接口 /api/recommend 是否存在。错误信息：" + err.message;
-      } finally {
-        els.recommendLoading.classList.add("hidden");
-      }
-    }
-
-    function normalizeCards(data) {
-      if (Array.isArray(data?.cards)) return data.cards;
-      if (Array.isArray(data?.options)) return data.options;
-      if (Array.isArray(data)) return data;
-      return [];
-    }
-
-    function renderRecommendations(data) {
-      const cards = normalizeCards(data);
-      els.recommendArea.innerHTML = "";
-
-      if (!cards.length) {
-        els.recommendError.classList.remove("hidden");
-        els.recommendError.textContent = "接口返回了数据，但没有 cards。请检查后端 prompt 是否要求返回 cards 数组。";
-      }
-
-      cards.forEach((card, index) => {
-        const btn = document.createElement("button");
-        btn.className = "choice-card";
-
-        const title = card.title || card.label || card.name || `选项 ${index + 1}`;
-        const subtitle = card.subtitle || card.description || "";
-        const reason = card.reason || card.intent || "";
-
-        btn.innerHTML = `
-          <span class="choice-title">${escapeHTML(title)}</span>
-          <div class="choice-subtitle">${escapeHTML(subtitle)}</div>
-          <div class="choice-reason">${escapeHTML(reason)}</div>
-        `;
-
-        btn.addEventListener("click", () => {
-          selectRecommendation({
-            ...card,
-            title,
-            payload: card.payload || {
-              value: card.value || title,
-              tags: card.tags || []
-            }
-          });
-        });
-
-        els.recommendArea.appendChild(btn);
-      });
-
-      const allowCustom = data?.allowCustom !== false;
-      if (allowCustom) {
-        els.customRecommendBox.classList.remove("hidden");
-        els.customRecommendHint.textContent =
-          data?.customPlaceholder ||
-          data?.customHint ||
-          "如果这些推荐都不符合你的想法，可以写下自己的方向。系统会把它作为后续叙事设定。";
-      }
-    }
-
-    function selectRecommendation(card) {
-      const step = steps[currentStepIndex];
-
-      gameState.setup[step.key] = {
-        id: card.id || `custom_${Date.now()}`,
-        title: card.title || card.label || card.payload?.value || "自定义",
-        subtitle: card.subtitle || "",
-        reason: card.reason || "",
-        payload: card.payload || {
-          value: card.title || card.label || "",
-          tags: []
-        }
-      };
-
-      if (currentStepIndex < steps.length - 1) {
-        currentStepIndex += 1;
-        loadRecommendations();
-      } else {
-        beginStory();
-      }
-    }
-
-    function useCustomRecommendation() {
-      const value = els.customRecommendInput.value.trim();
-
-      if (!value) {
-        alert("请先输入自定义内容。");
-        return;
-      }
-
-      selectRecommendation({
-        id: `custom_${Date.now()}`,
-        title: value,
-        subtitle: "用户自定义输入",
-        reason: "该方向来自用户主动设定，后续叙事必须优先遵循。",
-        payload: {
-          value,
-          tags: ["custom"]
-        }
-      });
-    }
-
-    async function beginStory() {
-      showView("story");
-      renderState();
-      await generateStoryNode({
-        latestChoice: null,
-        customInput: null
-      });
-    }
-
-    async function generateStoryNode({ latestChoice, customInput }) {
-      els.storyLoading.classList.remove("hidden");
-      els.storyError.classList.add("hidden");
-      els.storyError.textContent = "";
-      els.storyOptions.innerHTML = "";
-      els.storyCustomBox.classList.add("hidden");
-
-      try {
-        const data = await postJSON("/api/story-node", {
-          idea: gameState.idea,
-          setup: gameState.setup,
-          history: gameState.history,
-          latestChoice,
-          customInput
-        });
-
-        gameState.currentNode = data;
-        renderStoryNode(data);
-        renderState();
-      } catch (err) {
-        els.storyError.classList.remove("hidden");
-        els.storyError.textContent =
-          "情节点生成失败。请检查 server.mjs 是否正在运行、API_BASE 是否正确、接口 /api/story-node 是否存在。错误信息：" + err.message;
-      } finally {
-        els.storyLoading.classList.add("hidden");
-      }
-    }
-
-    function renderStoryNode(node) {
-      els.storyTitle.textContent = node.title || "未命名情节点";
-      els.storyScene.textContent = node.scene || node.text || "接口没有返回 scene 字段。";
-
-      const options = Array.isArray(node.options) ? node.options : [];
-      els.storyOptions.innerHTML = "";
-
-      options.forEach((option, index) => {
-        const btn = document.createElement("button");
-        btn.className = "story-option";
-
-        const label = option.label || option.title || `选择 ${index + 1}`;
-        const description = option.description || option.subtitle || "";
-        const risk = option.risk || "unknown";
-
-        btn.innerHTML = `
-          <strong>${escapeHTML(label)}</strong>
-          <small>${escapeHTML(description)}</small>
-          <span class="risk">risk: ${escapeHTML(risk)}</span>
-        `;
-
-        btn.addEventListener("click", async () => {
-          const choiceRecord = {
-            type: "option",
-            nodeTitle: gameState.currentNode?.title || "",
-            label,
-            description,
-            risk,
-            raw: option
-          };
-
-          gameState.history.push({
-            scene: gameState.currentNode?.scene || "",
-            choice: choiceRecord,
-            stateUpdate: gameState.currentNode?.stateUpdate || {}
-          });
-
-          await generateStoryNode({
-            latestChoice: choiceRecord,
-            customInput: null
-          });
-        });
-
-        els.storyOptions.appendChild(btn);
-      });
-
-      const custom = node.customInput || {};
-      if (custom.enabled) {
-        els.storyCustomBox.classList.remove("hidden");
-        els.storyCustomLabel.textContent = custom.label || "自定义路径";
-        els.storyCustomInput.placeholder =
-          custom.placeholder ||
-          "输入你想做的事、说的话、写下的记忆或选择";
-      }
-    }
-
-    async function useStoryCustomInput() {
-      const value = els.storyCustomInput.value.trim();
-
-      if (!value) {
-        alert("请先输入自定义行动。");
-        return;
-      }
-
-      const customRecord = {
-        type: "custom",
-        nodeTitle: gameState.currentNode?.title || "",
-        input: value
-      };
-
-      gameState.history.push({
-        scene: gameState.currentNode?.scene || "",
-        choice: customRecord,
-        stateUpdate: gameState.currentNode?.stateUpdate || {}
-      });
-
-      els.storyCustomInput.value = "";
-
-      await generateStoryNode({
-        latestChoice: "用户选择了自定义路径",
-        customInput: value
-      });
-    }
-
-    async function saveKnowledge() {
-      const text = els.knowledgeInput.value.trim();
-
-      if (!text) {
-        els.knowledgeStatus.textContent = "请先输入知识库内容。";
-        return;
-      }
-
-      els.knowledgeStatus.textContent = "正在保存知识库……";
-
-      try {
-        const data = await postJSON("/api/knowledge", { text });
-        els.knowledgeStatus.textContent = data.message || "知识库已保存。";
-        els.knowledgeInput.value = "";
-      } catch (err) {
-        els.knowledgeStatus.textContent =
-          "保存失败。请检查 server.mjs 是否正在运行、API_BASE 是否正确、接口 /api/knowledge 是否存在。错误信息：" + err.message;
-      }
-    }
-
-    function bindEvents() {
-      els.startSetupBtn.addEventListener("click", startSetup);
-
-      els.clearIdeaBtn.addEventListener("click", () => {
-        els.ideaInput.value = "";
-      });
-
-      els.openKnowledgeBtn.addEventListener("click", () => {
-        els.knowledgeModal.classList.add("active");
-      });
-
-      els.closeKnowledgeBtn.addEventListener("click", () => {
-        els.knowledgeModal.classList.remove("active");
-      });
-
-      els.knowledgeModal.addEventListener("click", (event) => {
-        if (event.target === els.knowledgeModal) {
-          els.knowledgeModal.classList.remove("active");
-        }
-      });
-
-      els.saveKnowledgeBtn.addEventListener("click", saveKnowledge);
-
-      els.homeBtn.addEventListener("click", () => {
-        showView("home");
-      });
-
-      els.backHomeBtn.addEventListener("click", () => {
-        showView("home");
-      });
-
-      els.restartBtn.addEventListener("click", () => {
-        resetGame(false);
-        els.ideaInput.value = "";
-        showView("home");
-      });
-
-      els.useCustomRecommendBtn.addEventListener("click", useCustomRecommendation);
-
-      els.customRecommendInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-          useCustomRecommendation();
-        }
-      });
-
-      els.useStoryCustomBtn.addEventListener("click", useStoryCustomInput);
-
-      els.storyCustomInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-          useStoryCustomInput();
-        }
-      });
-    }
-
-    function init() {
-      initTheme();
-      initRandomClock();
-      bindEvents();
-      renderState();
-    }
-
-    init();
-  </script>
-</body>
-</html>
-```
+       
