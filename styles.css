@@ -1,0 +1,191 @@
+:root {
+  --bg: #050505;
+  --panel: rgba(20, 20, 20, 0.72);
+  --text: #f5d76e;
+  --muted: #bba85d;
+  --accent: #f5c542;
+  --border: rgba(245, 197, 66, 0.35);
+  --font-title: Georgia, "Times New Roman", serif;
+  --font-body: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* 皮肤一：雾林绿 */
+body[data-theme="mist"] {
+  --bg: radial-gradient(circle at 30% 20%, #9eb898 0%, #4d715d 32%, #173426 70%, #07130d 100%);
+  --panel: rgba(12, 31, 23, 0.58);
+  --text: #e8f1d4;
+  --muted: #b6c9a7;
+  --accent: #d4e8a3;
+  --border: rgba(221, 239, 181, 0.3);
+  --font-title: Georgia, "Songti SC", serif;
+}
+
+/* 皮肤二：档案海报 */
+body[data-theme="archive"] {
+  --bg: linear-gradient(180deg, #eeeeec 0%, #d7d7d4 100%);
+  --panel: rgba(255, 255, 255, 0.68);
+  --text: #1d1d1d;
+  --muted: #565656;
+  --accent: #345bc7;
+  --border: rgba(0, 0, 0, 0.25);
+  --font-title: Didot, Bodoni 72, Georgia, serif;
+  --font-body: "Times New Roman", "Songti SC", serif;
+}
+
+/* 皮肤三：蓝苹果 */
+body[data-theme="blueapple"] {
+  --bg: linear-gradient(180deg, #1599ff 0%, #0078e8 100%);
+  --panel: rgba(255, 255, 255, 0.18);
+  --text: #ffffff;
+  --muted: #d6efff;
+  --accent: #0714d8;
+  --border: rgba(255, 255, 255, 0.42);
+  --font-title: Georgia, "Courier New", serif;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-title);
+}
+
+.app-shell {
+  min-height: 100vh;
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 20px 80px rgba(0,0,0,0.22);
+}
+
+.theme-selector {
+  margin-top: 32px;
+}
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.theme-card {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 22px;
+  padding: 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.theme-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+}
+
+.theme-card.active {
+  outline: 2px solid var(--accent);
+}
+
+.theme-preview {
+  display: block;
+  height: 120px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+}
+
+.mist-preview {
+  background: radial-gradient(circle at 20% 20%, #c1d6b4, #4f755d 42%, #10291d 100%);
+  filter: blur(0.2px);
+}
+
+.archive-preview {
+  background:
+    linear-gradient(rgba(255,255,255,.6), rgba(255,255,255,.6)),
+    linear-gradient(180deg, #efefef, #cfcfcf);
+  position: relative;
+}
+
+.archive-preview::after {
+  content: "AFIH2026";
+  position: absolute;
+  top: 36px;
+  left: 18px;
+  font-family: Didot, Georgia, serif;
+  font-size: 28px;
+  color: #111;
+}
+
+.blueapple-preview {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,.95) 0 24%, transparent 25%),
+    linear-gradient(180deg, #20a4ff, #0075e9);
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.option-card {
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+  border-radius: 18px;
+  padding: 16px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.option-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+textarea,
+input {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.12);
+  color: var(--text);
+  padding: 14px;
+  font: inherit;
+}
+
+button.primary {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 22px;
+  background: var(--accent);
+  color: #111;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .theme-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-shell {
+    padding: 18px;
+  }
+}
