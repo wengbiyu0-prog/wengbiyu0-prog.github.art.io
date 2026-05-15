@@ -1,5 +1,5 @@
 import { createServer } from "node:http";
-import { appendFile, readFile } from "node:fs/promises";
+import { appendFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { existsSync, readFileSync } from "node:fs";
 import { extname, join, normalize } from "node:path";
 
@@ -8,6 +8,14 @@ const env = loadEnv();
 const port = Number(env.PORT || 3000);
 const apiKey = env.OPENROUTER_API_KEY;
 const model = env.OPENROUTER_MODEL || "deepseek/deepseek-chat";
+const appBaseUrl = env.APP_BASE_URL || `http://localhost:${port}`;
+const inviteCode = env.INVITE_CODE || "edimage-world";
+const developerCode = env.DEVELOPER_CODE || "edithfish";
+const inviteLimit = Number(env.INVITE_LIMIT || 10);
+const dataDir = env.DATA_DIR ? normalize(env.DATA_DIR) : root;
+const accessStatePath = join(dataDir, "ACCESS-STATE.json");
+const knowledgeBasePath = join(dataDir, "KNOWLEDGE-BASE.md");
+const easterEggLibraryPath = join(dataDir, "EASTER-EGG-LIBRARY.md");
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -51,6 +59,27 @@ const server = createServer(async (req, res) => {
       return;
     }
 
+    if (req.method === "POST" && req.url === "/api/access/validate") {
+      await handleAccessValidate(req, res);
+      return;
+    }
+
+    if (req.method === "POST" && req.url === "/api/access/complete") {
+      await handleAccessComplete(req, res);
+      return;
+    }
+
+    if (req.method === "GET" && req.url === "/api/health") {
+      sendJson(res, 200, {
+        ok: true,
+        app: "EDIMAGE WORLD",
+        port,
+        dataDir,
+        inviteLimit
+      });
+      return;
+    }
+
     if (req.method === "GET") {
       await serveStatic(req, res);
       return;
@@ -63,7 +92,8 @@ const server = createServer(async (req, res) => {
   }
 });
 
-server.listen(port, () => {
+server.listen(port, "0.0.0.0", async () => {
+  await ensureRuntimeFiles();
   console.log(`EDIMAGE WORLD running at http://localhost:${port}`);
   if (!apiKey || apiKey.includes("PASTE")) {
     console.log("OPENROUTER_API_KEY is not set yet. Add it to .env before using real generation.");
@@ -85,7 +115,7 @@ async function handleGenerate(req, res) {
     headers: {
       "Authorization": `Bearer ${apiKey}`,
       "Content-Type": "application/json",
-      "HTTP-Referer": "http://localhost:3000",
+      "HTTP-Referer": appBaseUrl,
       "X-OpenRouter-Title": "EDIMAGE WORLD"
     },
     body: JSON.stringify({
@@ -138,8 +168,72 @@ async function handleKnowledge(req, res) {
     ""
   ].join("\n");
 
-  await appendFile(join(root, "KNOWLEDGE-BASE.md"), block, "utf8");
+  await ensureRuntimeFiles();
+  await appendFile(knowledgeBasePath, block, "utf8");
   sendJson(res, 200, { ok: true });
+}
+
+async function handleAccessValidate(req, res) {
+  const body = await readJsonBody(req);
+  const code = String(body.code || "").trim();
+  const accessState = readAccessState();
+
+  if (code === developerCode) {
+    sendJson(res, 200, {
+      ok: true,
+      mode: "developer",
+      remaining: "unlimited",
+      sessionId: `dev-${Date.now()}-${Math.random().toString(16).slice(2)}`
+    });
+    return;
+  }
+
+  const remaining = Math.max(0, inviteLimit - accessState.inviteCompletions);
+
+  if (code !== inviteCode) {
+    sendJson(res, 403, { ok: false, error: "体验码不正确。", remaining });
+    return;
+  }
+
+  if (remaining <= 0) {
+    sendJson(res, 403, { ok: false, error: "体验码可用次数已经用完。", remaining: 0 });
+    return;
+  }
+
+  sendJson(res, 200, {
+    ok: true,
+    mode: "invite",
+    remaining,
+    sessionId: `invite-${Date.now()}-${Math.random().toString(16).slice(2)}`
+  });
+}
+
+async function handleAccessComplete(req, res) {
+  const body = await readJsonBody(req);
+  const sessionId = String(body.sessionId || "").trim();
+  const accessState = readAccessState();
+
+  if (!sessionId || accessState.completedSessions.includes(sessionId)) {
+    sendJson(res, 200, {
+      ok: true,
+      remaining: Math.max(0, inviteLimit - accessState.inviteCompletions),
+      alreadyCounted: true
+    });
+    return;
+  }
+
+  if (accessState.inviteCompletions < inviteLimit) {
+    accessState.inviteCompletions += 1;
+    accessState.completedSessions.push(sessionId);
+    accessState.completedSessions = accessState.completedSessions.slice(-200);
+    await writeAccessState(accessState);
+  }
+
+  sendJson(res, 200, {
+    ok: true,
+    remaining: Math.max(0, inviteLimit - accessState.inviteCompletions),
+    alreadyCounted: false
+  });
 }
 
 function buildPrompt(stage, payload) {
@@ -323,7 +417,7 @@ ${knowledge}
 
 function buildKnowledgePrompt(payload) {
   const browserKnowledge = String(payload.knowledgeBase || "").trim();
-  const fileKnowledge = readOptionalFile("KNOWLEDGE-BASE.md")
+  const fileKnowledge = readOptionalFile(knowledgeBasePath)
     .replace("# EDIMAGE WORLD 知识库", "")
     .trim();
   const combined = [fileKnowledge, browserKnowledge].filter(Boolean).join("\n\n---\n\n").slice(-9000);
@@ -344,7 +438,7 @@ ${combined}
 }
 
 function buildEasterPrompt(payload) {
-  const library = readOptionalFile("EASTER-EGG-LIBRARY.md").slice(0, 6000);
+  const library = readOptionalFile(easterEggLibraryPath).slice(0, 6000);
   if (!payload.easterEgg && !payload.easterEggUsed) {
     return `
 彩蛋库：
@@ -363,10 +457,56 @@ ${library}
 `;
 }
 
-function readOptionalFile(name) {
-  const filePath = join(root, name);
+function readOptionalFile(filePath) {
   if (!existsSync(filePath)) return "";
   return readFileSync(filePath, "utf8");
+}
+
+function readAccessState() {
+  if (!existsSync(accessStatePath)) {
+    return { inviteCompletions: 0, completedSessions: [] };
+  }
+
+  try {
+    const parsed = JSON.parse(readFileSync(accessStatePath, "utf8"));
+    return {
+      inviteCompletions: Number(parsed.inviteCompletions || 0),
+      completedSessions: Array.isArray(parsed.completedSessions) ? parsed.completedSessions : []
+    };
+  } catch (error) {
+    return { inviteCompletions: 0, completedSessions: [] };
+  }
+}
+
+async function writeAccessState(accessState) {
+  await writeFile(accessStatePath, JSON.stringify(accessState, null, 2), "utf8");
+}
+
+async function ensureRuntimeFiles() {
+  await mkdir(dataDir, { recursive: true });
+
+  if (!existsSync(accessStatePath)) {
+    await writeAccessState({ inviteCompletions: 0, completedSessions: [] });
+  }
+
+  if (!existsSync(knowledgeBasePath)) {
+    await writeFile(knowledgeBasePath, "# EDIMAGE WORLD 知识库\n\n当前暂无正式知识库条目。\n", "utf8");
+  }
+
+  if (!existsSync(easterEggLibraryPath)) {
+    await writeFile(
+      easterEggLibraryPath,
+      [
+        "# EDIMAGE WORLD 彩蛋库",
+        "",
+        "## 关键词：蝴蝶",
+        "",
+        "触发情节：蝴蝶大战金刚侠，金刚侠惨败，被迫上梁山，尔后号召108好汉，在水浒边上起义，史称爱尔兰史上最伟大的革命。",
+        ""
+      ].join("\n"),
+      "utf8"
+    );
+  }
 }
 
 async function serveStatic(req, res) {

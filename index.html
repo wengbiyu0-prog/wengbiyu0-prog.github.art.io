@@ -26,6 +26,23 @@
       --ease: cubic-bezier(0.19, 1, 0.22, 1);
     }
 
+    body[data-theme="amber"] {
+      --bg: #040002;
+      --panel: rgba(5, 1, 2, 0.72);
+      --panel-strong: rgba(5, 1, 2, 0.9);
+      --text: #ffe7ad;
+      --text-soft: rgba(255, 231, 173, 0.72);
+      --text-faint: rgba(255, 231, 173, 0.42);
+      --accent: #ffb328;
+      --accent-hot: #ffdc5c;
+      --accent-dark: #170905;
+      --line: rgba(255, 198, 82, 0.24);
+      --line-strong: rgba(255, 198, 82, 0.48);
+      --cyan: #25c5d8;
+      --shadow: 0 0 22px rgba(255, 180, 46, 0.32), 0 0 70px rgba(255, 123, 18, 0.2);
+      --serif: "Iowan Old Style", "Songti SC", "STSong", "Noto Serif CJK SC", Georgia, serif;
+    }
+
     body[data-theme="mist"] {
       --bg: #07130d;
       --panel: rgba(12, 31, 23, 0.62);
@@ -77,6 +94,23 @@
       --serif: Georgia, "Courier New", serif;
     }
 
+    body[data-theme="redcanyon"] {
+      --bg: #3b0802;
+      --panel: rgba(42, 7, 2, 0.64);
+      --panel-strong: rgba(33, 4, 1, 0.92);
+      --text: #fff1d4;
+      --text-soft: rgba(255, 241, 212, 0.76);
+      --text-faint: rgba(255, 230, 190, 0.42);
+      --accent: #d7aa62;
+      --accent-hot: #ffe1a0;
+      --accent-dark: #2a0702;
+      --line: rgba(255, 218, 153, 0.28);
+      --line-strong: rgba(255, 218, 153, 0.56);
+      --cyan: #c3dfdf;
+      --shadow: 0 20px 76px rgba(103, 18, 7, 0.44);
+      --serif: "Iowan Old Style", "Songti SC", Georgia, serif;
+    }
+
     * {
       box-sizing: border-box;
     }
@@ -96,24 +130,41 @@
       transition: background 520ms ease, color 520ms ease;
     }
 
+    body[data-theme="amber"] {
+      background:
+        radial-gradient(circle at 52% 32%, rgba(255, 186, 44, 0.13), transparent 22rem),
+        radial-gradient(circle at 26% 72%, rgba(32, 181, 204, 0.1), transparent 18rem),
+        linear-gradient(180deg, #050003 0%, #090202 48%, #020001 100%);
+    }
+
     body[data-theme="mist"] {
       background:
-        radial-gradient(circle at 30% 20%, rgba(193, 214, 180, 0.72), transparent 22rem),
-        radial-gradient(circle at 78% 70%, rgba(39, 76, 52, 0.92), transparent 24rem),
+        linear-gradient(rgba(11, 46, 29, 0.08), rgba(2, 20, 13, 0.34)),
+        url("pic/skin-mist.jpeg") center / cover,
         linear-gradient(180deg, #5f8066 0%, #1b3d2c 48%, #07130d 100%);
     }
 
     body[data-theme="archive"] {
       background:
+        linear-gradient(rgba(245, 245, 241, 0.62), rgba(218, 218, 214, 0.72)),
+        url("pic/skin-archive.jpeg") center top / min(58vw, 720px) auto no-repeat,
         linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px),
         linear-gradient(180deg, #f0f0ee 0%, #d4d4d0 100%);
-      background-size: 48px 48px, auto;
     }
 
     body[data-theme="blueapple"] {
       background:
+        linear-gradient(rgba(0, 129, 238, 0.45), rgba(0, 117, 233, 0.68)),
+        url("pic/skin-blueapple.jpeg") center 18vh / min(56vw, 620px) auto no-repeat,
         radial-gradient(circle at 50% 35%, rgba(255,255,255,0.16), transparent 18rem),
         linear-gradient(180deg, #1aa4ff 0%, #0075e9 100%);
+    }
+
+    body[data-theme="redcanyon"] {
+      background:
+        linear-gradient(rgba(54, 5, 0, 0.1), rgba(54, 5, 0, 0.38)),
+        url("pic/skin-redcanyon.jpeg") center / cover,
+        #3b0802;
     }
 
     body::before,
@@ -140,6 +191,15 @@
       background-image:
         linear-gradient(rgba(0, 0, 0, 0.06) 50%, transparent 50%),
         radial-gradient(circle, rgba(0, 0, 0, 0.14) 1px, transparent 1.3px);
+    }
+
+    body[data-theme="redcanyon"]::before {
+      opacity: 0.28;
+      mix-blend-mode: multiply;
+      background-image:
+        linear-gradient(90deg, rgba(60, 7, 0, 0.18) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255, 236, 184, 0.1) 1px, transparent 1.3px);
+      background-size: 18px 100%, 11px 11px;
     }
 
     body::after {
@@ -256,6 +316,11 @@
       filter: blur(1px) saturate(0.8);
     }
 
+    body[data-theme="redcanyon"] .world-relic {
+      opacity: 0.18;
+      filter: sepia(1) hue-rotate(330deg) saturate(1.4);
+    }
+
     .screen {
       display: none;
       min-height: 100vh;
@@ -369,7 +434,7 @@
 
     .theme-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 14px;
     }
 
@@ -403,8 +468,19 @@
       border: 1px solid rgba(255,255,255,0.18);
     }
 
+    .amber-preview {
+      background:
+        radial-gradient(ellipse at 50% 46%, #ffe273 0 19%, #ffb22a 35%, #45200a 54%, transparent 56%),
+        radial-gradient(circle at 50% 54%, #22b9d0 0 15%, transparent 16%),
+        radial-gradient(circle at 62% 58%, #5bc853 0 13%, transparent 14%),
+        #050002;
+      background-size: cover;
+      filter: saturate(1.15);
+    }
+
     .mist-preview {
       background:
+        url("pic/skin-mist.jpeg") center / cover,
         radial-gradient(circle at 24% 18%, #c1d6b4, transparent 38%),
         radial-gradient(circle at 72% 70%, #183c2a, transparent 42%),
         linear-gradient(180deg, #88a983, #163522);
@@ -413,7 +489,10 @@
 
     .archive-preview {
       position: relative;
-      background: linear-gradient(180deg, #efefef, #cfcfcf);
+      background:
+        linear-gradient(rgba(255,255,255,.62), rgba(255,255,255,.62)),
+        url("pic/skin-archive.jpeg") center / cover,
+        linear-gradient(180deg, #efefef, #cfcfcf);
       overflow: hidden;
     }
 
@@ -439,9 +518,17 @@
 
     .blueapple-preview {
       background:
+        url("pic/skin-blueapple.jpeg") center / cover,
         radial-gradient(circle at 48% 50%, rgba(255,255,255,.95) 0 20%, transparent 21%),
         radial-gradient(circle at 60% 54%, rgba(8,24,210,.45), transparent 12%),
         linear-gradient(180deg, #20a4ff, #0075e9);
+    }
+
+    .redcanyon-preview {
+      background:
+        linear-gradient(rgba(65, 6, 0, 0.08), rgba(65, 6, 0, 0.32)),
+        url("pic/skin-redcanyon.jpeg") center / cover,
+        #8f1d0e;
     }
 
     .theme-card strong {
@@ -485,6 +572,11 @@
     body[data-theme="blueapple"] .primary-btn {
       color: white;
       background: #0714d8;
+    }
+
+    body[data-theme="redcanyon"] .primary-btn {
+      color: #2a0702;
+      background: linear-gradient(180deg, #ffe1a0, #d7aa62);
     }
 
     .primary-btn:disabled,
@@ -950,6 +1042,25 @@
       line-height: 1.8;
     }
 
+    .access-note {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--text-soft);
+      background: rgba(255,255,255,0.04);
+      line-height: 1.7;
+      font-size: 0.92rem;
+    }
+
+    .access-error {
+      min-height: 22px;
+      margin-top: 10px;
+      color: var(--danger);
+      line-height: 1.6;
+      font-size: 0.92rem;
+    }
+
     .knowledge-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1122,7 +1233,7 @@
   </style>
 </head>
 
-<body data-theme="mist">
+<body data-theme="amber">
   <div class="app">
     <div class="vhs-frame" aria-hidden="true"></div>
 
@@ -1168,6 +1279,12 @@
             </div>
 
             <div class="theme-grid">
+              <button class="theme-card" type="button" data-theme="amber">
+                <span class="theme-preview amber-preview"></span>
+                <strong>Amber VHS</strong>
+                <small>黑场、琥珀光、旧录像、小世界、发光网点。</small>
+              </button>
+
               <button class="theme-card" type="button" data-theme="mist">
                 <span class="theme-preview mist-preview"></span>
                 <strong>Mist Forest</strong>
@@ -1184,6 +1301,12 @@
                 <span class="theme-preview blueapple-preview"></span>
                 <strong>Blue Apple</strong>
                 <small>亮蓝、拼贴、超现实、漂浮文字、明亮怪异。</small>
+              </button>
+
+              <button class="theme-card" type="button" data-theme="redcanyon">
+                <span class="theme-preview redcanyon-preview"></span>
+                <strong>Red Canyon</strong>
+                <small>赤壁、卷轴、峡谷、旧神话、窄门与远路。</small>
               </button>
             </div>
           </section>
@@ -1319,12 +1442,36 @@
         <div class="knowledge-list" id="knowledgeList"></div>
       </div>
     </section>
+
+    <section class="modal hidden" id="accessModal" aria-label="EDIMAGE WORLD 体验码">
+      <div class="modal-panel">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">threshold code</p>
+            <h2 class="modal-title">输入体验码</h2>
+            <p class="modal-copy">
+              这条小径目前只向受邀体验者开放。体验码会在完成一篇完整互动文本后消耗 1 次。
+            </p>
+          </div>
+          <button class="ghost-btn" id="accessCancelBtn" type="button">返回</button>
+        </div>
+
+        <input id="accessCodeInput" type="password" placeholder="输入体验码或开发者密码" autocomplete="off" />
+        <div class="access-error" id="accessError"></div>
+        <div class="result-actions">
+          <button class="primary-btn" id="accessSubmitBtn" type="button">进入显影</button>
+        </div>
+        <div class="access-note" id="accessNote">
+          体验码剩余次数会由本地后端记录。开发者密码不消耗次数。
+        </div>
+      </div>
+    </section>
   </div>
 
   <script>
     const state = {
       idea: "",
-      theme: localStorage.getItem("edimage-theme") || "mist",
+      theme: localStorage.getItem("edimage-theme") || "amber",
       cards: null,
       cardOptions: null,
       level: {
@@ -1340,7 +1487,9 @@
       path: [],
       history: [],
       customInput: null,
-      finalStory: null
+      finalStory: null,
+      pendingIdea: "",
+      access: JSON.parse(localStorage.getItem("edimage-access") || "null")
     };
 
     const screens = [...document.querySelectorAll(".screen")];
@@ -1383,6 +1532,12 @@
     const knowledgeSaveBtn = document.querySelector("#knowledgeSaveBtn");
     const knowledgeClearBtn = document.querySelector("#knowledgeClearBtn");
     const knowledgeList = document.querySelector("#knowledgeList");
+    const accessModal = document.querySelector("#accessModal");
+    const accessCodeInput = document.querySelector("#accessCodeInput");
+    const accessSubmitBtn = document.querySelector("#accessSubmitBtn");
+    const accessCancelBtn = document.querySelector("#accessCancelBtn");
+    const accessError = document.querySelector("#accessError");
+    const accessNote = document.querySelector("#accessNote");
 
     const fallbackDecks = {
       tags: [
@@ -1424,6 +1579,18 @@
       const idea = ideaInput.value.trim();
       if (!idea) return;
 
+      state.pendingIdea = idea;
+      if (!hasDeveloperAccess()) {
+        openAccessModal();
+        return;
+      }
+
+      await beginIdeaFlow(idea);
+    });
+
+    async function beginIdeaFlow(idea) {
+      if (!idea) return;
+
       startBtn.disabled = true;
       startBtn.textContent = "显影中";
 
@@ -1436,7 +1603,7 @@
 
       startBtn.textContent = "进入";
       startBtn.disabled = false;
-    });
+    }
 
     matchLengthBtn.addEventListener("click", () => {
       state.level = matchLength(lengthInput.value);
@@ -1454,6 +1621,12 @@
     knowledgeCloseBtn.addEventListener("click", closeKnowledgeModal);
     knowledgeSaveBtn.addEventListener("click", saveKnowledgeEntry);
     knowledgeClearBtn.addEventListener("click", clearKnowledgeEntries);
+    accessSubmitBtn.addEventListener("click", validateAccessAndContinue);
+    accessCancelBtn.addEventListener("click", closeAccessModal);
+    accessCodeInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") validateAccessAndContinue();
+      if (event.key === "Escape") closeAccessModal();
+    });
 
     knowledgeModal.addEventListener("click", (event) => {
       if (event.target === knowledgeModal) closeKnowledgeModal();
@@ -1464,13 +1637,76 @@
     });
 
     function setTheme(theme) {
-      state.theme = theme || "mist";
+      state.theme = theme || "amber";
       document.body.dataset.theme = state.theme;
       localStorage.setItem("edimage-theme", state.theme);
 
       themeButtons.forEach((button) => {
         button.classList.toggle("active", button.dataset.theme === state.theme);
       });
+    }
+
+    function hasDeveloperAccess() {
+      return state.access?.mode === "developer";
+    }
+
+    function openAccessModal() {
+      accessError.textContent = "";
+      accessCodeInput.value = "";
+      accessNote.textContent = "体验码会在完成一篇完整互动文本后消耗 1 次。开发者密码不消耗次数。";
+      accessModal.classList.remove("hidden");
+      window.setTimeout(() => accessCodeInput.focus(), 60);
+    }
+
+    function closeAccessModal() {
+      accessModal.classList.add("hidden");
+      state.pendingIdea = "";
+      startBtn.disabled = ideaInput.value.trim().length < 2;
+      startBtn.textContent = "进入";
+    }
+
+    async function validateAccessAndContinue() {
+      const code = accessCodeInput.value.trim();
+      if (!code) {
+        accessError.textContent = "请输入体验码。";
+        return;
+      }
+
+      accessSubmitBtn.disabled = true;
+      accessSubmitBtn.textContent = "验证中";
+      accessError.textContent = "";
+
+      try {
+        const response = await fetch("/api/access/validate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code })
+        });
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          accessError.textContent = result.error || "体验码不可用。";
+          accessNote.textContent = typeof result.remaining === "number"
+            ? `体验名额剩余 ${result.remaining} 次。`
+            : "请确认体验码是否正确，或联系网站所有者。";
+          return;
+        }
+
+        state.access = {
+          mode: result.mode,
+          remaining: result.remaining,
+          sessionId: result.sessionId || `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+          completed: false
+        };
+        localStorage.setItem("edimage-access", JSON.stringify(state.access));
+        accessModal.classList.add("hidden");
+        await beginIdeaFlow(state.pendingIdea || ideaInput.value.trim());
+      } catch (error) {
+        accessError.textContent = "本地后端没有回应，请确认 server.mjs 正在运行。";
+      } finally {
+        accessSubmitBtn.disabled = false;
+        accessSubmitBtn.textContent = "进入显影";
+      }
     }
 
     function showScreen(name) {
@@ -2072,7 +2308,26 @@
         ${escapeHtml(`${state.cards.concept.join(" / ")} · ${state.cards.form} · ${state.cards.genre} · ${state.cards.style} · ${state.level.id} ${state.level.name}`)}
       `;
 
+      await completeAccessIfNeeded();
       showScreen("result");
+    }
+
+    async function completeAccessIfNeeded() {
+      if (!state.access || state.access.mode !== "invite" || state.access.completed) return;
+
+      try {
+        const response = await fetch("/api/access/complete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId: state.access.sessionId })
+        });
+        const result = await response.json();
+        state.access.completed = true;
+        state.access.remaining = result.remaining;
+        localStorage.setItem("edimage-access", JSON.stringify(state.access));
+      } catch (error) {
+        // 完成计数失败不阻断用户拿到当前文本；下次验证仍以后端为准。
+      }
     }
 
     async function generateFinalStory() {
