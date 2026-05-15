@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: edimage-world
+    runtime: node
+    plan: starter
+    buildCommand: ""
+    startCommand: "node server.mjs"
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: APP_BASE_URL
+        value: https://edimage.art
+      - key: DATA_DIR
+        value: /var/data
+      - key: INVITE_CODE
+        sync: false
+      - key: DEVELOPER_CODE
+        sync: false
+      - key: INVITE_LIMIT
+        value: 10
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: OPENROUTER_MODEL
+        value: deepseek/deepseek-chat
+    disks:
+      - name: edimage-data
+        mountPath: /var/data
+        sizeGB: 1
