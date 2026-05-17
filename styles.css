@@ -31,7 +31,10 @@ body[data-theme="mist"] {
 
 /* 皮肤二：档案海报 */
 body[data-theme="archive"] {
-  --bg: linear-gradient(180deg, #eeeeec 0%, #d7d7d4 100%);
+  --bg:
+    linear-gradient(rgba(247, 239, 220, 0.42), rgba(226, 214, 190, 0.54)),
+    linear-gradient(90deg, rgba(94, 74, 44, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, #eee5d2 0%, #d9ccb3 100%);
   --panel: rgba(255, 255, 255, 0.68);
   --text: #1d1d1d;
   --muted: #565656;
@@ -43,7 +46,10 @@ body[data-theme="archive"] {
 
 /* 皮肤三：蓝苹果 */
 body[data-theme="blueapple"] {
-  --bg: linear-gradient(180deg, #1599ff 0%, #0078e8 100%);
+  --bg:
+    linear-gradient(rgba(0, 129, 238, 0.45), rgba(0, 117, 233, 0.68)),
+    radial-gradient(circle at 50% 35%, rgba(255,255,255,0.16), transparent 18rem),
+    linear-gradient(180deg, #1aa4ff 0%, #0075e9 100%);
   --panel: rgba(255, 255, 255, 0.18);
   --text: #ffffff;
   --muted: #d6efff;
@@ -115,25 +121,20 @@ h1, h2, h3 {
 
 .archive-preview {
   background:
-    linear-gradient(rgba(255,255,255,.6), rgba(255,255,255,.6)),
-    linear-gradient(180deg, #efefef, #cfcfcf);
+    linear-gradient(rgba(247, 239, 220, 0.62), rgba(226, 214, 190, 0.68)),
+    url("pic/skin-archive.png") center / auto 92% no-repeat,
+    linear-gradient(90deg, rgba(94, 74, 44, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, #f0e6d2, #d9ccb3);
+  background-size: auto, auto 92%, 10px 10px, auto;
   position: relative;
-}
-
-.archive-preview::after {
-  content: "AFIH2026";
-  position: absolute;
-  top: 36px;
-  left: 18px;
-  font-family: Didot, Georgia, serif;
-  font-size: 28px;
-  color: #111;
 }
 
 .blueapple-preview {
   background:
+    url("pic/skin-blueapple.png") center / auto 74% no-repeat,
     radial-gradient(circle at 50% 50%, rgba(255,255,255,.95) 0 24%, transparent 25%),
     linear-gradient(180deg, #20a4ff, #0075e9);
+  background-size: auto 74%, auto, auto;
 }
 
 .option-grid {
