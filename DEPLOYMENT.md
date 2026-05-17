@@ -8,16 +8,15 @@
 
 1. 这个项目是一个 Node 服务，不只是纯静态页面。
 2. 项目会写入 `ACCESS-STATE.json`、`KNOWLEDGE-BASE.md`、`EASTER-EGG-LIBRARY.md`。
-3. Render 支持自定义域名和持久磁盘，适合先把 MVP 放上公网。
+3. Render 免费版可以先把 MVP 放上公网；如果以后要稳定保存知识库和邀请码次数，再接免费数据库或升级持久磁盘。
 
 ## 当前项目的公网运行要求
 
 部署时至少需要设置这些环境变量：
 
 ```env
-PORT=10000
 APP_BASE_URL=https://edimage.art
-DATA_DIR=/var/data
+DATA_DIR=.
 OPENROUTER_API_KEY=你的 OpenRouter key
 OPENROUTER_MODEL=deepseek/deepseek-chat
 INVITE_CODE=edimage-world
@@ -43,8 +42,9 @@ www.edimage.art
 8. 回到域名 DNS 管理后台，按 Render 提示添加记录。
 9. 等待 SSL 证书签发完成。
 
-## 注意事项
+## 免费版注意事项
 
-1. 现在的邀请码次数和知识库内容依赖本地文件存储，已经通过 `DATA_DIR` 支持持久磁盘。
-2. 如果未来体验人数变多，建议把这些数据迁到数据库。
+1. Render 免费版会在空闲时休眠，首次访问可能等待几十秒。
+2. Render 免费版没有持久磁盘，本地写入的知识库和邀请码次数在重启、重新部署后可能丢失。
+3. 免费阶段可以先用于朋友体验；如果要长期保存数据，建议把访问次数和知识库迁到 Supabase 免费数据库。
 3. 上公网前建议轮换一次 OpenRouter API key，并把旧 key 作废。

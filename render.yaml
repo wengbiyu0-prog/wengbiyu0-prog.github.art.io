@@ -2,7 +2,7 @@ services:
   - type: web
     name: edimage-world
     runtime: node
-    plan: starter
+    plan: free
     buildCommand: ""
     startCommand: "node server.mjs"
     autoDeploy: true
@@ -12,7 +12,7 @@ services:
       - key: APP_BASE_URL
         value: https://edimage.art
       - key: DATA_DIR
-        value: /var/data
+        value: .
       - key: INVITE_CODE
         sync: false
       - key: DEVELOPER_CODE
@@ -23,7 +23,3 @@ services:
         sync: false
       - key: OPENROUTER_MODEL
         value: deepseek/deepseek-chat
-    disks:
-      - name: edimage-data
-        mountPath: /var/data
-        sizeGB: 1

@@ -1,9 +1,9 @@
 import { createServer } from "node:http";
-import { appendFile, mkdir, readFile, writeFile } from "node:fs/promises";
+import { appendFile, mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import { existsSync, readFileSync } from "node:fs";
-import { extname, join, normalize } from "node:path";
+import { extname, join, relative, resolve, sep } from "node:path";
 
-const root = process.cwd();
+const root = resolve(process.cwd());
 const env = loadEnv();
 const port = Number(env.PORT || 3000);
 const apiKey = env.OPENROUTER_API_KEY;
@@ -12,9 +12,10 @@ const appBaseUrl = env.APP_BASE_URL || `http://localhost:${port}`;
 const inviteCode = env.INVITE_CODE || "edimage-world";
 const developerCode = env.DEVELOPER_CODE || "edithfish";
 const inviteLimit = Number(env.INVITE_LIMIT || 10);
-const dataDir = env.DATA_DIR ? normalize(env.DATA_DIR) : root;
+const dataDir = env.DATA_DIR ? resolve(root, env.DATA_DIR) : root;
 const accessStatePath = join(dataDir, "ACCESS-STATE.json");
 const knowledgeBasePath = join(dataDir, "KNOWLEDGE-BASE.md");
+const knowledgeEntriesPath = join(dataDir, "KNOWLEDGE-ENTRIES.json");
 const easterEggLibraryPath = join(dataDir, "EASTER-EGG-LIBRARY.md");
 
 const mimeTypes = {
@@ -59,6 +60,11 @@ const server = createServer(async (req, res) => {
       return;
     }
 
+    if (req.method === "GET" && req.url === "/api/knowledge") {
+      await handleKnowledgeList(req, res);
+      return;
+    }
+
     if (req.method === "POST" && req.url === "/api/access/validate") {
       await handleAccessValidate(req, res);
       return;
@@ -69,13 +75,28 @@ const server = createServer(async (req, res) => {
       return;
     }
 
+    if (req.method === "POST" && req.url === "/api/story/complete") {
+      await handleStoryComplete(req, res);
+      return;
+    }
+
     if (req.method === "GET" && req.url === "/api/health") {
       sendJson(res, 200, {
         ok: true,
         app: "EDIMAGE WORLD",
         port,
         dataDir,
-        inviteLimit
+        inviteLimit,
+        totalStoryCompletions: readAccessState().totalStoryCompletions || 0
+      });
+      return;
+    }
+
+    if (req.method === "GET" && req.url === "/api/stats") {
+      const accessState = readAccessState();
+      sendJson(res, 200, {
+        ok: true,
+        totalStoryCompletions: accessState.totalStoryCompletions || 0
       });
       return;
     }
@@ -146,22 +167,34 @@ async function handleGenerate(req, res) {
 async function handleKnowledge(req, res) {
   const entry = await readJsonBody(req);
   const safeTitle = String(entry.title || "未命名碎片").replace(/\n/g, " ").trim();
+  const safeAuthor = String(entry.author || "").replace(/\n/g, " ").trim();
   const safeTags = String(entry.tags || "").replace(/\n/g, " ").trim();
   const safeText = String(entry.text || "").trim();
+  const createdAt = new Date().toISOString();
 
   if (!safeText) {
     sendJson(res, 400, { error: "Knowledge text is empty" });
     return;
   }
 
+  const storedEntry = {
+    id: `memory-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
+    title: safeTitle,
+    author: safeAuthor,
+    tags: safeTags,
+    text: safeText,
+    createdAt
+  };
+
   const block = [
     "",
     `## ${safeTitle}`,
     "",
-    "作者：本地用户",
+    `作者：${safeAuthor || "匿名缔造者"}`,
     "权限：个人可用",
     "类型：创意文本",
     `标签：${safeTags}`,
+    `写入时间：${createdAt}`,
     "",
     "正文：",
     safeText,
@@ -169,8 +202,19 @@ async function handleKnowledge(req, res) {
   ].join("\n");
 
   await ensureRuntimeFiles();
+  const entries = readKnowledgeEntries();
+  entries.push(storedEntry);
+  await writeKnowledgeEntries(entries);
   await appendFile(knowledgeBasePath, block, "utf8");
-  sendJson(res, 200, { ok: true });
+  sendJson(res, 200, { ok: true, entry: storedEntry });
+}
+
+async function handleKnowledgeList(req, res) {
+  await ensureRuntimeFiles();
+  sendJson(res, 200, {
+    ok: true,
+    entries: readKnowledgeEntries()
+  });
 }
 
 async function handleAccessValidate(req, res) {
@@ -200,11 +244,16 @@ async function handleAccessValidate(req, res) {
     return;
   }
 
+  const sessionId = `invite-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  accessState.issuedInviteSessions.push(sessionId);
+  accessState.issuedInviteSessions = accessState.issuedInviteSessions.slice(-200);
+  await writeAccessState(accessState);
+
   sendJson(res, 200, {
     ok: true,
     mode: "invite",
     remaining,
-    sessionId: `invite-${Date.now()}-${Math.random().toString(16).slice(2)}`
+    sessionId
   });
 }
 
@@ -222,16 +271,53 @@ async function handleAccessComplete(req, res) {
     return;
   }
 
+  if (!accessState.issuedInviteSessions.includes(sessionId)) {
+    sendJson(res, 403, {
+      ok: false,
+      error: "Invalid invite session",
+      remaining: Math.max(0, inviteLimit - accessState.inviteCompletions)
+    });
+    return;
+  }
+
   if (accessState.inviteCompletions < inviteLimit) {
     accessState.inviteCompletions += 1;
     accessState.completedSessions.push(sessionId);
+    accessState.issuedInviteSessions = accessState.issuedInviteSessions.filter((id) => id !== sessionId);
     accessState.completedSessions = accessState.completedSessions.slice(-200);
+    accessState.issuedInviteSessions = accessState.issuedInviteSessions.slice(-200);
     await writeAccessState(accessState);
   }
 
   sendJson(res, 200, {
     ok: true,
     remaining: Math.max(0, inviteLimit - accessState.inviteCompletions),
+    alreadyCounted: false
+  });
+}
+
+async function handleStoryComplete(req, res) {
+  const body = await readJsonBody(req);
+  const sessionId = String(body.sessionId || "").trim();
+  const accessState = readAccessState();
+
+  if (!sessionId || accessState.completedStorySessions.includes(sessionId)) {
+    sendJson(res, 200, {
+      ok: true,
+      totalStoryCompletions: accessState.totalStoryCompletions || 0,
+      alreadyCounted: true
+    });
+    return;
+  }
+
+  accessState.totalStoryCompletions = Number(accessState.totalStoryCompletions || 0) + 1;
+  accessState.completedStorySessions.push(sessionId);
+  accessState.completedStorySessions = accessState.completedStorySessions.slice(-500);
+  await writeAccessState(accessState);
+
+  sendJson(res, 200, {
+    ok: true,
+    totalStoryCompletions: accessState.totalStoryCompletions,
     alreadyCounted: false
   });
 }
@@ -464,33 +550,110 @@ function readOptionalFile(filePath) {
 
 function readAccessState() {
   if (!existsSync(accessStatePath)) {
-    return { inviteCompletions: 0, completedSessions: [] };
+    return {
+      inviteCompletions: 0,
+      completedSessions: [],
+      issuedInviteSessions: [],
+      totalStoryCompletions: 0,
+      completedStorySessions: []
+    };
   }
 
   try {
     const parsed = JSON.parse(readFileSync(accessStatePath, "utf8"));
     return {
       inviteCompletions: Number(parsed.inviteCompletions || 0),
-      completedSessions: Array.isArray(parsed.completedSessions) ? parsed.completedSessions : []
+      completedSessions: Array.isArray(parsed.completedSessions) ? parsed.completedSessions : [],
+      issuedInviteSessions: Array.isArray(parsed.issuedInviteSessions) ? parsed.issuedInviteSessions : [],
+      totalStoryCompletions: Number(parsed.totalStoryCompletions || 0),
+      completedStorySessions: Array.isArray(parsed.completedStorySessions) ? parsed.completedStorySessions : []
     };
   } catch (error) {
-    return { inviteCompletions: 0, completedSessions: [] };
+    return {
+      inviteCompletions: 0,
+      completedSessions: [],
+      issuedInviteSessions: [],
+      totalStoryCompletions: 0,
+      completedStorySessions: []
+    };
   }
+}
+
+function readKnowledgeEntries() {
+  let entries = [];
+
+  if (existsSync(knowledgeEntriesPath)) {
+    try {
+      const parsed = JSON.parse(readFileSync(knowledgeEntriesPath, "utf8"));
+      entries = Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      entries = [];
+    }
+  }
+
+  if (entries.length) {
+    return entries;
+  }
+
+  return parseKnowledgeMarkdown(readOptionalFile(knowledgeBasePath));
 }
 
 async function writeAccessState(accessState) {
   await writeFile(accessStatePath, JSON.stringify(accessState, null, 2), "utf8");
 }
 
+async function writeKnowledgeEntries(entries) {
+  await writeFile(knowledgeEntriesPath, JSON.stringify(entries, null, 2), "utf8");
+}
+
+function parseKnowledgeMarkdown(content) {
+  if (!content) {
+    return [];
+  }
+
+  const blocks = content.split(/\n## /).map((block, index) => (index === 0 ? block : `## ${block}`));
+  return blocks
+    .filter((block) => block.startsWith("## "))
+    .map((block, index) => {
+      const lines = block.split(/\r?\n/);
+      const title = lines[0].replace(/^##\s*/, "").trim() || "未命名碎片";
+      const author = lines.find((line) => line.startsWith("作者："))?.replace("作者：", "").trim() || "";
+      const tags = lines.find((line) => line.startsWith("标签："))?.replace("标签：", "").trim() || "";
+      const createdAt = lines.find((line) => line.startsWith("写入时间："))?.replace("写入时间：", "").trim() || "";
+      const textStart = lines.findIndex((line) => line.trim() === "正文：");
+      const text = textStart === -1 ? "" : lines.slice(textStart + 1).join("\n").trim();
+
+      return {
+        id: `legacy-memory-${index}`,
+        title,
+        author,
+        tags,
+        text,
+        createdAt
+      };
+    })
+    .filter((entry) => entry.text);
+}
+
 async function ensureRuntimeFiles() {
   await mkdir(dataDir, { recursive: true });
 
   if (!existsSync(accessStatePath)) {
-    await writeAccessState({ inviteCompletions: 0, completedSessions: [] });
+    await writeAccessState({
+      inviteCompletions: 0,
+      completedSessions: [],
+      issuedInviteSessions: [],
+      totalStoryCompletions: 0,
+      completedStorySessions: []
+    });
   }
 
   if (!existsSync(knowledgeBasePath)) {
     await writeFile(knowledgeBasePath, "# EDIMAGE WORLD 知识库\n\n当前暂无正式知识库条目。\n", "utf8");
+  }
+
+  if (!existsSync(knowledgeEntriesPath)) {
+    await writeKnowledgeEntries([]);
   }
 
   if (!existsSync(easterEggLibraryPath)) {
@@ -513,9 +676,17 @@ async function serveStatic(req, res) {
   const url = new URL(req.url, `http://localhost:${port}`);
   const pathname = decodeURIComponent(url.pathname);
   const requested = pathname === "/" ? "index.html" : pathname.slice(1);
-  const filePath = normalize(join(root, requested));
 
-  if (!filePath.startsWith(root)) {
+  if (!isPublicAsset(requested)) {
+    res.writeHead(404);
+    res.end("Not found");
+    return;
+  }
+
+  const filePath = resolve(root, requested);
+  const pathFromRoot = relative(root, filePath);
+
+  if (pathFromRoot.startsWith("..") || pathFromRoot.includes(`..${sep}`) || pathFromRoot === "") {
     res.writeHead(403);
     res.end("Forbidden");
     return;
@@ -527,10 +698,27 @@ async function serveStatic(req, res) {
     return;
   }
 
+  const fileStats = await stat(filePath);
+  if (!fileStats.isFile()) {
+    res.writeHead(404);
+    res.end("Not found");
+    return;
+  }
+
   const ext = extname(filePath).toLowerCase();
   const content = await readFile(filePath);
   res.writeHead(200, { "Content-Type": mimeTypes[ext] || "application/octet-stream" });
   res.end(content);
+}
+
+function isPublicAsset(requested) {
+  return (
+    requested === "index.html" ||
+    requested === "styles.css" ||
+    requested === "preview-desktop.png" ||
+    requested === "preview-mobile.png" ||
+    requested.startsWith("pic/")
+  );
 }
 
 function readJsonBody(req) {
@@ -559,7 +747,17 @@ function parseJsonContent(content) {
   }
 
   const trimmed = content.trim().replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```$/i, "").trim();
-  return JSON.parse(trimmed);
+  try {
+    return JSON.parse(trimmed);
+  } catch (error) {
+    const start = trimmed.indexOf("{");
+    const end = trimmed.lastIndexOf("}");
+    if (start !== -1 && end > start) {
+      return JSON.parse(trimmed.slice(start, end + 1));
+    }
+
+    throw error;
+  }
 }
 
 function sendJson(res, status, data) {

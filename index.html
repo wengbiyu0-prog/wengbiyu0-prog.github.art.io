@@ -299,6 +299,7 @@
         radial-gradient(ellipse at center, var(--accent), rgba(0,0,0,0.2) 72%, transparent 76%);
       box-shadow: var(--shadow);
       clip-path: polygon(4% 46%, 13% 25%, 34% 12%, 58% 8%, 82% 19%, 98% 41%, 92% 70%, 70% 91%, 39% 92%, 13% 78%);
+      animation: eyeFloat 5.2s ease-in-out infinite;
     }
 
     body[data-theme="archive"] .world-relic {
@@ -422,8 +423,10 @@
 
     .theme-title-row h2 {
       margin: 0;
-      font-size: clamp(1.25rem, 3vw, 2rem);
+      font-size: clamp(1.05rem, 2.45vw, 1.72rem);
       font-weight: 500;
+      opacity: 0.6;
+      text-shadow: 0 0 10px color-mix(in srgb, var(--accent-hot) 10%, transparent);
     }
 
     .theme-title-row p {
@@ -1063,7 +1066,7 @@
 
     .knowledge-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 10px;
       margin-bottom: 10px;
     }
@@ -1192,6 +1195,17 @@
       }
     }
 
+    @keyframes eyeFloat {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
     @keyframes screenIn {
       from {
         opacity: 0;
@@ -1238,11 +1252,11 @@
     <div class="vhs-frame" aria-hidden="true"></div>
 
     <div class="status-line">
-      <span>EDIMAGE WORLD / PATH 0001</span>
-      <button class="knowledge-btn" id="knowledgeOpenBtn" type="button">knowledge base</button>
+      <span id="pathCounter">EDIMAGE WORLD / PATH 0000</span>
+      <button class="knowledge-btn" id="knowledgeOpenBtn" type="button">记忆共同体</button>
     </div>
 
-    <div class="timestamp" aria-hidden="true">2000.04.14&nbsp;&nbsp;14:10</div>
+    <div class="timestamp" id="timestamp" aria-hidden="true">2000.04.14&nbsp;&nbsp;14:10:00</div>
 
     <div class="world-relic" aria-hidden="true">
       <div class="relic-shell"></div>
@@ -1251,16 +1265,10 @@
     <main>
       <section class="screen home active" data-screen="home">
         <div class="home-shell">
-          <p class="eyebrow">an entrance for unfinished dreams</p>
-
           <h1>
             <span>WELCOME</span><br />
             <span class="brand-line"><span>EDIMAGE</span> <span>WORLD.</span></span>
           </h1>
-
-          <p class="threshold">
-            站在小径分岔的路口，你可以去往一段梦、一枚场景，或一个尚未学会说话的世界。
-          </p>
 
           <form class="oracle-box" id="ideaForm">
             <div class="oracle-inner">
@@ -1272,10 +1280,8 @@
           <section class="theme-selector" id="themeSelector">
             <div class="theme-title-row">
               <div>
-                <p class="eyebrow">choose a skin</p>
-                <h2>选择进入世界的皮肤</h2>
+                <h2>站在小径分岔的路口，你可以选择显影的方式</h2>
               </div>
-              <p>它只改变世界显影的方式，不改变你的念头本身。</p>
             </div>
 
             <div class="theme-grid">
@@ -1419,24 +1425,24 @@
         <div class="modal-head">
           <div>
             <p class="eyebrow">world memory</p>
-            <h2 class="modal-title">知识库入口</h2>
+            <h2 class="modal-title">记忆共同体</h2>
             <p class="modal-copy">
-              把小说片段、梦境碎片、地点设定或一句还没有归处的话存进世界。知识库会优先参与后续文本生成。
+              把小说片段、梦境碎片、地点设定或一句还没有归处的话存进世界。它们会同步进入共享知识库，并优先参与后续文本生成。
             </p>
           </div>
-          <button class="ghost-btn" id="knowledgeCloseBtn" type="button">关闭</button>
+          <button class="ghost-btn" id="knowledgeCloseBtn" type="button">x</button>
         </div>
 
         <div class="knowledge-grid">
           <input id="knowledgeTitle" type="text" placeholder="标题，例如：夜间便利店" />
+          <input id="knowledgeAuthor" type="text" placeholder="缔造者，例如：W / 匿名（选填）" />
           <input id="knowledgeTags" type="text" placeholder="标签，例如：梦境 / 货架 / 私语" />
         </div>
 
-        <textarea class="knowledge-text" id="knowledgeText" rows="6" placeholder="粘贴一段创意文本。它会成为世界后续生成时优先参考的材料。"></textarea>
+        <textarea class="knowledge-text" id="knowledgeText" rows="6" placeholder="输入你的灵思碎片，共创EDIMAGE WORLD的灵魂。"></textarea>
 
         <div class="result-actions">
           <button class="primary-btn" id="knowledgeSaveBtn" type="button">存入世界</button>
-          <button class="ghost-btn" id="knowledgeClearBtn" type="button">清空本地条目</button>
         </div>
 
         <div class="knowledge-list" id="knowledgeList"></div>
@@ -1469,9 +1475,35 @@
   </div>
 
   <script>
+    function readStoredJson(key, fallback) {
+      try {
+        const value = localStorage.getItem(key);
+        return value ? JSON.parse(value) : fallback;
+      } catch (error) {
+        localStorage.removeItem(key);
+        return fallback;
+      }
+    }
+
+    function readStoredText(key, fallback) {
+      try {
+        return localStorage.getItem(key) || fallback;
+      } catch (error) {
+        return fallback;
+      }
+    }
+
+    const themePlaceholders = {
+      amber: "写下一枚会在旧录像里持续发光的念头。例如：一个失眠的人在梦里收到未来自己的来信。",
+      mist: "写下一句像雾气一样缓慢蔓延的想法。例如：有人在潮湿山路上反复听见一座没建成的房子叫他回去。",
+      archive: "写下一则像档案残页的线索。例如：某份展览手册里夹着一段不属于任何参展者的自述。",
+      blueapple: "写下一颗明亮又古怪的种子。例如：一枚蓝色苹果在午后的操场中央开始替每个人保存秘密。",
+      redcanyon: "写下一段通往远路与窄门的传闻。例如：有人穿过赤色峡谷，在断崖深处看见一座会移动的门楼。"
+    };
+
     const state = {
       idea: "",
-      theme: localStorage.getItem("edimage-theme") || "amber",
+      theme: readStoredText("edimage-theme", "amber"),
       cards: null,
       cardOptions: null,
       level: {
@@ -1489,7 +1521,11 @@
       customInput: null,
       finalStory: null,
       pendingIdea: "",
-      access: JSON.parse(localStorage.getItem("edimage-access") || "null")
+      access: readStoredJson("edimage-access", null),
+      knowledgeEntries: [],
+      storySessionId: "",
+      storyCompleted: false,
+      totalStoryCompletions: 0
     };
 
     const screens = [...document.querySelectorAll(".screen")];
@@ -1497,6 +1533,8 @@
 
     const ideaInput = document.querySelector("#ideaInput");
     const startBtn = document.querySelector("#startBtn");
+    const pathCounterEl = document.querySelector("#pathCounter");
+    const timestampEl = document.querySelector("#timestamp");
     const ideaForm = document.querySelector("#ideaForm");
     const cardGrid = document.querySelector("#cardGrid");
     const thoughtEcho = document.querySelector("#thoughtEcho");
@@ -1527,10 +1565,10 @@
     const knowledgeModal = document.querySelector("#knowledgeModal");
     const knowledgeCloseBtn = document.querySelector("#knowledgeCloseBtn");
     const knowledgeTitle = document.querySelector("#knowledgeTitle");
+    const knowledgeAuthor = document.querySelector("#knowledgeAuthor");
     const knowledgeTags = document.querySelector("#knowledgeTags");
     const knowledgeText = document.querySelector("#knowledgeText");
     const knowledgeSaveBtn = document.querySelector("#knowledgeSaveBtn");
-    const knowledgeClearBtn = document.querySelector("#knowledgeClearBtn");
     const knowledgeList = document.querySelector("#knowledgeList");
     const accessModal = document.querySelector("#accessModal");
     const accessCodeInput = document.querySelector("#accessCodeInput");
@@ -1560,8 +1598,10 @@
     };
 
     setTheme(state.theme);
+    startFloatingTimestamp();
     renderLength();
-    renderKnowledgeList();
+    hydrateKnowledgeEntries();
+    hydrateStats();
 
     themeButtons.forEach((button) => {
       button.addEventListener("click", () => {
@@ -1595,6 +1635,8 @@
       startBtn.textContent = "显影中";
 
       state.idea = idea;
+      state.storySessionId = `story-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`;
+      state.storyCompleted = false;
       state.cards = await generateCards(idea);
       thoughtEcho.textContent = idea;
 
@@ -1620,7 +1662,6 @@
     knowledgeOpenBtn.addEventListener("click", openKnowledgeModal);
     knowledgeCloseBtn.addEventListener("click", closeKnowledgeModal);
     knowledgeSaveBtn.addEventListener("click", saveKnowledgeEntry);
-    knowledgeClearBtn.addEventListener("click", clearKnowledgeEntries);
     accessSubmitBtn.addEventListener("click", validateAccessAndContinue);
     accessCancelBtn.addEventListener("click", closeAccessModal);
     accessCodeInput.addEventListener("keydown", (event) => {
@@ -1640,10 +1681,54 @@
       state.theme = theme || "amber";
       document.body.dataset.theme = state.theme;
       localStorage.setItem("edimage-theme", state.theme);
+      ideaInput.placeholder = themePlaceholders[state.theme] || themePlaceholders.amber;
 
       themeButtons.forEach((button) => {
         button.classList.toggle("active", button.dataset.theme === state.theme);
       });
+    }
+
+    function startFloatingTimestamp() {
+      const seed = new Date(Date.UTC(
+        1999 + Math.floor(Math.random() * 27),
+        Math.floor(Math.random() * 12),
+        1 + Math.floor(Math.random() * 28),
+        Math.floor(Math.random() * 24),
+        Math.floor(Math.random() * 60),
+        Math.floor(Math.random() * 60)
+      ));
+
+      const render = () => {
+        const year = seed.getUTCFullYear();
+        const month = String(seed.getUTCMonth() + 1).padStart(2, "0");
+        const day = String(seed.getUTCDate()).padStart(2, "0");
+        const hours = String(seed.getUTCHours()).padStart(2, "0");
+        const minutes = String(seed.getUTCMinutes()).padStart(2, "0");
+        const seconds = String(seed.getUTCSeconds()).padStart(2, "0");
+        timestampEl.innerHTML = `${year}.${month}.${day}&nbsp;&nbsp;${hours}:${minutes}:${seconds}`;
+        seed.setUTCSeconds(seed.getUTCSeconds() + 1);
+      };
+
+      render();
+      window.setInterval(render, 1000);
+    }
+
+    async function hydrateStats() {
+      try {
+        const response = await fetch("/api/stats");
+        const result = await response.json();
+        if (response.ok && result.ok) {
+          state.totalStoryCompletions = Number(result.totalStoryCompletions || 0);
+          renderPathCounter();
+        }
+      } catch (error) {
+        renderPathCounter();
+      }
+    }
+
+    function renderPathCounter() {
+      const count = String(Number(state.totalStoryCompletions || 0)).padStart(4, "0");
+      pathCounterEl.textContent = `EDIMAGE WORLD / PATH ${count}`;
     }
 
     function hasDeveloperAccess() {
@@ -2309,6 +2394,7 @@
       `;
 
       await completeAccessIfNeeded();
+      await completeStoryIfNeeded();
       showScreen("result");
     }
 
@@ -2322,11 +2408,31 @@
           body: JSON.stringify({ sessionId: state.access.sessionId })
         });
         const result = await response.json();
+        if (!response.ok || !result.ok) return;
         state.access.completed = true;
         state.access.remaining = result.remaining;
         localStorage.setItem("edimage-access", JSON.stringify(state.access));
       } catch (error) {
         // 完成计数失败不阻断用户拿到当前文本；下次验证仍以后端为准。
+      }
+    }
+
+    async function completeStoryIfNeeded() {
+      if (!state.storySessionId || state.storyCompleted) return;
+
+      try {
+        const response = await fetch("/api/story/complete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId: state.storySessionId })
+        });
+        const result = await response.json();
+        if (!response.ok || !result.ok) return;
+        state.storyCompleted = true;
+        state.totalStoryCompletions = Number(result.totalStoryCompletions || state.totalStoryCompletions || 0);
+        renderPathCounter();
+      } catch (error) {
+        // 累计数失败不阻断用户拿到文本。
       }
     }
 
@@ -2435,6 +2541,8 @@ ${state.cards.concept.join(" / ")} · ${state.cards.form} · ${state.cards.genre
       state.history = [];
       state.customInput = null;
       state.finalStory = null;
+      state.storySessionId = "";
+      state.storyCompleted = false;
       state.level = level("L3", "标准互动短篇", "5 到 8 次分岔", "如果你没有指定体量，世界会默认给这枚念头 5 到 8 次分岔。");
 
       ideaInput.value = "";
@@ -2447,6 +2555,7 @@ ${state.cards.concept.join(" / ")} · ${state.cards.form} · ${state.cards.genre
     }
 
     function openKnowledgeModal() {
+      hydrateKnowledgeEntries();
       renderKnowledgeList();
       knowledgeModal.classList.remove("hidden");
     }
@@ -2455,77 +2564,72 @@ ${state.cards.concept.join(" / ")} · ${state.cards.form} · ${state.cards.genre
       knowledgeModal.classList.add("hidden");
     }
 
-    function loadKnowledgeEntries() {
-      try {
-        return JSON.parse(localStorage.getItem("edimageKnowledgeEntries") || "[]");
-      } catch (error) {
-        return [];
-      }
-    }
-
-    function storeKnowledgeEntries(entries) {
-      localStorage.setItem("edimageKnowledgeEntries", JSON.stringify(entries));
-    }
-
     function getKnowledgeContext() {
-      return loadKnowledgeEntries()
+      return state.knowledgeEntries
         .slice(-8)
-        .map((entry) => `标题：${entry.title}\n标签：${entry.tags}\n正文：${entry.text}`)
+        .map((entry) => `标题：${entry.title}\n缔造者：${entry.author || "匿名缔造者"}\n标签：${entry.tags}\n正文：${entry.text}`)
         .join("\n\n---\n\n");
+    }
+
+    async function hydrateKnowledgeEntries() {
+      try {
+        const response = await fetch("/api/knowledge");
+        const result = await response.json();
+        if (response.ok && result.ok && Array.isArray(result.entries)) {
+          state.knowledgeEntries = result.entries;
+          renderKnowledgeList();
+        }
+      } catch (error) {
+        // 共享知识库读取失败时，不阻断当前创作流。
+      }
     }
 
     async function saveKnowledgeEntry() {
       const title = knowledgeTitle.value.trim() || "未命名碎片";
+      const author = knowledgeAuthor.value.trim();
       const tags = knowledgeTags.value.trim();
       const text = knowledgeText.value.trim();
 
       if (!text) return;
 
-      const entry = {
-        id: Date.now(),
+      const draftEntry = {
         title,
+        author,
         tags,
-        text,
-        createdAt: new Date().toISOString()
+        text
       };
 
-      const entries = loadKnowledgeEntries().concat(entry);
-      storeKnowledgeEntries(entries);
-
-      renderKnowledgeList();
-
       knowledgeTitle.value = "";
+      knowledgeAuthor.value = "";
       knowledgeTags.value = "";
       knowledgeText.value = "";
 
       try {
-        await fetch("/api/knowledge", {
+        const response = await fetch("/api/knowledge", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(entry)
+          body: JSON.stringify(draftEntry)
         });
+        if (response.ok) {
+          await hydrateKnowledgeEntries();
+        }
       } catch (error) {
-        // 本地存储已经完成；后端写入失败时不打断创作。
+        // 后端写入失败时不打断创作，但不会伪造本地成功。
       }
-    }
-
-    function clearKnowledgeEntries() {
-      storeKnowledgeEntries([]);
-      renderKnowledgeList();
     }
 
     function renderKnowledgeList() {
-      const entries = loadKnowledgeEntries();
+      const entries = state.knowledgeEntries;
 
       if (!entries.length) {
-        knowledgeList.innerHTML = `<div class="knowledge-item">当前本地知识库还没有条目。知识库为空时，文本生成完全依赖智能体推理。</div>`;
+        knowledgeList.innerHTML = `<div class="knowledge-item">记忆共同体暂时还没有条目。知识库为空时，文本生成完全依赖智能体推理。</div>`;
         return;
       }
 
-      knowledgeList.innerHTML = entries.slice(-8).reverse().map((entry) => `
+      knowledgeList.innerHTML = entries.slice().reverse().map((entry) => `
         <div class="knowledge-item">
           <strong>${escapeHtml(entry.title)}</strong><br />
-          ${escapeHtml(entry.tags || "未标记")}<br />
+          ${escapeHtml(entry.author || "匿名缔造者")} · ${escapeHtml(entry.tags || "未标记")}<br />
           ${escapeHtml(entry.text.slice(0, 140))}${entry.text.length > 140 ? "..." : ""}
         </div>
       `).join("");

@@ -1,4 +1,7 @@
 {
   "inviteCompletions": 0,
-  "completedSessions": []
+  "completedSessions": [],
+  "issuedInviteSessions": [],
+  "totalStoryCompletions": 0,
+  "completedStorySessions": []
 }
