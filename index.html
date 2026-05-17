@@ -1493,6 +1493,23 @@
       }
     }
 
+    function readStoredAccess() {
+      const stored = readStoredJson("edimage-access", null);
+      if (!stored) return null;
+
+      // Developer access should not survive a refresh. Invite sessions may persist briefly.
+      if (stored.mode === "developer") {
+        try {
+          localStorage.removeItem("edimage-access");
+        } catch (error) {
+          // Ignore storage cleanup failures.
+        }
+        return null;
+      }
+
+      return stored;
+    }
+
     const themePlaceholders = {
       amber: "写下一枚会在旧录像里持续发光的念头。例如：一个失眠的人在梦里收到未来自己的来信。",
       mist: "写下一句像雾气一样缓慢蔓延的想法。例如：有人在潮湿山路上反复听见一座没建成的房子叫他回去。",
@@ -1521,7 +1538,7 @@
       customInput: null,
       finalStory: null,
       pendingIdea: "",
-      access: readStoredJson("edimage-access", null),
+      access: readStoredAccess(),
       knowledgeEntries: [],
       storySessionId: "",
       storyCompleted: false,
@@ -1783,7 +1800,9 @@
           sessionId: result.sessionId || `${Date.now()}-${Math.random().toString(16).slice(2)}`,
           completed: false
         };
-        localStorage.setItem("edimage-access", JSON.stringify(state.access));
+        if (state.access.mode === "invite") {
+          localStorage.setItem("edimage-access", JSON.stringify(state.access));
+        }
         accessModal.classList.add("hidden");
         await beginIdeaFlow(state.pendingIdea || ideaInput.value.trim());
       } catch (error) {
